@@ -23,7 +23,7 @@ function App() {
 
         <Routes>
           {/* Default → redirect to login */}
-          <Route path='https://resource-allocator-project.onrender.com/' element={<Navigate to="/login" />} />
+          <Route path='https://resource-allocator-project.onrender.com' element={<Navigate to="/login" />} />
 
           {/* Auth pages */}
           <Route path='/login' element={<Login />} />
