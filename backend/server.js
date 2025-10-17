@@ -274,6 +274,10 @@ app.post("/api/auth/login", async (req, res) => {
 
 
 
+// ✅ Root route (to verify Render deployment)
+app.get("/", (req, res) => {
+  res.send("🚀 Dbatu Scholar Hub backend is running successfully!");
+});
 
 // ================== START SERVER ==================
 const PORT = process.env.PORT || 5000;
