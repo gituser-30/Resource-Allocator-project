@@ -23,7 +23,7 @@ function App() {
 
         <Routes>
           {/* Default → redirect to login */}
-          <Route path='/' element={<Navigate to="/login" />} />
+          <Route path='https://dbatuscholarhub.onrender.com/' element={<Navigate to="/login" />} />
 
           {/* Auth pages */}
           <Route path='/login' element={<Login />} />
