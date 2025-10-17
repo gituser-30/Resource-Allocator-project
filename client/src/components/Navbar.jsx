@@ -1,5 +1,5 @@
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import head from "../image/Head_logo.png";
+import head from "../images/Head_logo.png";
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
