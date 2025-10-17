@@ -9,7 +9,7 @@ const Settings = () => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/admin/profile", {
+        const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/profile", {
           headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
         });
         setAdminData({ name: res.data.name, email: res.data.email });
@@ -25,7 +25,7 @@ const Settings = () => {
     e.preventDefault();
     try {
       await axios.put(
-        "http://localhost:5000/api/admin/profile",
+        "https://resource-allocator-project.onrender.com/api/admin/profile",
         { name: adminData.name, email: adminData.email },
         { headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` } }
       );
@@ -41,7 +41,7 @@ const Settings = () => {
 
     try {
       await axios.put(
-        "http://localhost:5000/api/admin/password",
+        "https://resource-allocator-project.onrender.com/api/admin/password",
         { oldPassword: passwords.oldPassword, newPassword: passwords.newPassword },
         { headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` } }
       );
