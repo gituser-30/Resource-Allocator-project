@@ -20,7 +20,7 @@ const Footer = () => {
               <span className="text-warning fw-semibold">notes</span>,{" "}
               <span className="text-warning fw-semibold">assignments</span>, and{" "}
               <span className="text-warning fw-semibold">previous year papers</span>. 
-              <br />
+              <br /> 
               Learn 📖 | Share 🤝 | Grow 🚀
             </p>
           </div>
@@ -77,6 +77,24 @@ const Footer = () => {
               </a>
               <a
                 href="https://instagram.com/mandhare3243"
+                className="text-light"
+                style={{
+                  fontSize: "20px",
+                  transition: "color 0.3s, transform 0.3s",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.color = "#e4405f";
+                  e.target.style.transform = "scale(1.2)";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.color = "white";
+                  e.target.style.transform = "scale(1)";
+                }}
+              >
+                <FaInstagram />
+              </a>
+                  <a
+                href="https://instagram.com/mr_rashid46"
                 className="text-light"
                 style={{
                   fontSize: "20px",
