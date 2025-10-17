@@ -26,7 +26,7 @@ const PYQsPage = () => {
  useEffect(() => {
   const fetchPyqs = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/pyqs", {
+      const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/pyqs", {
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
 
@@ -59,7 +59,7 @@ const PYQsPage = () => {
     formData.append("title", title);
 
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/pyqs", {
+      const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/pyqs", {
       headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
       setPyqs(res.data); // guaranteed to be an array
@@ -79,7 +79,7 @@ const PYQsPage = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this PYQ?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/admin/pyqs/${id}`, {
+      await axios.delete(`https://resource-allocator-project.onrender.com/api/admin/pyqs/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
       setPyqs(pyqs.filter((p) => p._id !== id));
@@ -179,7 +179,7 @@ const PYQsPage = () => {
                   <td>{p.subject}</td>
                   <td>{p.year}</td>
                   <td>
-                    <a href={`http://localhost:5000${p.fileUrl}`} target="_blank" rel="noopener noreferrer">View PDF</a>
+                    <a href={`https://resource-allocator-project.onrender.com${p.fileUrl}`} target="_blank" rel="noopener noreferrer">View PDF</a>
                   </td>
                   <td>
                     <button onClick={() => handleDelete(p._id)}>Delete</button>
