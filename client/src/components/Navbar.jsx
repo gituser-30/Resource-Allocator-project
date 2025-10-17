@@ -6,7 +6,7 @@ const Navbar = () => {
   const token = localStorage.getItem("token"); // ✅ check auth status
 
   // hide navbar completely on login and register
-  const hideNavbarRoutes = ["/login", "/Register"];
+  const hideNavbarRoutes = ["/login", "/register"];
   if (hideNavbarRoutes.includes(location.pathname)) {
     return null;
   }
