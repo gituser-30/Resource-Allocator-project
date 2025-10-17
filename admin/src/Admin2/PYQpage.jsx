@@ -31,7 +31,7 @@ const PYQsPage = () => {
       });
 
       // Ensure pyqs is an array
-      const pyqsArray = Array.isArray(res.data.pyq) ? res.data.pyq : [];
+      const pyqsArray = Array.isArray(res.data.pyqs) ? res.data.pyqs : [];
       setPyqs(pyqsArray);
 
     } catch (err) {
@@ -71,7 +71,7 @@ const PYQsPage = () => {
     );
 
     // add newly created PYQ to state
-    setPyqs([...pyqs, res.data]);
+    setPyqs([...pyqs, res.data.pyq]);
 
     // reset form
     setDepartment(""); 
