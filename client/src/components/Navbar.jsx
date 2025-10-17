@@ -34,7 +34,7 @@ const Navbar = () => {
               width: "60px",
               height: "60px",
               borderRadius: "50%",
-              objectFit: "contain",
+              objectFit: "cover",
               marginRight: "12px",
             }}
           />
