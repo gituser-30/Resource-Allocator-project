@@ -31,11 +31,11 @@ const Navbar = () => {
             src={head}
             alt="Dbatu Scholar Hub Logo"
             style={{
-              width: "60px",
-              height: "60px",
+              width: "40px",
+              height: "40px",
               borderRadius: "50%",
               objectFit: "cover",
-              marginRight: "12px",
+              marginRight: "8px",
             }}
           />
           <span className="fw-bold " style={{ color: "#38bdf8" }}>
