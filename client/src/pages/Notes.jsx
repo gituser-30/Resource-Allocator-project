@@ -16,7 +16,7 @@ const Notes = () => {
     if (department && semester) {
       axios
         .get(
-          `http://localhost:5000/api/resources?department=${department}&semester=${semester}`
+          `https://resource-allocator-project.onrender.com/api/resources?department=${department}&semester=${semester}`
         )
         .then((res) => setNotes(res.data))
         .catch((err) => console.log(err));
