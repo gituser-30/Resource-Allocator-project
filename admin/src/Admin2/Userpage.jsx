@@ -24,7 +24,7 @@ const UsersPage = () => {
                 const cacheBuster = `?t=${new Date().getTime()}`;
                 
                 // Request is sent to GET /api/admin/users?t=123456789
-                const res = await axios.get(`http://localhost:5000/api/admin/users${cacheBuster}`, {
+                const res = await axios.get(`https://resource-allocator-project.onrender.com/api/admin/users${cacheBuster}`, {
                     headers: {
                         Authorization: `Bearer ${token}`, 
                         // Explicitly tell the browser NOT to cache this result
@@ -65,7 +65,7 @@ const UsersPage = () => {
         }
 
         try {
-            await axios.delete(`http://localhost:5000/api/admin/users/${id}`, {
+            await axios.delete(`https://resource-allocator-project.onrender.com/api/admin/users/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
