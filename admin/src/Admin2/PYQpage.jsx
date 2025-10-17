@@ -44,36 +44,49 @@ const PYQsPage = () => {
 
   // Add PYQ
   const handleAddPyq = async (e) => {
-    e.preventDefault();
-    if (!department || !semester || !subject || !year || !file) {
-      setError("All fields are required ❌");
-      return;
-    }
+  e.preventDefault();
+  if (!department || !semester || !subject || !year || !file || !title) {
+    setError("All fields are required ❌");
+    return;
+  }
 
-    const formData = new FormData();
-    formData.append("department", department);
-    formData.append("semester", semester);
-    formData.append("subject", subject);
-    formData.append("year", year); // ✅ send year to backend
-    formData.append("file", file);
-    formData.append("title", title);
+  const formData = new FormData();
+  formData.append("department", department);
+  formData.append("semester", semester);
+  formData.append("subject", subject);
+  formData.append("year", year);
+  formData.append("file", file);
+  formData.append("title", title);
 
-    try {
-      const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/pyqs", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
-      });
-      setPyqs(res.data); // guaranteed to be an array
-      setDepartment(""); 
-      setSemester(""); 
-      setSubject(""); 
-      settittle(""); 
-      setYear("");     // ✅ reset year
-      setFile(null);
-      setError("");
-    } catch (err) {
-      setError(err.response?.data?.error || "Failed to add PYQ ❌");
-    }
-  };
+  try {
+    const res = await axios.post(
+      "https://resource-allocator-project.onrender.com/api/admin/pyqs",
+      formData,
+      {
+        headers: { 
+          Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+          "Content-Type": "multipart/form-data"
+        },
+      }
+    );
+
+    // add newly created PYQ to state
+    setPyqs([...pyqs, res.data]);
+
+    // reset form
+    setDepartment(""); 
+    setSemester(""); 
+    setSubject(""); 
+    setYear("");
+    settittle(""); 
+    setFile(null);
+    setError("");
+
+  } catch (err) {
+    setError(err.response?.data?.error || "Failed to add PYQ ❌");
+  }
+};
+
 
   // Delete PYQ
   const handleDelete = async (id) => {
