@@ -35,12 +35,12 @@ const PYQ = require("./models/PYQ");
 const app = express();
 
 
-app.use("/images", express.static(path.join(__dirname, "images")));
 
 
 // Middleware
 app.use(express.json());
 app.use(cors()); // allow all origins while developing
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 const userRoutes = require("./routes/user");
 app.use("/api/users", userRoutes);
