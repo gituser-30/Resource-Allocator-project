@@ -25,7 +25,7 @@ const NotesPage = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/admin/notes", {
+        const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/notes", {
           headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
         });
 
@@ -54,7 +54,7 @@ const NotesPage = () => {
     formData.append("title", title);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/admin/notes", formData, {
+      const res = await axios.post("https://resource-allocator-project.onrender.com/api/admin/notes", formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
           "Content-Type": "multipart/form-data",
@@ -73,7 +73,7 @@ const NotesPage = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this note?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/admin/notes/${id}`, {
+      await axios.delete(`https://resource-allocator-project.onrender.com/api/admin/notes/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
       setNotes(notes.filter((n) => n._id !== id));
@@ -159,7 +159,7 @@ const NotesPage = () => {
                   <td style={tdStyle}>{n.semester}</td>
                   <td style={tdStyle}>{n.subject}</td>
                   <td style={tdStyle}>
-                    <a href={`http://localhost:5000${n.fileUrl}`} target="_blank" rel="noopener noreferrer" style={{ color: "#1d4ed8", fontWeight: "600" }}>View PDF</a>
+                    <a href={`https://resource-allocator-project.onrender.com${n.fileUrl}`} target="_blank" rel="noopener noreferrer" style={{ color: "#1d4ed8", fontWeight: "600" }}>View PDF</a>
                   </td>
                   <td style={tdStyle}>
                     <button style={deleteButtonStyle} onClick={() => handleDelete(n._id)}>Delete</button>
