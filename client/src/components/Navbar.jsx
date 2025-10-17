@@ -28,7 +28,7 @@ const Navbar = () => {
           to="/"
         >
           <img
-            src="/images/Head_logo.png"
+            src={head}
             alt="Dbatu Scholar Hub Logo"
             style={{
               width: "60px",
