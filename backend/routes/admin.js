@@ -536,6 +536,24 @@ router.get("/users", async (_, res) => {
   }
 });
 
+
+
+// ---------------- Delete User ----------------
+router.delete("/users/:id", async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    res.json({ success: true, message: "User deleted successfully ✅" });
+  } catch (err) {
+    console.error("Delete User Error:", err);
+    res.status(500).json({ success: false, message: "Failed to delete user" });
+  }
+});
+
+
 // ---------------- PYQs ----------------
 router.get("/pyqs", async (req, res) => {
   try {
