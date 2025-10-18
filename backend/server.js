@@ -264,7 +264,8 @@ app.post("/api/auth/register", uploadProfile.single("profilePhoto"), async (req,
     if (user) return res.status(400).json({ message: "User already exists" });
 
     // ✅ Upload handled by Cloudinary middleware
-    const profilePhoto = req.file ? req.file.path : null; // Cloudinary returns .path as URL
+    // const profilePhoto = req.file ? req.file.path : null; // Cloudinary returns .path as URL
+    const profilePhoto = req.file?.path || req.file?.secure_url || null;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
