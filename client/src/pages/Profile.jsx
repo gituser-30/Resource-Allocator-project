@@ -113,7 +113,7 @@ const Profile = () => {
             <li><strong>📛 Name:</strong> {user.fullName}</li>
             <li><strong>📧 Email:</strong> {user.email}</li>
             <li><strong>🎂 Date of Birth:</strong> {user.dob || "Not provided"}</li>
-            <li><strong>🎓 Department:</strong> {user.department || "Not updated"}</li>
+            
             <li><strong>📅 Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}</li>
           </ul>
         </div>
