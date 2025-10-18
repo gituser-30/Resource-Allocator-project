@@ -58,14 +58,7 @@ process.on("unhandledRejection", (reason) => {
 });
 
 
-// // ✅ Serve static files (uploaded notes + profiles)
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-
-// ================== MongoDB Connection ==================
-// mongoose.connect("mongodb://127.0.0.1:27017/Dbatu_scholar_hub")
-//   .then(() => console.log("✅ MongoDB Connected"))
-//   .catch(err => console.error("❌ MongoDB Error:", err));
 
 
 mongoose
@@ -107,16 +100,7 @@ app.post("/contact", async (req, res) => {
   }
 });
 
-// ================== FILE UPLOAD (Multer) ==================
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//     cb(null, "uploads/");
-//   },
-//   filename: (req, file, cb) => {
-//     cb(null, Date.now() + "-" + file.originalname);
-//   }
-// });
-// const upload = multer({ storage });
+
 
 
 const storage = new CloudinaryStorage({
@@ -202,13 +186,6 @@ app.get("/api/resources", async (req, res) => {
 // ================== AUTH (Register + Login) ==================
 
 // Profile photo storage
-// const storageProfile = multer.diskStorage({
-//   destination: (req, file, cb) => cb(null, "uploads/profiles/"),
-//   filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname)
-// });
-// const uploadProfile = multer({ storage: storageProfile });
-
-
 const storageProfile = new CloudinaryStorage({
   cloudinary,
   params: {
@@ -221,36 +198,6 @@ const storageProfile = new CloudinaryStorage({
 const uploadProfile = multer({ storage: storageProfile });
 
 // 📌 Register
-// app.post("/api/auth/register", uploadProfile.single("profilePhoto"), async (req, res) => {
-//   try {
-//     const { fullName, email, dob, password } = req.body;
-
-//     if (!fullName || !email || !dob || !password) {
-//       return res.status(400).json({ message: "All fields are required" });
-//     }
-
-//     let user = await User.findOne({ email });
-//     if (user) return res.status(400).json({ message: "User already exists" });
-
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     const profilePhoto = req.file ? req.file.filename : null;
-
-//     user = new User({
-//       fullName,
-//       email,
-//       dob,
-//       password: hashedPassword,
-//       profilePhoto,
-//       verified: true // ✅ Directly verified (no email verification needed)
-//     });
-
-//     await user.save();
-//     return res.status(201).json({ message: "✅ Registered successfully!", user });
-//   } catch (err) {
-//     console.error("❌ Register Error:", err);
-//     res.status(500).json({ message: "Error registering user" });
-//   }
-// });
 
 app.post("/api/auth/register", uploadProfile.single("profilePhoto"), async (req, res) => {
   try {
