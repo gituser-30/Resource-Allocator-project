@@ -202,13 +202,56 @@ app.get("/api/resources", async (req, res) => {
 // ================== AUTH (Register + Login) ==================
 
 // Profile photo storage
-const storageProfile = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, "uploads/profiles/"),
-  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname)
+// const storageProfile = multer.diskStorage({
+//   destination: (req, file, cb) => cb(null, "uploads/profiles/"),
+//   filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname)
+// });
+// const uploadProfile = multer({ storage: storageProfile });
+
+
+const storageProfile = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "uploads/profiles", // ✅ Folder in Cloudinary
+    allowed_formats: ["jpg", "jpeg", "png"],
+    public_id: (req, file) => `${Date.now()}-${file.originalname}`,
+  },
 });
+
 const uploadProfile = multer({ storage: storageProfile });
 
 // 📌 Register
+// app.post("/api/auth/register", uploadProfile.single("profilePhoto"), async (req, res) => {
+//   try {
+//     const { fullName, email, dob, password } = req.body;
+
+//     if (!fullName || !email || !dob || !password) {
+//       return res.status(400).json({ message: "All fields are required" });
+//     }
+
+//     let user = await User.findOne({ email });
+//     if (user) return res.status(400).json({ message: "User already exists" });
+
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     const profilePhoto = req.file ? req.file.filename : null;
+
+//     user = new User({
+//       fullName,
+//       email,
+//       dob,
+//       password: hashedPassword,
+//       profilePhoto,
+//       verified: true // ✅ Directly verified (no email verification needed)
+//     });
+
+//     await user.save();
+//     return res.status(201).json({ message: "✅ Registered successfully!", user });
+//   } catch (err) {
+//     console.error("❌ Register Error:", err);
+//     res.status(500).json({ message: "Error registering user" });
+//   }
+// });
+
 app.post("/api/auth/register", uploadProfile.single("profilePhoto"), async (req, res) => {
   try {
     const { fullName, email, dob, password } = req.body;
@@ -220,8 +263,10 @@ app.post("/api/auth/register", uploadProfile.single("profilePhoto"), async (req,
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: "User already exists" });
 
+    // ✅ Upload handled by Cloudinary middleware
+    const profilePhoto = req.file ? req.file.path : null; // Cloudinary returns .path as URL
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    const profilePhoto = req.file ? req.file.filename : null;
 
     user = new User({
       fullName,
@@ -229,7 +274,7 @@ app.post("/api/auth/register", uploadProfile.single("profilePhoto"), async (req,
       dob,
       password: hashedPassword,
       profilePhoto,
-      verified: true // ✅ Directly verified (no email verification needed)
+      verified: true,
     });
 
     await user.save();
