@@ -93,13 +93,19 @@ const Profile = () => {
         {/* Header */}
         <div className="profile-header text-center">
          <div className="profile-avatar">
-            <img
+            {/* <img
               src={
                 user.profilePhoto
                   ? `https://resource-allocator-project.onrender.com/uploads/profiles/${user.profilePhoto}`
                   : "/images/default-avatar.png"
               }
               alt="Profile"
+            /> */}
+
+           <img
+              src={user.profilePhoto || "/images/default-avatar.png"}
+              alt="Profile"
+              onError={(e) => (e.target.src = "/images/default-avatar.png")} // fallback if URL broken
             />
           </div>
 
