@@ -71,7 +71,7 @@ const Notes = () => {
           >
             <option value="">-- Choose Department --</option>
             <option value="Computer">💻 Computer Engineering</option>
-            <option value="Information-Technology">
+            <option value="Information Technology">
               💻 Information Technology
             </option>
             <option value="Mechanical">⚙️ Mechanical Engineering</option>
