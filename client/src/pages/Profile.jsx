@@ -112,9 +112,9 @@ const Profile = () => {
           <ul className="list-unstyled">
             <li><strong>📛 Name:</strong> {user.fullName}</li>
             <li><strong>📧 Email:</strong> {user.email}</li>
-            <li><strong>🎂 Date of Birth:</strong> {user.dob || "Not provided"}</li>
-            
-            <li><strong>📅 Joined:</strong> {new Date(user.createdAt).toLocaleDateString()}</li>
+            <li><strong>🎂 Date of Birth:</strong>{" "} {user.dob ? new Date(user.dob).toLocaleDateString("en-GB") : "Not provided"}</li>
+            <li><strong>📅 Joined:</strong>{" "}{user.createdAt ? new Date(user.createdAt).toLocaleDateString("en-GB") : "Unknown"}</li>
+
           </ul>
         </div>
 
