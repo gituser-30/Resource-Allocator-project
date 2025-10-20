@@ -72,7 +72,7 @@ function App() {
           />
 
             
-            
+            <Route path="/notes/:department" element={<Notes />} />
           
 
           {/* Email Verification
