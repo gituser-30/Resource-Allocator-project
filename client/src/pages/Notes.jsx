@@ -311,11 +311,11 @@ const Notes = () => {
             onChange={(e) => setDepartment(e.target.value)}
           >
             <option value="">-- Choose Department --</option>
-            <option value="Computer Engineering">💻 Computer Engineering</option>
+            <option value="Computer">💻 Computer Engineering</option>
             <option value="Information Technology">💻 Information Technology</option>
-            <option value="Mechanical Engineering">⚙️ Mechanical Engineering</option>
-            <option value="Civil Engineering">🏗️ Civil Engineering</option>
-            <option value="Electrical Engineering">🔌 Electrical Engineering</option>
+            <option value="Mechanical">⚙️ Mechanical Engineering</option>
+            <option value="Civil">🏗️ Civil Engineering</option>
+            <option value="Electrical">🔌 Electrical Engineering</option>
           </select>
 
           <button
