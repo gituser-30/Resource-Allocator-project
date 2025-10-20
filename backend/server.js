@@ -8,8 +8,7 @@ const path = require("path");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-import { Resend } from "resend";
-
+const { Resend } = require("resend");
 
 
 require("dotenv").config();
