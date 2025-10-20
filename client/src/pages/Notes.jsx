@@ -236,13 +236,21 @@ const Notes = () => {
   const location = useLocation();
   const { department: deptParam } = useParams();
 
-  // ✅ If user came from Browse page
+  // ✅ Department normalization mapping
+  const departmentMap = {
+    "Computer Engineering": "Computer",
+    "Information Technology": "Information Technology",
+    "Mechanical Engineering": "Mechanical",
+    "Civil Engineering": "Civil",
+    "Electrical Engineering": "Electrical",
+  };
+
+  // ✅ Handle route /notes/:department or state from Browse page
   useEffect(() => {
     if (location.state?.department) {
       setDepartment(location.state.department);
-      setStep(2); // skip department selection step
+      setStep(2);
     } else if (deptParam) {
-      // If accessed directly via URL (/notes/computer-engineering)
       const formattedDept = deptParam
         .replace(/-/g, " ")
         .replace(/\b\w/g, (l) => l.toUpperCase());
@@ -254,12 +262,15 @@ const Notes = () => {
   // ✅ Fetch notes when department + semester selected
   useEffect(() => {
     if (department && semester) {
+      // Normalize department name to match backend
+      const backendDept = departmentMap[department] || department;
+
       axios
         .get(
-          `https://resource-allocator-project.onrender.com/api/resources?department=${department}&semester=${semester}`
+          `https://resource-allocator-project.onrender.com/api/resources?department=${backendDept}&semester=${semester}`
         )
         .then((res) => setNotes(res.data))
-        .catch((err) => console.log(err));
+        .catch((err) => console.error("❌ Fetch Error:", err));
     }
   }, [department, semester]);
 
@@ -269,7 +280,7 @@ const Notes = () => {
     return acc;
   }, {});
 
-  // ✅ If a subject is searched (via ?subject= query param)
+  // ✅ Auto-select subject if ?subject= param present
   useEffect(() => {
     if (searchSubject && Object.keys(groupedNotes).length > 0) {
       const found = Object.keys(groupedNotes).find(
@@ -311,11 +322,17 @@ const Notes = () => {
             onChange={(e) => setDepartment(e.target.value)}
           >
             <option value="">-- Choose Department --</option>
-            <option value="Computer">💻 Computer Engineering</option>
-            <option value="Information Technology">💻 Information Technology</option>
-            <option value="Mechanical">⚙️ Mechanical Engineering</option>
-            <option value="Civil">🏗️ Civil Engineering</option>
-            <option value="Electrical">🔌 Electrical Engineering</option>
+            <option value="Computer Engineering">💻 Computer Engineering</option>
+            <option value="Information Technology">
+              💻 Information Technology
+            </option>
+            <option value="Mechanical Engineering">
+              ⚙️ Mechanical Engineering
+            </option>
+            <option value="Civil Engineering">🏗️ Civil Engineering</option>
+            <option value="Electrical Engineering">
+              🔌 Electrical Engineering
+            </option>
           </select>
 
           <button
@@ -337,7 +354,7 @@ const Notes = () => {
             {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
               <button
                 key={sem}
-                className="btn btn-outline-light px-4 py-2 rounded-pill shadow-sm hover-scale"
+                className="btn btn-outline-light px-4 py-2 rounded-pill shadow-sm"
                 onClick={() => {
                   setSemester(sem);
                   setStep(3);
@@ -455,4 +472,3 @@ const Notes = () => {
 };
 
 export default Notes;
-
