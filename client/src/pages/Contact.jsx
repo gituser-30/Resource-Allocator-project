@@ -22,7 +22,12 @@ const Contact = () => {
     setStatus("⏳ Sending...");
 
     try {
-      const res = await axios.post("https://resource-allocator-project.onrender.com/contact", formData);
+      const res = await axios.post(
+  "https://resource-allocator-project.onrender.com/contact",
+  formData,
+  { headers: { "Content-Type": "application/json" } }
+);
+
       if (res.data.success) {
         setStatus("✅ Message sent successfully!");
         setFormData({ name: "", email: "", subject: "", message: "" });
