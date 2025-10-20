@@ -111,7 +111,7 @@ app.post("/contact", async (req, res) => {
 
     const response = await resend.emails.send({
       from: "Dbatu Scholar Hub <no-reply@resend.dev>", // use your verified domain or @resend.dev
-      to: "dbatuscholorhub@gmail.com",           // your receiving email
+      to: "aryanmandhare30@gmail.com",           // your receiving email
       subject: `New Contact from ${name}`,
       html: `
         <h2>New Contact Message</h2>
