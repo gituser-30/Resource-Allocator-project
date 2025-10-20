@@ -186,21 +186,44 @@ if (title === "Assignment") {
 
 
 
+// app.get("/api/resources", async (req, res) => {
+//   try {
+//     const { department, semester } = req.query;
+//     const query = {};
+//     if (department) query.department = department;
+//     if (semester) query.semester = semester;
+
+//     const notes = await Note.find(query);
+//     const assignments = await Assignment.find(query);
+//     const Pyqs = await PYQ .find(query);
+
+//     const all = [...notes, ...assignments,...Pyqs].sort(
+//       (a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt)
+//     );
+
+//     res.json(all);
+//   } catch (err) {
+//     console.error("❌ Fetch Resources Error:", err);
+//     res.status(500).json({ error: "Failed to fetch resources" });
+//   }
+// });
+
 app.get("/api/resources", async (req, res) => {
   try {
     const { department, semester } = req.query;
     const query = {};
-    if (department) query.department = department;
+    if (department) query.department = { $regex: new RegExp(department, "i") };
     if (semester) query.semester = semester;
 
     const notes = await Note.find(query);
     const assignments = await Assignment.find(query);
-    const Pyqs = await PYQ .find(query);
+    const Pyqs = await PYQ.find(query);
 
-    const all = [...notes, ...assignments,...Pyqs].sort(
+    const all = [...notes, ...assignments, ...Pyqs].sort(
       (a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt)
     );
 
+    console.log("📘 Found:", all.length, "resources");
     res.json(all);
   } catch (err) {
     console.error("❌ Fetch Resources Error:", err);
