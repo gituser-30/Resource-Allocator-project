@@ -8,7 +8,7 @@ const path = require("path");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
-
+import { Resend } from "resend";
 
 
 
@@ -67,40 +67,69 @@ mongoose
   .catch((err) => console.error("❌ MongoDB error:", err));
 
 // ================== CONTACT ROUTE ==================
-app.post("/contact", async (req, res) => {
-  const { name, email, subject, message } = req.body;
+// app.post("/contact", async (req, res) => {
+//   const { name, email, subject, message } = req.body;
 
+//   try {
+//     const transporter = nodemailer.createTransport({
+//       host: "smtp.gmail.com",
+//       port: 465,
+//       secure: true,
+//       auth: {
+//         user: process.env.GMAIL_USER || "dbatuscholorhub@gmail.com",
+//         pass: process.env.GMAIL_PASS || "bibb ijnv yluk qcpz", // replace with env var in production
+//       },
+//     });
+
+//     const mailOptions = {
+//       from: `"Dbatu Scholar Hub" <${process.env.GMAIL_USER || "dbatuscholorhub@gmail.com"}>`,
+//       to: "dbatuscholorhub@gmail.com",
+//       subject: `New message from ${name}: ${subject}`,
+//       text: `
+//         Name: ${name}
+//         Email: ${email}
+//         Message: ${message}
+//       `,
+//     };
+
+//     await transporter.sendMail(mailOptions);
+//     res.json({ success: true, message: "Message sent successfully!" });
+//   } catch (err) {
+//     console.error("❌ Email Error:", err);
+//     res.status(500).json({ success: false, message: "Something went wrong." });
+//   }
+// });
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+app.post("/contact", async (req, res) => {
   try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.GMAIL_USER || "dbatuscholorhub@gmail.com",
-        pass: process.env.GMAIL_PASS || "bibb ijnv yluk qcpz", // replace with env var in production
-      },
+    const { name, email, message } = req.body;
+
+    if (!name || !email || !message) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
+    const response = await resend.emails.send({
+      from: "Your App <noreply@resend.dev>", // use your verified domain or @resend.dev
+      to: "your_email@example.com",           // your receiving email
+      subject: `New Contact from ${name}`,
+      html: `
+        <h2>New Contact Message</h2>
+        <p><b>Name:</b> ${name}</p>
+        <p><b>Email:</b> ${email}</p>
+        <p><b>Message:</b> ${message}</p>
+      `,
     });
 
-    const mailOptions = {
-      from: `"Dbatu Scholar Hub" <${process.env.GMAIL_USER || "dbatuscholorhub@gmail.com"}>`,
-      to: "dbatuscholorhub@gmail.com",
-      subject: `New message from ${name}: ${subject}`,
-      text: `
-        Name: ${name}
-        Email: ${email}
-        Message: ${message}
-      `,
-    };
+    console.log("✅ Email sent:", response);
+    res.status(200).json({ success: true, message: "Email sent successfully!" });
 
-    await transporter.sendMail(mailOptions);
-    res.json({ success: true, message: "Message sent successfully!" });
-  } catch (err) {
-    console.error("❌ Email Error:", err);
-    res.status(500).json({ success: false, message: "Something went wrong." });
+  } catch (error) {
+    console.error("❌ Resend Error:", error);
+    res.status(500).json({ error: "Failed to send email", details: error.message });
   }
 });
-
-
 
 
 const storage = new CloudinaryStorage({
