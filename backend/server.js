@@ -213,7 +213,7 @@ app.get("/api/resources", async (req, res) => {
     const { department, semester } = req.query;
     const query = {};
     if (department) query.department = { $regex: new RegExp(department, "i") };
-    if (semester) query.semester = semester;
+    if (semester) query.semester = Number(semester); // ✅ convert string to number
 
     const notes = await Note.find(query);
     const assignments = await Assignment.find(query);
@@ -230,7 +230,6 @@ app.get("/api/resources", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch resources" });
   }
 });
-
 
 
 
