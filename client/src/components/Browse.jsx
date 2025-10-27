@@ -96,7 +96,7 @@ const Browse = () => {
       path: "computer-engineering",
     },
     {
-      name: "IT Engineering",
+      name: "Information Technology",
       icon: <FaProjectDiagram size={40} />,
       gradient: "linear-gradient(135deg, #11998e, #38ef7d)",
       path: "it-engineering",
