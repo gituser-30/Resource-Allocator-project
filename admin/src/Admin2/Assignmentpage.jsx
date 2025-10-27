@@ -20,7 +20,8 @@ const AssignmentsPage = () => {
     "Electrical",
     "Information Technology",
     "Chemical Engineering",
-    "Electronics & Telecommunication"
+    "ENTC",
+    "Electrical"
   ];
   const semesters = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
