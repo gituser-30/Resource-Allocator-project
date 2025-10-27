@@ -21,7 +21,7 @@ const Notes = () => {
     "Mechanical Engineering": "Mechanical",
     "Civil Engineering": "Civil",
     "Electrical Engineering": "Electrical",
-    "Electronics & Telecommunication": "Electronics & Telecommunication",
+    "Electronics & Telecommunication": "ENTC",
     "Chemical Enginnering": "Chemical",
   };
 
