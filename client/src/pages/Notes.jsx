@@ -47,7 +47,7 @@ const Notes = () => {
 
       axios
         .get(
-          `https://resource-allocator-project.onrender.com/api/resources?department=${backendDept}&semester=${semester}`
+          `https://resource-allocator-project.onrender.com/api/resources?department=${encodeURIComponent(backendDept)}&semester=${semester}`
         )
         .then((res) => setNotes(res.data))
         .catch((err) => console.error("❌ Fetch Error:", err));
