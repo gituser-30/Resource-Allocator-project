@@ -15,10 +15,13 @@ const PYQsPage = () => {
 
   // Options
   const departments = [
-    "Computer Engineering",
+    "Computer",
     "Mechanical Engineering",
-    "Civil Engineering",
-    "Electrical Engineering",
+    "Civil",
+    "Electrical",
+    "ENTC",
+    "Chemical Engineering",
+    "Information Technology",
   ];
   const semesters = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
