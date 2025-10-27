@@ -243,6 +243,8 @@ const Notes = () => {
     "Mechanical Engineering": "Mechanical",
     "Civil Engineering": "Civil",
     "Electrical Engineering": "Electrical",
+    "Electronics & Telecommunication": "Electronics & Telecommunication",
+    "Chemical Enginnering": "Chemical",
   };
 
   // ✅ Handle route /notes/:department or state from Browse page
