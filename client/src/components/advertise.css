@@ -1,4 +1,4 @@
-.advertise-slide {
+/* .advertise-slide {
   position: relative;
 }
 
@@ -24,4 +24,98 @@
 
 .advertise-overlay h4 {
   color: #f9a825;
+} */
+
+.advertise-slide {
+  position: relative;
+}
+
+.advertise-img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  filter: brightness(70%);
+  border-radius: 0; /* keep edges clean */
+  transition: transform 2s ease;
+}
+
+.advertise-slide:hover .advertise-img {
+  transform: scale(1.05);
+}
+
+.advertise-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 10;
+}
+
+/* Title Animation */
+.animate-fade {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1.5s ease forwards;
+}
+
+.animate-slide {
+  opacity: 0;
+  transform: translateY(40px);
+  animation: fadeUp 1.8s ease forwards;
+  animation-delay: 0.4s;
+}
+
+/* Keyframes */
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Text Styling */
+.advertise-overlay h1 {
+  font-size: 2.8rem;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.advertise-overlay h4 {
+  font-size: 1.3rem;
+  color: #f9a825;
+  margin-top: 10px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Dots Customization */
+.slick-dots li button:before {
+  font-size: 10px;
+  color: #f9a825;
+  opacity: 0.7;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #f9a825;
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .advertise-img {
+    height: 350px;
+  }
+
+  .advertise-overlay h1 {
+    font-size: 1.8rem;
+  }
+
+  .advertise-overlay h4 {
+    font-size: 1rem;
+  }
 }
