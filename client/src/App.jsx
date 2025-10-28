@@ -20,7 +20,7 @@ function App() {
     <div>
       <BrowserRouter>
         
-
+        <Navbar />
         <Routes>
           {/* Default → redirect to login */}
           <Route path='/' element={<Navigate to="/login" />} />
@@ -29,7 +29,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
 
-          <Navbar />
+          
           {/* Protected pages (after login) */}
           <Route
             path='/home'
