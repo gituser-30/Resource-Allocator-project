@@ -75,7 +75,7 @@ const Popular = () => {
           <h5 className="card-title fw-bold text-info">
             {note.subject} - {note.unit} Notes
           </h5>
-          <p className="card-text small text-light"><a href={note.link} target="_parent">{note.description}</a></p>
+          <p className="card-text small text-light"><a href={note.link} target="_blank" rel="noopener noreferrer">{note.description}</a></p>
         </div>
       </div>
     </div>
