@@ -22,7 +22,8 @@ const Popular = () => {
       subject: "DBMS",
       unit: "Unit 1",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP6alUrn9jJxQKo0OM236ekOxLmep3dPnK-g&s",
-      description: "📖 First Year - Discrete mathematics",
+      description: "📖 Second Year - Discrete mathematics",
+      link:"https://res.cloudinary.com/dsq3sf0ea/raw/upload/v1761630004/uploads/1761630003169-1757868895020-%5BBook%5D%20Discrete%20mathematics%20and%20its%20applications%20%282019%29_0_compressed.pdf",
     },
     {
       id: 2,
@@ -30,13 +31,15 @@ const Popular = () => {
       unit: "Unit 2",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_0hzZQ_ZgZQa09fQLKnrsL37fX0hgI3Z15g&s",
       description: "🖥️ First Year - C Programming",
+      link:"https://res.cloudinary.com/dsq3sf0ea/raw/upload/v1761630004/uploads/1761630003169-1757868895020-%5BBook%5D%20Discrete%20mathematics%20and%20its%20applications%20%282019%29_0_compressed.pdf",
     },
     {
       id: 3,
       subject: "Computer Networks",
       unit: "Unit 3",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmR4RBb4KR2F8smhdxiPTRDjezKjiW53zGUQ&s",
-      description: "🌐 First Year - Data Structures & Algorithm",
+      description: "🌐 Second Year - Data Structures & Algorithm",
+      link:"https://res.cloudinary.com/dsq3sf0ea/raw/upload/v1761630004/uploads/1761630003169-1757868895020-%5BBook%5D%20Discrete%20mathematics%20and%20its%20applications%20%282019%29_0_compressed.pdf",
     },
   ].map((note) => (
     <div className="col-md-4 col-sm-6" key={note.id}>
@@ -72,7 +75,7 @@ const Popular = () => {
           <h5 className="card-title fw-bold text-info">
             {note.subject} - {note.unit} Notes
           </h5>
-          <p className="card-text small text-light">{note.description}</p>
+          <p className="card-text small text-light"><a href={note.link}>{note.description}</a></p>
         </div>
       </div>
     </div>
