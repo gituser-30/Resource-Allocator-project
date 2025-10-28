@@ -129,7 +129,7 @@ const Register = () => {
               value={formData.email}
               onChange={handleInputChange}
               required
-            />
+            />Email aadress
           </div>
 
           <div className="form-group animated-input delay-2">
@@ -139,11 +139,11 @@ const Register = () => {
               value={formData.dob}
               onChange={handleInputChange}
               required
-            />
+            />DOB
           </div>
 
           <div className="form-group animated-input delay-3">
-            <input type="file" accept="image/*" onChange={handleFileChange} />
+            <input type="file" accept="image/*" onChange={handleFileChange} /> Upload Profile Pic
           </div>
 
           <div className="form-group animated-input delay-4">
