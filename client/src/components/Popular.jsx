@@ -22,21 +22,21 @@ const Popular = () => {
       subject: "DBMS",
       unit: "Unit 1",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP6alUrn9jJxQKo0OM236ekOxLmep3dPnK-g&s",
-      description: "📖 Second Year - Database Management System",
+      description: "📖 First Year - Discrete mathematics",
     },
     {
       id: 2,
       subject: "Operating System",
       unit: "Unit 2",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_0hzZQ_ZgZQa09fQLKnrsL37fX0hgI3Z15g&s",
-      description: "🖥️ Second Year - Operating System",
+      description: "🖥️ First Year - C Programming",
     },
     {
       id: 3,
       subject: "Computer Networks",
       unit: "Unit 3",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmR4RBb4KR2F8smhdxiPTRDjezKjiW53zGUQ&s",
-      description: "🌐 Second Year - Computer Networks",
+      description: "🌐 First Year - Data Structures & Algorithm",
     },
   ].map((note) => (
     <div className="col-md-4 col-sm-6" key={note.id}>
