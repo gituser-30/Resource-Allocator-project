@@ -19,23 +19,23 @@ const Popular = () => {
   {[
     {
       id: 1,
-      subject: "DBMS",
-      unit: "Unit 1",
+      subject: "Discrete mathematics",
+      unit: "Reference book",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRP6alUrn9jJxQKo0OM236ekOxLmep3dPnK-g&s",
       description: "📖 Second Year - Discrete mathematics",
       link:"https://res.cloudinary.com/dsq3sf0ea/raw/upload/v1761630004/uploads/1761630003169-1757868895020-%5BBook%5D%20Discrete%20mathematics%20and%20its%20applications%20%282019%29_0_compressed.pdf",
     },
     {
       id: 2,
-      subject: "Operating System",
-      unit: "Unit 2",
+      subject: "C Programming",
+      unit: "Reference Book",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_0hzZQ_ZgZQa09fQLKnrsL37fX0hgI3Z15g&s",
       description: "🖥️ First Year - C Programming",
       link:"https://res.cloudinary.com/dsq3sf0ea/raw/upload/v1761630004/uploads/1761630003169-1757868895020-%5BBook%5D%20Discrete%20mathematics%20and%20its%20applications%20%282019%29_0_compressed.pdf",
     },
     {
       id: 3,
-      subject: "Computer Networks",
+      subject: "Data Structures & Algorithm",
       unit: "Unit 3",
       img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmR4RBb4KR2F8smhdxiPTRDjezKjiW53zGUQ&s",
       description: "🌐 Second Year - Data Structures & Algorithm",
