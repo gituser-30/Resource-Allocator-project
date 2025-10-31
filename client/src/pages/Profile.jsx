@@ -12,22 +12,50 @@ const Profile = () => {
   const navigate = useNavigate();
 
   // Fetch user from localStorage
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUser(parsedUser);
-      setForm(parsedUser);
-    } else {
-      navigate("/login");
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   const storedUser = localStorage.getItem("user");
+  //   if (storedUser) {
+  //     const parsedUser = JSON.parse(storedUser);
+  //     setUser(parsedUser);
+  //     setForm(parsedUser);
+  //   } else {
+  //     navigate("/login");
+  //   }
+  // }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+  // const handleLogout = () => {
+  //   localStorage.removeItem("token");
+  //   localStorage.removeItem("user");
+  //   navigate("/login");
+  // };
+
+  useEffect(() => {
+  const storedUser = localStorage.getItem("user");
+  if (storedUser) {
+    const parsedUser = JSON.parse(storedUser);
+    setUser(parsedUser);
+    setForm(parsedUser);
+
+    // ✅ Fetch full user data from backend to get createdAt and other latest fields
+    fetchUserData(parsedUser._id || parsedUser.id);
+  } else {
     navigate("/login");
-  };
+  }
+}, [navigate]);
+
+const fetchUserData = async (userId) => {
+  try {
+    const res = await axios.get(
+      `https://resource-allocator-project.onrender.com/api/users/${userId}`
+    );
+    if (res.data.success) {
+      setUser(res.data.user);
+      localStorage.setItem("user", JSON.stringify(res.data.user)); // ✅ update localStorage
+    }
+  } catch (err) {
+    console.error("Error fetching full user data:", err);
+  }
+};
 
   // Update profile
   const handleProfileUpdate = async () => {
