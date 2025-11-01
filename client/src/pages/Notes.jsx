@@ -22,7 +22,7 @@ const Notes = () => {
     "Civil Engineering": "Civil",
     "Electrical Engineering": "Electrical",
     "Electronics & Telecommunication": "ENTC",
-    "Chemical Enginnering": "Chemical",
+    "Chemical Enginnering": "Chemical Engineering",
   };
 
   // ✅ Handle route /notes/:department or state from Browse page
@@ -116,7 +116,7 @@ const Notes = () => {
             <option value="Electronics & Telecommunication">
               🔌 Electronics & Telecommunication
             </option>
-            <option value="Chemical">
+            <option value="Chemical Engineering">
               🔌 Chemical Engineering
             </option>
           </select>
