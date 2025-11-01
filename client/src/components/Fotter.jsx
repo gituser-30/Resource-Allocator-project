@@ -2,8 +2,10 @@ import React from "react";
 import { FaFacebookF, FaTwitter, FaLinkedinIn, FaInstagram } from "react-icons/fa";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
   return (
     <footer
       className="text-light pt-5 pb-3"
@@ -26,7 +28,7 @@ const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          <div className="col-md-4 mb-4">
+          {/* <div className="col-md-4 mb-4">
             <h4 className="fw-bold text-warning mb-3">Quick Links</h4>
             <ul className="list-unstyled">
               {[
@@ -45,6 +47,31 @@ const Footer = () => {
                   >
                     {item.name}
                   </a>
+                </li>
+              ))}
+            </ul>
+          </div> */}
+
+            <div className="col-md-4 mb-4">
+            <h4 className="fw-bold text-warning mb-3">Quick Links</h4>
+            <ul className="list-unstyled">
+              {[
+                { name: "🏠 Home", link: "/home" },
+                { name: "📚 Browse Notes", link: "/Notes" },
+                { name: "ℹ️ About Us", link: "/About-us" },
+                { name: "✉️ Contact", link: "/Contact" },
+              ].map((item, idx) => (
+                <li key={idx} className="mb-2">
+                  <span
+                    role="button"
+                    className="text-decoration-none text-light"
+                    style={{ cursor: "pointer", transition: "color 0.3s" }}
+                    onClick={() => navigate(item.link)}
+                    onMouseEnter={(e) => (e.target.style.color = "#facc15")}
+                    onMouseLeave={(e) => (e.target.style.color = "white")}
+                  >
+                    {item.name}
+                  </span>
                 </li>
               ))}
             </ul>
