@@ -31,9 +31,9 @@ const Footer = () => {
             <ul className="list-unstyled">
               {[
                 { name: "🏠 Home", link: "/home" },
-                { name: "📚 Browse Notes", link: "/browse" },
-                { name: "ℹ️ About Us", link: "/about" },
-                { name: "✉️ Contact", link: "/contact" },
+                { name: "📚 Browse Notes", link: "/Notes" },
+                { name: "ℹ️ About Us", link: "/About-us" },
+                { name: "✉️ Contact", link: "/Contact" },
               ].map((item, idx) => (
                 <li key={idx} className="mb-2">
                   <a
