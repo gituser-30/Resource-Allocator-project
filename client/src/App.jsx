@@ -162,6 +162,8 @@ const AppContent = () => {
           }
         />
 
+
+
         <Route path="/notes/:department" element={<Notes />} />
       </Routes>
     </>
