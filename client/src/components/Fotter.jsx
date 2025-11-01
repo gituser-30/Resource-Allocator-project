@@ -30,7 +30,7 @@ const Footer = () => {
             <h4 className="fw-bold text-warning mb-3">Quick Links</h4>
             <ul className="list-unstyled">
               {[
-                { name: "🏠 Home", link: "/" },
+                { name: "🏠 Home", link: "/home" },
                 { name: "📚 Browse Notes", link: "/browse" },
                 { name: "ℹ️ About Us", link: "/about" },
                 { name: "✉️ Contact", link: "/contact" },
