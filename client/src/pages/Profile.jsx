@@ -98,7 +98,7 @@ const Profile = () => {
            
 
            <img
-              src={user.profilePhoto || "/images/default-avatar.png"}
+              src={user.profilePhoto || "https://www.pngkey.com/png/full/115-1150152_default-profile-picture-avatar-png-green.png"}
               alt="Profile"
               onError={(e) => (e.target.src = "/images/default-avatar.png")} // fallback if URL broken
             />
