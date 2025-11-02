@@ -85,7 +85,7 @@ const Footer = () => {
             </p>
             <div className="d-flex justify-content-center justify-content-md-start gap-3">
               <a
-                href="#"
+                href="https://www.linkedin.com/in/rashid-khopatkar-74a238308/"
                 className="text-light"
                 style={{
                   fontSize: "20px",
