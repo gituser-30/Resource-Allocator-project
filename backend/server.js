@@ -380,9 +380,9 @@ async function sendEmailToAllStudents(title, department, semester) {
   try {
     const students = await User.find({}, "email fullName");
 
-    for (let student of students) {
-      await resend.emails.send({
-        from: "aryanmandhare30@gmail.com",
+    const emails = students.map((student) =>
+      resend.emails.send({
+        from: "onboarding@resend.dev",
         to: student.email,
         subject: `New ${title} Uploaded`,
         html: `
@@ -396,14 +396,19 @@ async function sendEmailToAllStudents(title, department, semester) {
           <br/>
           <p>Regards,<br>Dbatu Scholar Hub Team</p>
         `,
-      });
-    }
+      })
+    );
 
-    console.log("📩 Emails sent to all students!");
+    // 🟢 Resend recommends this to avoid throttling
+    const results = await Promise.allSettled(emails);
+
+    console.log("Email dispatch results:", results);
+
   } catch (error) {
     console.error("❌ Error sending notification emails:", error);
   }
 }
+
 
 // ================== CONTACT ROUTE ==================
 app.post("/contact", async (req, res) => {
