@@ -382,7 +382,7 @@ async function sendEmailToAllStudents(title, department, semester) {
 
     const emails = students.map((student) =>
       resend.emails.send({
-        from:"Dbatu Scholar Hub <no-reply@pixuuxsele.resend.app>",
+        from:"Dbatu Scholar Hub <no-reply@resend.dev>",
         to: student.email,
         subject: `New ${title} Uploaded`,
         html: `
