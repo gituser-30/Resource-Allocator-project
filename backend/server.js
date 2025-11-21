@@ -382,7 +382,7 @@ async function sendEmailToAllStudents(title, department, semester) {
 
     for (let student of students) {
       await resend.emails.send({
-        from: "Dbatu Scholar Hub <no-reply@resend.dev>",
+        from: "aryanmandhare30@gmail.com",
         to: student.email,
         subject: `New ${title} Uploaded`,
         html: `
