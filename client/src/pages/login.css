@@ -1,17 +1,44 @@
 /* /* Background container */
+/* ======== PAGE BACKGROUND ONLY ======== */
 .login-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100vw;      /* full width of viewport */
-    height: 100vh;     /* full height of viewport */
-    /* min-height: 100vh; */
-    background: linear-gradient(135deg, #0d1117, #1a1f2e);
-    color: white;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    position: relative;
-    overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  color: white;
+
+  /* Modern animated gradient */
+  background: linear-gradient(
+    120deg,
+    #020024,
+    #090979,
+    #00d4ff
+  );
+  background-size: 300% 300%;
+  animation: gradientMove 12s ease infinite;
 }
+
+/* Gradient animation */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Soft glowing overlay */
+.login-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top left, rgba(0, 180, 216, 0.35), transparent 45%),
+    radial-gradient(circle at bottom right, rgba(144, 224, 239, 0.25), transparent 50%);
+  pointer-events: none;
+}
+
 
 /* SVG background */
 .background-svg {
