@@ -1,4 +1,4 @@
-/* Background container */
+/* /* Background container */
 .login-container {
     display: flex;
     align-items: center;
@@ -176,4 +176,232 @@
 .animated-input,
 .animated-button {
     opacity: 1;
-} 
+}  */
+
+
+/* ================= ROOT ================= */
+:root {
+  --primary: #00f5d4;
+  --secondary: #3a86ff;
+  --dark: #0b0f1a;
+  --card: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.15);
+}
+
+/* ================= BODY ================= */
+.login-container {
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle at top, #1b1f3b, #05060a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  font-family: "Poppins", sans-serif;
+  color: #fff;
+}
+
+/* ================= ANIMATED BLOBS ================= */
+.login-container::before,
+.login-container::after {
+  content: "";
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.4;
+  animation: float 10s infinite alternate ease-in-out;
+}
+
+.login-container::before {
+  top: -150px;
+  left: -150px;
+}
+
+.login-container::after {
+  bottom: -150px;
+  right: -150px;
+  animation-delay: 3s;
+}
+
+@keyframes float {
+  from {
+    transform: translateY(0) translateX(0);
+  }
+  to {
+    transform: translateY(-40px) translateX(40px);
+  }
+}
+
+/* ================= CARD ================= */
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.8rem;
+  background: var(--card);
+  backdrop-filter: blur(18px);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  position: relative;
+  animation: pop 0.9s ease;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ================= HEADER ================= */
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.icon-circle {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 30px rgba(0, 245, 212, 0.6);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 20px rgba(0,245,212,0.4); }
+  50% { box-shadow: 0 0 35px rgba(0,245,212,0.9); }
+  100% { box-shadow: 0 0 20px rgba(0,245,212,0.4); }
+}
+
+.login-header h1 {
+  font-size: 30px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #fff, var(--primary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-header p {
+  font-size: 14px;
+  color: #bfc5ff;
+}
+
+/* ================= FORM ================= */
+.form-group {
+  margin-bottom: 1.4rem;
+  position: relative;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 18px rgba(0, 245, 212, 0.6);
+  transform: scale(1.02);
+}
+
+/* ================= FORGOT ================= */
+.password-group a {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.password-group a:hover {
+  text-decoration: underline;
+}
+
+/* ================= BUTTON ================= */
+.btn-primary {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--secondary), var(--primary));
+  color: #000;
+  box-shadow: 0 10px 30px rgba(0, 245, 212, 0.5);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.25);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 45px rgba(0, 245, 212, 0.9);
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+}
+
+/* ================= SIGNUP ================= */
+.signup-text {
+  text-align: center;
+  margin-top: 1.6rem;
+}
+
+.signup-text p {
+  font-size: 14px;
+  color: #bfc5ff;
+}
+
+.signup-text a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup-text a:hover {
+  text-decoration: underline;
+}
+
+/* ================= ERROR ================= */
+.error-message {
+  background: rgba(255, 0, 80, 0.15);
+  border: 1px solid rgba(255, 0, 80, 0.4);
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  margin-bottom: 1rem;
+  color: #ff6b81;
+  text-align: center;
+}
