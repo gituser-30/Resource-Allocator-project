@@ -122,18 +122,7 @@ const Navbar = () => {
                     Profile
                   </NavLink>
                 </li>
-                <li className="nav-item">
-                  <NavLink
-                    className={({ isActive }) =>
-                      isActive
-                        ? "nav-link text-warning border-bottom border-2 border-warning px-3"
-                        : "nav-link text-light px-3"
-                    }
-                    to="https://dbatuscholarhub-chatapp.onrender.com"
-                  >
-                    Chats
-                  </NavLink>
-                </li>
+                
               </>
             ) : (
               <>
