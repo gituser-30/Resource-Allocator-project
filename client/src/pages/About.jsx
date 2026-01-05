@@ -123,21 +123,68 @@ const About = () => {
 
             {/* Aryan */}
             <div className="col-md-4">
-              <div
-                className="card shadow-lg border-0 h-100 text-center"
-                style={{ background: "#0d1117", borderRadius: "15px" }}
-              >
-                <div className="card-body">
-                  <h4 className="text-warning">Aryan Mandhare</h4>
-                  <p className="text-light mb-2">Full Stack Developer</p>
-                  <p className="text-secondary small">
-                    Passionate about building Real world projects. Handles the frontend design and
-                    backend integration of Dbatu Scholar Hub. Student of Computer Engineering.
-                    Languages known :<strong className="text-warning">C,Python, java, javascript, PHP.</strong>
-                  </p>
-                </div>
-              </div>
-            </div>
+  <div
+    className="card shadow-lg border-0 h-100 text-center"
+    style={{ background: "#0d1117", borderRadius: "15px" }}
+  >
+    <div className="card-body d-flex flex-column justify-content-center">
+      <h4 className="text-warning mb-1">Aryan Mandhare</h4>
+      <p className="text-light mb-2">Full Stack Developer</p>
+
+      <p className="text-secondary small">
+        A passionate Full Stack Developer with hands-on experience in building
+        real-world web applications. Actively involved in frontend design and
+        backend integration for projects like <strong>Dbatu Scholar Hub</strong>.
+        Computer Engineering student with strong problem-solving skills.
+        <br /><br />
+        <strong className="text-warning">
+          Languages & Technologies:
+        </strong>{" "}
+        C, Python, Java, JavaScript, PHP, MERN Stack.
+      </p>
+
+      {/* Social Links */}
+      <div className="d-flex justify-content-center gap-3 mt-3">
+        <a
+          href="https://www.linkedin.com/in/your-linkedin-username"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-primary fs-5"
+        >
+          <i className="fab fa-linkedin"></i>
+        </a>
+
+        <a
+          href="https://wa.me/91XXXXXXXXXX"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-success fs-5"
+        >
+          <i className="fab fa-whatsapp"></i>
+        </a>
+
+        <a
+          href="https://www.instagram.com/your-instagram-username"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-danger fs-5"
+        >
+          <i className="fab fa-instagram"></i>
+        </a>
+
+        <a
+          href="https://your-portfolio-link.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-warning fs-5"
+        >
+          <i className="fas fa-globe"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
 
             {/* Rashid */}
             <div className="col-md-4">
