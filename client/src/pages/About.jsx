@@ -146,7 +146,7 @@ const About = () => {
       {/* Social Links */}
       <div className="d-flex justify-content-center gap-3 mt-3">
         <a
-          href="https://www.linkedin.com/in/your-linkedin-username"
+          href="https://www.linkedin.com/in/aryan-mandhare-207014380"
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary fs-5"
@@ -155,7 +155,7 @@ const About = () => {
         </a>
 
         <a
-          href="https://wa.me/91XXXXXXXXXX"
+          href="https://wa.me/919561017209"
           target="_blank"
           rel="noopener noreferrer"
           className="text-success fs-5"
@@ -164,7 +164,7 @@ const About = () => {
         </a>
 
         <a
-          href="https://www.instagram.com/your-instagram-username"
+          href="https://www.instagram.com/mandhare3243"
           target="_blank"
           rel="noopener noreferrer"
           className="text-danger fs-5"
@@ -173,7 +173,7 @@ const About = () => {
         </a>
 
         <a
-          href="https://your-portfolio-link.com"
+          href="https://https://aryanportfolio-r5lg.onrender.com/"
           target="_blank"
           rel="noopener noreferrer"
           className="text-warning fs-5"
