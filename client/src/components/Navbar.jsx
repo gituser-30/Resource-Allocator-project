@@ -202,7 +202,7 @@ const Navbar = () => {
 
         {/* Toggle */}
         <button
-          className="navbar-toggler neo-toggler"
+          className="navbar-toggler neo-toggler bg-white"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarNav"
