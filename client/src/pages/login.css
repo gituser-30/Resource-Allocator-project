@@ -1,6 +1,6 @@
 /* /* Background container */
 /* ======== PAGE BACKGROUND ONLY ======== */
-.login-container {
+/* .login-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,10 +96,10 @@
     color: #9ca3af;
     font-size: 14px;
     margin: 0;
-}
+} */
 
 /* Icon circle with glow */
-.icon-circle {
+/* .icon-circle {
     width: 64px;
     height: 64px;
     background: linear-gradient(135deg, #0077b6, #00b4d8);
@@ -109,10 +109,10 @@
     justify-content: center;
     margin: 0 auto 15px;
     box-shadow: 0 0 15px rgba(0, 183, 255, 0.6);
-}
+} */
 
 /* Form */
-.form-group {
+/* .form-group {
     margin-bottom: 1rem;
     position: relative;
 }
@@ -132,10 +132,10 @@
 .form-group input:focus {
     border-color: #00b4d8;
     box-shadow: 0 0 8px rgba(0, 180, 216, 0.7);
-}
+} */
 
 /* Forgot link */
-.password-group a {
+/* .password-group a {
     position: absolute;
     right: 12px;
     top: 50%;
@@ -147,10 +147,10 @@
 
 .password-group a:hover {
     color: #90e0ef;
-}
+} */
 
 /* Gradient button */
-.btn-primary {
+/* .btn-primary {
     width: 100%;
     padding: 12px;
     background: linear-gradient(135deg, #0077b6, #00b4d8);
@@ -168,10 +168,10 @@
     background: linear-gradient(135deg, #0096c7, #48cae4);
     transform: translateY(-2px);
     box-shadow: 0 0 18px rgba(0, 180, 216, 0.8);
-}
+} */
 
 /* Signup text */
-.signup-text {
+/* .signup-text {
     text-align: center;
     margin-top: 1.2rem;
 }
@@ -190,10 +190,10 @@
 
 .signup-text a:hover {
     color: #90e0ef;
-}
+} */
 
 /* Animated elements are just instantly visible */
-.animated-card,
+/* .animated-card,
 .animated-header,
 .animated-form,
 .animated-signup-text,
@@ -203,20 +203,20 @@
 .animated-input,
 .animated-button {
     opacity: 1;
-}  */
+}  */ */
 
 
 /* ================= ROOT ================= */
-:root {
+/* :root {
   --primary: #00f5d4;
   --secondary: #3a86ff;
   --dark: #0b0f1a;
   --card: rgba(255, 255, 255, 0.08);
   --border: rgba(255, 255, 255, 0.15);
-}
+} */
 
 /* ================= BODY ================= */
-.login-container {
+/* .login-container {
   min-height: 100vh;
   width: 100%;
   background: radial-gradient(circle at top, #1b1f3b, #05060a);
@@ -227,10 +227,10 @@
   overflow: hidden;
   font-family: "Poppins", sans-serif;
   color: #fff;
-}
+} */
 
 /* ================= ANIMATED BLOBS ================= */
-.login-container::before,
+/* .login-container::before,
 .login-container::after {
   content: "";
   position: absolute;
@@ -261,10 +261,10 @@
   to {
     transform: translateY(-40px) translateX(40px);
   }
-}
+} */
 
 /* ================= CARD ================= */
-.login-card {
+/* .login-card {
   width: 100%;
   max-width: 420px;
   padding: 2.8rem;
@@ -286,10 +286,10 @@
     opacity: 1;
     transform: scale(1) translateY(0);
   }
-}
+} */
 
 /* ================= HEADER ================= */
-.login-header {
+/* .login-header {
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -324,10 +324,10 @@
 .login-header p {
   font-size: 14px;
   color: #bfc5ff;
-}
+} */
 
 /* ================= FORM ================= */
-.form-group {
+/* .form-group {
   margin-bottom: 1.4rem;
   position: relative;
 }
@@ -348,10 +348,10 @@
   border-color: var(--primary);
   box-shadow: 0 0 18px rgba(0, 245, 212, 0.6);
   transform: scale(1.02);
-}
+} */
 
 /* ================= FORGOT ================= */
-.password-group a {
+/* .password-group a {
   position: absolute;
   right: 14px;
   top: 50%;
@@ -363,10 +363,10 @@
 
 .password-group a:hover {
   text-decoration: underline;
-}
+} */
 
 /* ================= BUTTON ================= */
-.btn-primary {
+/* .btn-primary {
   width: 100%;
   padding: 14px;
   border-radius: 14px;
@@ -398,10 +398,10 @@
 
 .btn-primary:hover::after {
   opacity: 1;
-}
+} */
 
 /* ================= SIGNUP ================= */
-.signup-text {
+/* .signup-text {
   text-align: center;
   margin-top: 1.6rem;
 }
@@ -419,10 +419,10 @@
 
 .signup-text a:hover {
   text-decoration: underline;
-}
+} */
 
 /* ================= ERROR ================= */
-.error-message {
+/* .error-message {
   background: rgba(255, 0, 80, 0.15);
   border: 1px solid rgba(255, 0, 80, 0.4);
   padding: 10px;
@@ -431,4 +431,164 @@
   margin-bottom: 1rem;
   color: #ff6b81;
   text-align: center;
+} */
+
+
+/* Background */
+.login-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0a0f24;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Floating Gradient Circles */
+.login-background::before,
+.login-background::after {
+  content: "";
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: 0;
+}
+
+.login-background::before {
+  background: #6a5acd;
+  top: -120px;
+  left: -100px;
+}
+
+.login-background::after {
+  background: #00b4d8;
+  bottom: -120px;
+  right: -100px;
+}
+
+/* Login Card */
+.login-box {
+  width: 380px;
+  padding: 40px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 0 45px rgba(0, 0, 0, 0.35);
+  color: white;
+  z-index: 10;
+  animation: fadeIn 0.7s ease;
+}
+
+/* Text */
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.subtitle {
+  text-align: center;
+  opacity: 0.7;
+  margin-top: -5px;
+  margin-bottom: 25px;
+}
+
+/* Error Box */
+.error-box {
+  background: rgba(255, 51, 51, 0.1);
+  border-left: 4px solid #ff4444;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  color: #ff6b6b;
+  font-size: 14px;
+}
+
+.form-area {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Input Fields */
+.input-block label {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.input-block input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  transition: 0.3s;
+}
+
+.input-block input:focus {
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 8px #4ea8de;
+}
+
+/* Forgot Link */
+.forgot {
+  font-size: 13px;
+  color: #a0e9ff;
+  margin-left: 2px;
+  text-decoration: none;
+  float: right;
+}
+
+.forgot:hover {
+  text-decoration: underline;
+}
+
+/* Button */
+.login-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #00b4d8, #0077b6);
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  color: white;
+  margin-top: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px #0096c7;
+}
+
+/* Signup */
+.signup-box {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.signup-link {
+  color: #48cae4;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
