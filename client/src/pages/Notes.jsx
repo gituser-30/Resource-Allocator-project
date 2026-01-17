@@ -368,7 +368,7 @@ const Notes = () => {
       Choose your department to explore notes, books & resources.
     </p>
 
-    <div className="row g-4 justify-content-center">
+    <div className="row g-4">
 
       {[
         {
@@ -381,7 +381,7 @@ const Notes = () => {
         },
         {
           name: "Mechanical Engineering",
-          img: "https://images.stockcake.com/public/b/5/c/b5c385a5-c3e3-4e5d-8d32-8add193c5c9a_large/mechanical-gears-abstract-stockcake.jpg",
+          img: "https://images.unsplash.com/photo-1581091870632-3ed31b174662",
         },
         {
           name: "Civil Engineering",
@@ -389,7 +389,7 @@ const Notes = () => {
         },
         {
           name: "Electrical Engineering",
-          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRViIsZG0VLF1E1Pfw0I52dACoYrwfcCawAhw&s",
+          img: "https://images.unsplash.com/photo-1567443024551-f3e2f64f72e8",
         },
         {
           name: "Electronics & Telecommunication",
@@ -397,29 +397,35 @@ const Notes = () => {
         },
         {
           name: "Chemical Engineering",
-          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRemcbWnrUKpi6lZfzfmitBEmtnd7ea4Iucsw&s",
+          img: "https://images.unsplash.com/photo-1581091012184-5c8afaae03fb",
         },
       ].map((dept, index) => (
-        <div key={index} className="col-md-6 col-lg-4">
+        <div key={index} className="col-12 col-md-6 col-lg-4">
+          
           <div
-            className="dept-big-card"
+            className="dept-card"
             onClick={() => {
               setDepartment(dept.name);
               setStep(2);
             }}
           >
-            <img src={dept.img} alt={dept.name} className="dept-big-img" />
+            <div
+              className="dept-card-img"
+              style={{ backgroundImage: `url(${dept.img})` }}
+            ></div>
 
-            <div className="dept-big-overlay"></div>
+            <div className="dept-card-overlay"></div>
 
-            <h3 className="dept-big-title">{dept.name}</h3>
+            <h3 className="dept-card-title">{dept.name}</h3>
           </div>
+
         </div>
       ))}
 
     </div>
   </div>
 )}
+
 
 
       {/* STEP 2 */}
