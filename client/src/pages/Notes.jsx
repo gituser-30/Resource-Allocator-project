@@ -261,7 +261,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useLocation, useParams } from "react-router-dom";
 
 const Notes = () => {
   const [department, setDepartment] = useState("");
@@ -272,257 +272,286 @@ const Notes = () => {
 
   const [searchParams] = useSearchParams();
   const searchSubject = searchParams.get("subject");
+  const location = useLocation();
+  const { department: deptParam } = useParams();
 
+  // Department Name Normalization
+  const departmentMap = {
+    "Computer Engineering": "Computer",
+    "Information Technology": "Information Technology",
+    "Mechanical Engineering": "Mechanical",
+    "Civil Engineering": "Civil",
+    "Electrical Engineering": "Electrical",
+    "Electronics & Telecommunication": "ENTC",
+    "Chemical Engineering": "Chemical Engineering",
+  };
+
+  // Handle department from route (/notes/:department)
+  useEffect(() => {
+    if (location.state?.department) {
+      setDepartment(location.state.department);
+      setStep(2);
+    } else if (deptParam) {
+      const formatted = deptParam
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (l) => l.toUpperCase());
+
+      setDepartment(formatted);
+      setStep(2);
+    }
+  }, [location.state, deptParam]);
+
+  // FETCH NOTES API — FIXED
   useEffect(() => {
     if (department && semester) {
+      const backendDept = departmentMap[department] || department;
+
       axios
         .get(
-          `https://resource-allocator-backendservice.onrender.com/api/resources?department=${department}&semester=${semester}`
+          `https://resource-allocator-project.onrender.com/api/resources?department=${encodeURIComponent(
+            backendDept
+          )}&semester=${semester}`
         )
         .then((res) => setNotes(res.data))
-        .catch((err) => console.log(err));
+        .catch((err) => console.log("❌ Fetch Error:", err));
     }
   }, [department, semester]);
 
+  // Group notes by subject
   const groupedNotes = notes.reduce((acc, note) => {
     if (!acc[note.subject]) acc[note.subject] = [];
     acc[note.subject].push(note);
     return acc;
   }, {});
 
+  // Auto-select subject from ?subject=
   useEffect(() => {
     if (searchSubject && Object.keys(groupedNotes).length > 0) {
-      const found = Object.keys(groupedNotes).find(
-        (subj) => subj.toLowerCase() === searchSubject.toLowerCase()
+      const match = Object.keys(groupedNotes).find(
+        (s) => s.toLowerCase() === searchSubject.toLowerCase()
       );
-      if (found) {
+      if (match) {
         setStep(3);
-        setSelectedSubject(found);
+        setSelectedSubject(match);
       }
     }
   }, [searchSubject, groupedNotes]);
 
-return (
-  <div
-    className="container-fluid min-vh-100 py-5"
-    style={{
-      background: "linear-gradient(135deg, #0a0f1f, #0e1b2c, #0a1a33)",
-      color: "#e6f1ff",
-      paddingBottom: "90px",
-    }}
-  >
-    {/* Header */}
-    <div className="text-center mb-5">
-      <h2 className="fw-bold display-5" style={{ color: "#a8c5ff" }}>
-        📚 Scholar’s Library
-      </h2>
-      <p className="text-light opacity-75">
-        Find all semester-wise notes, books, assignments & resources.
-      </p>
-    </div>
-
-    {/* Step 1: Select Department */}
-    {step === 1 && (
-      <div className="text-center">
-        <h4 className="fw-bold mb-3" style={{ color: "#84d8ff" }}>
-          Select Your Department
-        </h4>
-
-        <select
-          className="form-select w-50 mx-auto mt-3 border-0 shadow-lg"
-          style={{
-            background: "rgba(255,255,255,0.1)",
-            color: "white",
-            borderRadius: "12px",
-            padding: "12px",
-            backdropFilter: "blur(10px)",
-          }}
-          onChange={(e) => setDepartment(e.target.value)}
-        >
-          <option value="">-- Choose Department --</option>
-          <option value="Computer Engineering">Computer Engineering</option>
-          <option value="Information Technology">Information Technology</option>
-          <option value="Mechanical Engineering">Mechanical Engineering</option>
-          <option value="Civil Engineering">Civil Engineering</option>
-          <option value="Electrical Engineering">Electrical Engineering</option>
-          <option value="Electronics & Telecommunication">
-            Electronics & Telecommunication
-          </option>
-          <option value="Chemical Engineering">Chemical Engineering</option>
-        </select>
-
-        <button
-          className="btn mt-4 px-4 fw-bold"
-          style={{
-            background: "#4ea8de",
-            borderRadius: "10px",
-            padding: "10px 26px",
-            color: "white",
-          }}
-          disabled={!department}
-          onClick={() => setStep(2)}
-        >
-          Continue →
-        </button>
+  return (
+    <div
+      className="container-fluid min-vh-100 py-5"
+      style={{
+        background: "linear-gradient(135deg, #0a0f1f, #0e1b2c, #0a1a33)",
+        color: "#e6f1ff",
+        paddingBottom: "90px",
+      }}
+    >
+      {/* Header */}
+      <div className="text-center mb-5">
+        <h2 className="fw-bold display-5" style={{ color: "#a8c5ff" }}>
+          📚 Scholar’s Library
+        </h2>
+        <p className="text-light opacity-75">
+          Find all semester-wise notes, books, assignments & resources.
+        </p>
       </div>
-    )}
 
-    {/* Step 2: Select Semester */}
-    {step === 2 && (
-      <div className="text-center">
-        <h5 className="fw-bold" style={{ color: "#ffd166" }}>
-          Department: {department}
-        </h5>
-        <p className="text-light opacity-75">Select your semester below</p>
+      {/* STEP 1 */}
+      {step === 1 && (
+        <div className="text-center">
+          <h4 className="fw-bold mb-3" style={{ color: "#84d8ff" }}>
+            Select Your Department
+          </h4>
 
-        <div className="d-flex flex-wrap justify-content-center gap-3 mt-4">
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
-            <button
-              key={sem}
-              className="shadow-lg"
-              style={{
-                background: "rgba(255,255,255,0.07)",
-                color: "#caf0f8",
-                border: "none",
-                borderRadius: "12px",
-                padding: "12px 30px",
-                fontWeight: "600",
-                transition: "0.3s",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = "rgba(255,255,255,0.15)")
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = "rgba(255,255,255,0.07)")
-              }
-              onClick={() => {
-                setSemester(sem);
-                setStep(3);
-              }}
-            >
-              Semester {sem}
-            </button>
-          ))}
-        </div>
-      </div>
-    )}
-
-    {/* Step 3: Show Subjects */}
-    {step === 3 && !selectedSubject && (
-      <>
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <h5 className="fw-bold" style={{ color: "#90e0ef" }}>
-            {department} – Sem {semester}
-          </h5>
+          <select
+            className="form-select w-50 mx-auto mt-3 border-0 shadow-lg"
+            style={{
+              background: "rgba(255,255,255,0.1)",
+              color: "white",
+              borderRadius: "12px",
+              padding: "12px",
+              backdropFilter: "blur(10px)",
+            }}
+            onChange={(e) => setDepartment(e.target.value)}
+          >
+            <option value="">-- Choose Department --</option>
+            <option value="Computer Engineering">Computer Engineering</option>
+            <option value="Information Technology">Information Technology</option>
+            <option value="Mechanical Engineering">Mechanical Engineering</option>
+            <option value="Civil Engineering">Civil Engineering</option>
+            <option value="Electrical Engineering">Electrical Engineering</option>
+            <option value="Electronics & Telecommunication">
+              Electronics & Telecommunication
+            </option>
+            <option value="Chemical Engineering">Chemical Engineering</option>
+          </select>
 
           <button
-            className="btn btn-outline-light"
+            className="btn mt-4 px-4 fw-bold"
+            style={{
+              background: "#4ea8de",
+              borderRadius: "10px",
+              padding: "10px 26px",
+              color: "white",
+            }}
+            disabled={!department}
             onClick={() => setStep(2)}
-            style={{ borderRadius: "8px" }}
           >
-            ← Back
+            Continue →
           </button>
         </div>
+      )}
 
-        <div className="row g-4">
-          {Object.keys(groupedNotes).length > 0 ? (
-            Object.keys(groupedNotes).map((subject, index) => (
-              <div key={index} className="col-md-3 col-sm-6">
-                <div
-                  className="shadow-lg text-center"
-                  style={{
-                    background: "rgba(255,255,255,0.07)",
-                    borderRadius: "15px",
-                    padding: "25px 10px",
-                    cursor: "pointer",
-                    transition: "0.3s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.transform = "scale(1.05)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.transform = "scale(1)")
-                  }
-                  onClick={() => setSelectedSubject(subject)}
-                >
-                  <h5 className="fw-bold" style={{ color: "#ffd166" }}>
-                    {subject}
-                  </h5>
-                  <p className="small opacity-75">
-                    {groupedNotes[subject].length} Files Available
-                  </p>
-                </div>
-              </div>
-            ))
-          ) : (
-            <p className="text-center text-muted">No subjects available.</p>
-          )}
-        </div>
-      </>
-    )}
-
-    {/* Step 4: Show Notes */}
-    {step === 3 && selectedSubject && (
-      <>
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <h5 className="fw-bold" style={{ color: "#90e0ef" }}>
-            {selectedSubject}
+      {/* STEP 2 */}
+      {step === 2 && (
+        <div className="text-center">
+          <h5 className="fw-bold" style={{ color: "#ffd166" }}>
+            Department: {department}
           </h5>
-          <button
-            className="btn btn-outline-light"
-            onClick={() => setSelectedSubject(null)}
-            style={{ borderRadius: "8px" }}
-          >
-            ← Back
-          </button>
-        </div>
 
-        <div className="row g-4">
-          {groupedNotes[selectedSubject]?.map((note, index) => (
-            <div key={index} className="col-md-4 col-sm-6">
-              <div
+          <div className="d-flex flex-wrap justify-content-center gap-3 mt-4">
+            {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
+              <button
+                key={sem}
                 className="shadow-lg"
                 style={{
                   background: "rgba(255,255,255,0.07)",
-                  borderRadius: "15px",
-                  padding: "20px",
+                  color: "#caf0f8",
+                  border: "none",
+                  borderRadius: "12px",
+                  padding: "12px 30px",
+                  fontWeight: "600",
                   transition: "0.3s",
                 }}
                 onMouseEnter={(e) =>
-                  (e.currentTarget.style.transform = "translateY(-6px)")
+                  (e.currentTarget.style.background = "rgba(255,255,255,0.15)")
                 }
                 onMouseLeave={(e) =>
-                  (e.currentTarget.style.transform = "translateY(0)")
+                  (e.currentTarget.style.background = "rgba(255,255,255,0.07)")
                 }
+                onClick={() => {
+                  setSemester(sem);
+                  setStep(3);
+                }}
               >
-                <h5 className="fw-bold" style={{ color: "#a8dadc" }}>
-                  {note.title}
-                </h5>
-                <span className="badge bg-dark mb-2">{note.subject}</span>
-                <p className="small opacity-75">{note.description}</p>
-
-                <a
-                  href={note.fileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-info w-100 fw-bold mt-3"
-                  style={{
-                    background: "#4ea8de",
-                    borderRadius: "10px",
-                  }}
-                >
-                  View File
-                </a>
-              </div>
-            </div>
-          ))}
+                Semester {sem}
+              </button>
+            ))}
+          </div>
         </div>
-      </>
-    )}
-  </div>
-);
+      )}
 
+      {/* STEP 3 - Subject List */}
+      {step === 3 && !selectedSubject && (
+        <>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h5 className="fw-bold" style={{ color: "#90e0ef" }}>
+              {department} – Sem {semester}
+            </h5>
+
+            <button
+              className="btn btn-outline-light"
+              onClick={() => setStep(2)}
+              style={{ borderRadius: "8px" }}
+            >
+              ← Back
+            </button>
+          </div>
+
+          <div className="row g-4">
+            {Object.keys(groupedNotes).length > 0 ? (
+              Object.keys(groupedNotes).map((subject, i) => (
+                <div key={i} className="col-md-3 col-sm-6">
+                  <div
+                    className="shadow-lg text-center"
+                    style={{
+                      background: "rgba(255,255,255,0.07)",
+                      borderRadius: "15px",
+                      padding: "25px 10px",
+                      cursor: "pointer",
+                      transition: "0.3s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.transform = "scale(1.05)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.transform = "scale(1)")
+                    }
+                    onClick={() => setSelectedSubject(subject)}
+                  >
+                    <h5 className="fw-bold" style={{ color: "#ffd166" }}>
+                      {subject}
+                    </h5>
+                    <p className="small opacity-75">
+                      {groupedNotes[subject].length} Files Available
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-center text-muted">No subjects available.</p>
+            )}
+          </div>
+        </>
+      )}
+
+      {/* STEP 4 - Notes */}
+      {step === 3 && selectedSubject && (
+        <>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h5 className="fw-bold" style={{ color: "#90e0ef" }}>
+              {selectedSubject}
+            </h5>
+            <button
+              className="btn btn-outline-light"
+              onClick={() => setSelectedSubject(null)}
+              style={{ borderRadius: "8px" }}
+            >
+              ← Back
+            </button>
+          </div>
+
+          <div className="row g-4">
+            {groupedNotes[selectedSubject]?.map((note, index) => (
+              <div key={index} className="col-md-4 col-sm-6">
+                <div
+                  className="shadow-lg"
+                  style={{
+                    background: "rgba(255,255,255,0.07)",
+                    borderRadius: "15px",
+                    padding: "20px",
+                    transition: "0.3s",
+                  }}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.transform = "translateY(-6px)")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.transform = "translateY(0)")
+                  }
+                >
+                  <h5 className="fw-bold" style={{ color: "#a8dadc" }}>
+                    {note.title}
+                  </h5>
+                  <span className="badge bg-dark mb-2">{note.subject}</span>
+                  <p className="small opacity-75">{note.description}</p>
+
+                  <a
+                    href={note.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-info w-100 fw-bold mt-3"
+                    style={{ background: "#4ea8de", borderRadius: "10px" }}
+                  >
+                    View File
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 export default Notes;
-
