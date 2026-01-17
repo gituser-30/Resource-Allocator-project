@@ -88,18 +88,25 @@ router.post("/login", async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    res.json({
-      success: true,
-      message: "Login successful",
-      token,
-      user: {
-        id: user._id,
-        fullName: user.fullName,
-        email: user.email,
-        dob: user.dob,
-        profilePhoto: user.profilePhoto
-      }
+    // res.json({
+    //   success: true,
+    //   message: "Login successful",
+    //   token,
+    //   user: {
+    //     id: user._id,
+    //     fullName: user.fullName,
+    //     email: user.email,
+    //     dob: user.dob,
+    //     profilePhoto: user.profilePhoto
+    //   }
+    // });
+
+    return res.json({
+        success: true,
+        user,  // sends full user object including department
+        token
     });
+
   } catch (err) {
     console.error("❌ Login Error:", err);
     res.status(500).json({ message: "Server error during login" });
