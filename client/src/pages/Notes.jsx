@@ -428,6 +428,7 @@ const Notes = () => {
 
 
 
+
       {/* STEP 2 */}
       {step === 2 && (
         <div className="text-center">
