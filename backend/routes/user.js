@@ -4,20 +4,27 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const router = express.Router();
 
-// ✅ Update profile
+
+
+// PUT /update-profile/:id
 router.put("/update-profile/:id", async (req, res) => {
   try {
-    const { fullName, department } = req.body;
-    const user = await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate(
       req.params.id,
-      { fullName, department },
+      {
+        fullName: req.body.fullName,
+        dob: req.body.dob,
+        department: req.body.department, // ⭐ ADD THIS
+      },
       { new: true }
     );
-    res.json({ success: true, user });
+
+    res.json({ success: true, user: updatedUser });
   } catch (err) {
-    res.status(500).json({ success: false, msg: err.message });
+    res.json({ success: false, msg: "Error updating profile" });
   }
 });
+
 
 // ✅ Change password
 router.put("/change-password/:id", async (req, res) => {
