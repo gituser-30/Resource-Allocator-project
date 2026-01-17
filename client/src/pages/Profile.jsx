@@ -111,13 +111,14 @@ const Profile = () => {
         {/* Info */}
         <div className="profile-info">
           <h5 className="section-title">👤 Personal Information</h5>
-          <ul className="list-unstyled">
+         <ul className="list-unstyled">
             <li><strong>📛 Name:</strong> {user.fullName}</li>
             <li><strong>📧 Email:</strong> {user.email}</li>
-            <li><strong>🎂 Date of Birth:</strong>{" "} {user.dob ? new Date(user.dob).toLocaleDateString("en-GB") : "Not provided"}</li>
-            <li><strong>📅 Joined:</strong>{" "}{user.createdAt ? new Date(user.createdAt).toLocaleDateString("en-GB") : "Unknown"}</li>
-
+            <li><strong>🏫 Department:</strong> {user.department || "Not added"}</li>
+            <li><strong>🎂 Date of Birth:</strong> {user.dob ? new Date(user.dob).toLocaleDateString("en-GB") : "Not provided"}</li>
+            <li><strong>📅 Joined:</strong>{user.createdAt ? new Date(user.createdAt).toLocaleDateString("en-GB") : "Unknown"}</li>
           </ul>
+
         </div>
 
         {/* Buttons */}
