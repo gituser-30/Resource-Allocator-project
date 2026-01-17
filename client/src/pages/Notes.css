@@ -1,42 +1,45 @@
-/* WRAPPER */
+/* ===================================================================
+   GLOBAL WRAPPER
+=================================================================== */
 .notes-wrapper {
   font-family: "Inter", sans-serif;
 }
 
-/* ---------- DEPARTMENT CARDS (Modern Big Image Cards) ---------- */
+/* ===================================================================
+   DEPARTMENT POSTER CARDS (BIG MODERN CARDS)
+=================================================================== */
 
 .dept-card {
   position: relative;
-  height: 220px;
+  height: 240px;
   width: 100%;
-  border-radius: 18px;
+  border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
   transition: 0.35s ease;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.45);
+  box-shadow: 0px 12px 28px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Hover Lift & Glow */
 .dept-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0px 20px 45px rgba(0, 0, 0, 0.75);
+  transform: translateY(-12px);
+  box-shadow: 0px 25px 45px rgba(0, 0, 0, 0.75);
 }
 
 /* Background Image */
 .dept-card-img {
   height: 100%;
   width: 100%;
-  background-size: cover;
-  background-position: center;
+  object-fit: cover;
   filter: brightness(0.55);
-  transition: 0.3s;
+  transition: 0.35s ease;
 }
 
 .dept-card:hover .dept-card-img {
   filter: brightness(0.85);
 }
 
-/* Overlay Gradient */
+/* Overlay */
 .dept-card-overlay {
   position: absolute;
   inset: 0;
@@ -45,143 +48,105 @@
     rgba(0, 0, 0, 0.8),
     rgba(0, 0, 0, 0.2)
   );
+  z-index: 1;
 }
 
-/* Department Name Text */
+/* Title Text */
 .dept-card-title {
   position: absolute;
   bottom: 18px;
+  left: 0;
   width: 100%;
+  z-index: 3;
   text-align: center;
-  color: #ffffff;
-  font-size: 20px;
+  color: #fff;
+  font-size: 22px;
   font-weight: 700;
-  z-index: 2;
-  text-shadow: 0px 4px 12px rgba(0, 0, 0, 0.95);
-  padding: 0 15px;
+  padding: 0 20px;
+  text-shadow: 0px 6px 14px rgba(0, 0, 0, 0.9);
 }
 
-
-/* ---------- SEMESTER CARDS ---------- */
+/* ===================================================================
+   SEMESTER CARDS
+=================================================================== */
 
 .sem-card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: #cfe9ff;
   padding: 18px 35px;
   border-radius: 15px;
   cursor: pointer;
   transition: 0.3s;
 }
+
 .sem-card:hover {
-  background: rgba(0,238,255,0.15);
+  background: rgba(0, 238, 255, 0.15);
   transform: translateY(-5px);
 }
 
-
-/* ---------- SUBJECT CARDS ---------- */
+/* ===================================================================
+   SUBJECT CARDS
+=================================================================== */
 
 .subject-card {
-  background: rgba(255,255,255,0.07);
+  background: rgba(255, 255, 255, 0.07);
   border-radius: 16px;
   padding: 22px;
   text-align: center;
   cursor: pointer;
   transition: 0.3s ease;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
+
 .subject-card:hover {
-  background: rgba(100,225,255,0.15);
+  background: rgba(100, 225, 255, 0.15);
   transform: translateY(-5px);
 }
+
 .subject-title {
   color: #38bdf8;
   font-weight: 700;
 }
+
 .subject-count {
   color: #94a3b8;
 }
 
-
-/* ---------- NOTE CARDS ---------- */
+/* ===================================================================
+   NOTE CARDS
+=================================================================== */
 
 .note-card {
-  background: rgba(255,255,255,0.08);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 18px;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   color: #e2e8f0;
   padding-bottom: 20px;
 }
+
 .note-header h5 {
   padding: 15px;
   font-size: 1.1rem;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   color: #38bdf8;
   font-weight: 700;
 }
+
 .note-desc {
   color: #cbd5e1;
   font-size: 0.9rem;
 }
+
 .note-footer .view-btn {
-  background: rgba(56,189,248,0.2);
+  background: rgba(56, 189, 248, 0.2);
   padding: 8px 15px;
   border-radius: 10px;
   color: #38bdf8;
   text-decoration: none;
   transition: 0.3s;
 }
+
 .view-btn:hover {
-  background: rgba(56,189,248,0.35);
-}
-
-/* BIG POSTER CARDS */
-.dept-big-card {
-  position: relative;
-  height: 240px;
-  width: 100%;
-  border-radius: 18px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: 0.35s ease;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.35);
-}
-
-.dept-big-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0px 18px 40px rgba(0, 0, 0, 0.55);
-}
-
-/* FULL IMAGE */
-.dept-big-img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  filter: brightness(0.55);
-  transition: 0.4s;
-}
-
-.dept-big-card:hover .dept-big-img {
-  filter: brightness(0.85);
-}
-
-/* OVERLAY */
-.dept-big-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0.1));
-}
-
-/* TITLE */
-.dept-big-title {
-  position: absolute;
-  bottom: 18px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  font-size: 22px;
-  font-weight: 700;
-  color: white;
-  z-index: 5;
-  text-shadow: 0px 6px 14px rgba(0,0,0,0.9);
+  background: rgba(56, 189, 248, 0.35);
 }
