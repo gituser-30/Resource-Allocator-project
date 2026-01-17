@@ -357,50 +357,70 @@ const Notes = () => {
       </div>
 
       {/* STEP 1 */}
-      {step === 1 && (
-        <div className="text-center">
-          <h4 className="fw-bold mb-3" style={{ color: "#84d8ff" }}>
-            Select Your Department
-          </h4>
+ {step === 1 && (
+  <div className="container py-4">
 
-          <select
-            className="form-select w-50 mx-auto mt-3 border-0 shadow-lg"
-            style={{
-              background: "rgba(255,255,255,0.1)",
-              color: "white",
-              borderRadius: "12px",
-              padding: "12px",
-              backdropFilter: "blur(10px)",
-            }}
-            onChange={(e) => setDepartment(e.target.value)}
-          >
-            <option value="">-- Choose Department --</option>
-            <option value="Computer Engineering">Computer Engineering</option>
-            <option value="Information Technology">Information Technology</option>
-            <option value="Mechanical Engineering">Mechanical Engineering</option>
-            <option value="Civil Engineering">Civil Engineering</option>
-            <option value="Electrical Engineering">Electrical Engineering</option>
-            <option value="Electronics & Telecommunication">
-              Electronics & Telecommunication
-            </option>
-            <option value="Chemical Engineering">Chemical Engineering</option>
-          </select>
+    <h2 className="fw-bold text-center mb-3" style={{ color: "#84d8ff" }}>
+      Select Your Department
+    </h2>
 
-          <button
-            className="btn mt-4 px-4 fw-bold"
-            style={{
-              background: "#4ea8de",
-              borderRadius: "10px",
-              padding: "10px 26px",
-              color: "white",
+    <p className="text-center text-light opacity-75 mb-4">
+      Choose your department to explore notes, books & resources.
+    </p>
+
+    <div className="row g-4 justify-content-center">
+
+      {[
+        {
+          name: "Computer Engineering",
+          img: "https://images.unsplash.com/photo-1518770660439-4636190af475",
+        },
+        {
+          name: "Information Technology",
+          img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c",
+        },
+        {
+          name: "Mechanical Engineering",
+          img: "https://images.stockcake.com/public/b/5/c/b5c385a5-c3e3-4e5d-8d32-8add193c5c9a_large/mechanical-gears-abstract-stockcake.jpg",
+        },
+        {
+          name: "Civil Engineering",
+          img: "https://images.unsplash.com/photo-1503387762-592deb58ef4e",
+        },
+        {
+          name: "Electrical Engineering",
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRViIsZG0VLF1E1Pfw0I52dACoYrwfcCawAhw&s",
+        },
+        {
+          name: "Electronics & Telecommunication",
+          img: "https://images.unsplash.com/photo-1542751110-97427bbecf20",
+        },
+        {
+          name: "Chemical Engineering",
+          img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRemcbWnrUKpi6lZfzfmitBEmtnd7ea4Iucsw&s",
+        },
+      ].map((dept, index) => (
+        <div key={index} className="col-md-6 col-lg-4">
+          <div
+            className="dept-big-card"
+            onClick={() => {
+              setDepartment(dept.name);
+              setStep(2);
             }}
-            disabled={!department}
-            onClick={() => setStep(2)}
           >
-            Continue →
-          </button>
+            <img src={dept.img} alt={dept.name} className="dept-big-img" />
+
+            <div className="dept-big-overlay"></div>
+
+            <h3 className="dept-big-title">{dept.name}</h3>
+          </div>
         </div>
-      )}
+      ))}
+
+    </div>
+  </div>
+)}
+
 
       {/* STEP 2 */}
       {step === 2 && (
