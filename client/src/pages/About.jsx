@@ -173,7 +173,7 @@ const About = () => {
         </a>
 
         <a
-          href="https://https://aryanportfolio-r5lg.onrender.com/"
+          href="https://aryanportfolio-r5lg.onrender.com/"
           target="_blank"
           rel="noopener noreferrer"
           className="text-warning fs-5"
