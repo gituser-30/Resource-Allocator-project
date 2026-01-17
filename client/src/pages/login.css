@@ -1,4 +1,4 @@
-/* /* Background container */
+/* /* /* Background container */
 /* ======== PAGE BACKGROUND ONLY ======== */
 /* .login-container {
   display: flex;
@@ -590,5 +590,123 @@
 /* Animation */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+} */
+
+
+/* Page Wrapper */
+.login-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dark Gradient Background */
+.login-background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at right, #00b4d8, transparent 50%),
+              radial-gradient(circle at left, #7b2ff7, transparent 50%),
+              #0d1117;
+  z-index: -1;
+  filter: blur(40px);
+}
+
+/* Login Card */
+.login-box {
+  width: 380px;
+  background: rgba(17, 25, 40, 0.8);
+  padding: 35px;
+  border-radius: 18px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  color: white;
+  animation: fadeIn 0.4s ease;
+}
+
+/* Title + Subtitle */
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.subtitle {
+  opacity: 0.75;
+  margin-bottom: 25px;
+}
+
+/* Input blocks */
+.input-block label {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.input-block input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.06);
+  color: white;
+}
+
+/* Forgot Password */
+.forgot {
+  font-size: 13px;
+  float: right;
+  color: #4ea8de;
+}
+
+/* Login Button */
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  color: white;
+  margin-top: 10px;
+  transition: 0.25s;
+}
+
+.login-btn:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, #1e40af, #1e3a8a);
+}
+
+/* Signup section */
+.signup-box {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.signup-link {
+  color: #4ea8de;
+  font-weight: 600;
+}
+
+/* Error Message */
+.error-box {
+  background: #ff4d4f;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 10px;
+  color: white;
+  font-weight: bold;
+}
+
+/* Fade Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
