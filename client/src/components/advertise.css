@@ -1,4 +1,4 @@
-/* /* .advertise-slide {
+/* /* /* .advertise-slide {
   position: relative;
 }
 
@@ -202,5 +202,93 @@
 
   .tws-card {
     padding: 25px 15px;
+  }
+} */
+
+/* Main Hero Section */
+.hero-section {
+  height: 75vh;
+  width: 100%;
+  background: linear-gradient(135deg, #0f172a, #1e293b, #0b3d91);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Gradient Blobs */
+.blob {
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  filter: blur(120px);
+  opacity: 0.55;
+}
+
+/* Neon Cyan Glow */
+.blob1 {
+  background: #00eaff;
+  top: -80px;
+  left: -60px;
+}
+
+/* Purple Glow */
+.blob2 {
+  background: #c700ff;
+  bottom: -80px;
+  right: -40px;
+}
+
+/* Golden Accent Glow */
+.blob3 {
+  background: #ffd700;
+  top: 45%;
+  left: 55%;
+}
+
+/* Main Content */
+.hero-content {
+  z-index: 10;
+  max-width: 650px;
+}
+
+.hero-title {
+  font-size: 3.2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.hero-subtitle {
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin-top: 10px;
+  opacity: 0.85;
+}
+
+.hero-desc {
+  font-size: 1rem;
+  margin-top: 15px;
+  opacity: 0.75;
+  line-height: 1.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.4rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.3rem;
+  }
+
+  .blob {
+    width: 240px;
+    height: 240px;
+    filter: blur(90px);
   }
 }
