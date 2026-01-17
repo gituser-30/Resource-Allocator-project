@@ -262,6 +262,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams, useLocation, useParams } from "react-router-dom";
+import "./Navbar.css";
 
 const Notes = () => {
   const [department, setDepartment] = useState("");
