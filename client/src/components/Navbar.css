@@ -1,0 +1,79 @@
+/* NAVBAR BASE */
+.neo-navbar {
+  background: linear-gradient(135deg, #0a0f1f, #0c1b33, #0f2c54);
+  padding: 12px 0;
+  backdrop-filter: blur(6px);
+}
+
+/* BRAND LOGO */
+.neo-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* BRAND TITLE */
+.neo-title {
+  color: #00eaff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-left: 10px;
+  letter-spacing: 0.5px;
+}
+
+/* NAV LINKS */
+.neo-link {
+  color: #cbd5e1 !important;
+  padding: 8px 18px !important;
+  font-weight: 500;
+  position: relative;
+  transition: 0.3s ease-in-out;
+}
+
+/* Hover Color */
+.neo-link:hover {
+  color: #00eaff !important;
+}
+
+/* Neon Underline */
+.neo-link::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  height: 2.5px;
+  width: 0%;
+  background: #00eaff;
+  box-shadow: 0 0 8px #00eaff;
+  transition: 0.3s;
+}
+
+/* Active Link */
+.neo-link.active,
+.neo-link.active::after {
+  color: #00eaff !important;
+  width: 100%;
+}
+
+/* TOGGLER */
+.neo-toggler {
+  border: none !important;
+}
+
+/* Logout Button */
+.neo-logout-btn {
+  background: linear-gradient(135deg, #ff4d4d, #d62828);
+  border: none;
+  padding: 7px 20px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  transition: 0.3s;
+  box-shadow: 0 0 10px rgba(255, 50, 50, 0.5);
+}
+
+.neo-logout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 14px rgba(255, 60, 60, 0.7);
+}
