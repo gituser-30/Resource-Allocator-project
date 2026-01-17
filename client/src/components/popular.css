@@ -1,0 +1,82 @@
+/* Main container */
+.popular-container {
+  padding: 70px 20px;
+  background: linear-gradient(135deg, #0a0f1f, #0c1b33, #0f2c54);
+  color: white;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+}
+
+/* Titles */
+.popular-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(45deg, #00eaff, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.popular-sub {
+  opacity: 0.8;
+  font-size: 1rem;
+}
+
+/* TRENDING CARDS */
+.trend-card {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 25px;
+  border-radius: 18px;
+  height: 100%;
+  border-top: 4px solid;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: 0.3s ease;
+}
+
+.trend-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 238, 255, 0.25);
+}
+
+/* Badge */
+.trend-badge {
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #0a0f1f;
+}
+
+/* Card headings */
+.trend-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.trend-desc {
+  font-size: 0.9rem;
+  opacity: 0.85;
+  margin-top: 3px;
+}
+
+/* VIDEO CARDS */
+.video-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 10px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.video-card iframe {
+  width: 100%;
+  height: 210px;
+  border-radius: 12px;
+}
+
+.video-title {
+  font-size: 1rem;
+  margin-top: 10px;
+  opacity: 0.85;
+}
