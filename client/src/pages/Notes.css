@@ -9,7 +9,7 @@
    DEPARTMENT POSTER CARDS (BIG MODERN CARDS)
 =================================================================== */
 
-.dept-card {
+.dept-big-card {
   position: relative;
   height: 240px;
   width: 100%;
@@ -21,13 +21,13 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.dept-card:hover {
+.dept-big-card:hover {
   transform: translateY(-12px);
   box-shadow: 0px 25px 45px rgba(0, 0, 0, 0.75);
 }
 
 /* Background Image */
-.dept-card-img {
+.dept-big-img {
   height: 100%;
   width: 100%;
   object-fit: cover;
@@ -35,12 +35,12 @@
   transition: 0.35s ease;
 }
 
-.dept-card:hover .dept-card-img {
+.dept-big-card:hover .dept-big-img {
   filter: brightness(0.85);
 }
 
 /* Overlay */
-.dept-card-overlay {
+.dept-big-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -52,7 +52,7 @@
 }
 
 /* Title Text */
-.dept-card-title {
+.dept-big-title {
   position: absolute;
   bottom: 18px;
   left: 0;
