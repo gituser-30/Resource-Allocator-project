@@ -169,7 +169,7 @@ const Login = () => {
 
   return (
     <div className="login-page-wrapper">
-      {/* Beautiful Gradient Background */}
+      {/* Background */}
       <div className="login-background"></div>
 
       {/* Login Card */}
