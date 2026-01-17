@@ -9,7 +9,9 @@
    DEPARTMENT POSTER CARDS (BIG MODERN CARDS)
 =================================================================== */
 
-.dept-big-card {
+/* ======= DEPARTMENT POSTER CARDS ======= */
+
+.dept-card {
   position: relative;
   height: 240px;
   width: 100%;
@@ -18,52 +20,53 @@
   cursor: pointer;
   transition: 0.35s ease;
   box-shadow: 0px 12px 28px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
-.dept-big-card:hover {
+.dept-card:hover {
   transform: translateY(-12px);
   box-shadow: 0px 25px 45px rgba(0, 0, 0, 0.75);
 }
 
-/* Background Image */
-.dept-big-img {
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
+/* Background Image Layer */
+.dept-card-img {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
   filter: brightness(0.55);
   transition: 0.35s ease;
 }
 
-.dept-big-card:hover .dept-big-img {
+.dept-card:hover .dept-card-img {
   filter: brightness(0.85);
 }
 
-/* Overlay */
-.dept-big-overlay {
+/* Dark Overlay */
+.dept-card-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.8),
-    rgba(0, 0, 0, 0.2)
+    rgba(0, 0, 0, 0.85),
+    rgba(0, 0, 0, 0.25)
   );
-  z-index: 1;
+  z-index: 2;
 }
 
-/* Title Text */
-.dept-big-title {
+/* Title */
+.dept-card-title {
   position: absolute;
   bottom: 18px;
   left: 0;
   width: 100%;
-  z-index: 3;
   text-align: center;
-  color: #fff;
   font-size: 22px;
   font-weight: 700;
+  color: #fff;
+  z-index: 3;
   padding: 0 20px;
-  text-shadow: 0px 6px 14px rgba(0, 0, 0, 0.9);
+  text-shadow: 0px 6px 14px rgba(0,0,0,0.9);
 }
 
 /* ===================================================================
