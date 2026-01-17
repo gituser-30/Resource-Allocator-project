@@ -1,0 +1,92 @@
+/* WRAPPER */
+.notes-wrapper {
+  font-family: "Inter", sans-serif;
+}
+
+/* DEPARTMENT CARDS */
+.dept-card {
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(6px);
+  border-radius: 18px;
+  padding: 25px;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+  transition: 0.3s;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.dept-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 10px 20px rgba(0, 238, 255, 0.25);
+}
+.dept-icon {
+  font-size: 45px;
+}
+
+/* SEMESTER CARDS */
+.sem-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #cfe9ff;
+  padding: 18px 35px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.sem-card:hover {
+  background: rgba(0,238,255,0.15);
+  transform: translateY(-5px);
+}
+
+/* SUBJECT CARDS */
+.subject-card {
+  background: rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 22px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.subject-card:hover {
+  background: rgba(100,225,255,0.15);
+  transform: translateY(-5px);
+}
+.subject-title {
+  color: #38bdf8;
+  font-weight: 700;
+}
+.subject-count {
+  color: #94a3b8;
+}
+
+/* NOTE CARDS */
+.note-card {
+  background: rgba(255,255,255,0.08);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #e2e8f0;
+  padding-bottom: 20px;
+}
+.note-header h5 {
+  padding: 15px;
+  font-size: 1.1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  color: #38bdf8;
+  font-weight: 700;
+}
+.note-desc {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+}
+.note-footer .view-btn {
+  background: rgba(56,189,248,0.2);
+  padding: 8px 15px;
+  border-radius: 10px;
+  color: #38bdf8;
+  text-decoration: none;
+  transition: 0.3s;
+}
+.view-btn:hover {
+  background: rgba(56,189,248,0.35);
+}
