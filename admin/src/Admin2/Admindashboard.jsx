@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Import all pages
-// import NotesPage from "./Notespage";
 import NotesPage from "./Notespage"
 import AssignmentsPage from "./Assignmentpage";
 import PYQsPage from "./PYQpage";
@@ -13,58 +12,45 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState("Dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [hoverCard, setHoverCard] = useState(null);
-  const [sidebarAnimate, setSidebarAnimate] = useState(false);
-  const [cardAnimate, setCardAnimate] = useState(false);
 
   // Stats state
   const [stats, setStats] = useState([
-    { title: "Total Users", value: 0, bg: "#2563eb", icon: "👤" },
-    { title: "Assignments", value: 0, bg: "#1e40af", icon: "📄" },
-    { title: "Notes", value: 0, bg: "#3b82f6", icon: "📝" },
-    { title: "PYQs", value: 0, bg: "#60a5fa", icon: "📄" },
+    { title: "Total Users", value: 0, bg: "linear-gradient(135deg, #3b82f6, #2563eb)", icon: "👤" },
+    { title: "Assignments", value: 0, bg: "linear-gradient(135deg, #10b981, #059669)", icon: "📄" },
+    { title: "Notes", value: 0, bg: "linear-gradient(135deg, #8b5cf6, #7c3aed)", icon: "📝" },
+    { title: "PYQs", value: 0, bg: "linear-gradient(135deg, #f59e0b, #d97706)", icon: "📄" },
   ]);
 
   // Fetch stats dynamically
-useEffect(() => {
-  const fetchStats = async () => {
-    try {
-      const token = localStorage.getItem("adminToken");
-
-      const usersRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/users/count", { headers: { Authorization: `Bearer ${token}` } });
-      const assignmentsRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/assignments/count", { headers: { Authorization: `Bearer ${token}` } });
-      const notesRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/notes/count", { headers: { Authorization: `Bearer ${token}` } });
-      const pyqsRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/pyqs/count", { headers: { Authorization: `Bearer ${token}` } });
-
-      setStats([
-        { title: "Total Users", value: usersRes.data.count, bg: "#2563eb", icon: "👤" },
-        { title: "Assignments", value: assignmentsRes.data.count, bg: "#1e40af", icon: "📄" },
-        { title: "Notes", value: notesRes.data.count, bg: "#3b82f6", icon: "📝" },
-        { title: "PYQs", value: pyqsRes.data.count, bg: "#60a5fa", icon: "📄" },
-      ]);
-    } catch (err) {
-      console.error("Failed to fetch stats:", err);
-    }
-  };
-
-  fetchStats();
-}, []);
-
-
-  // Logout
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    navigate("/admin/login");
-  };
-
-  // Sidebar animation on load
   useEffect(() => {
-    setSidebarAnimate(true);
-    const timer = setTimeout(() => setCardAnimate(true), 300);
-    return () => clearTimeout(timer);
+    const fetchStats = async () => {
+      try {
+        const token = localStorage.getItem("adminToken");
+        const headers = { headers: { Authorization: `Bearer ${token}` } };
+
+        const usersRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/users/count", headers);
+        const assignmentsRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/assignments/count", headers);
+        const notesRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/notes/count", headers);
+        const pyqsRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/pyqs/count", headers);
+
+        setStats([
+          { title: "Total Users", value: usersRes.data.count, bg: "linear-gradient(135deg, #3b82f6, #2563eb)", icon: "👤" },
+          { title: "Assignments", value: assignmentsRes.data.count, bg: "linear-gradient(135deg, #10b981, #059669)", icon: "📄" },
+          { title: "Notes", value: notesRes.data.count, bg: "linear-gradient(135deg, #8b5cf6, #7c3aed)", icon: "📝" },
+          { title: "PYQs", value: pyqsRes.data.count, bg: "linear-gradient(135deg, #f59e0b, #d97706)", icon: "📄" },
+        ]);
+      } catch (err) {
+        console.error("Failed to fetch stats:", err);
+      }
+    };
+    fetchStats();
   }, []);
 
-  // Menu items
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken");
+    navigate("/");
+  };
+
   const menuItems = [
     { name: "Dashboard", icon: "🏠" },
     { name: "Users", icon: "👥" },
@@ -73,89 +59,174 @@ useEffect(() => {
     { name: "PYQs", icon: "📄" },
   ];
 
-  // Handle menu click
-  const handleMenuClick = (menuName) => setActiveMenu(menuName);
-
-  // Inline styles (same as your previous dashboard)
-  const styles = {
-    container: { display: "flex", minHeight: "100vh", fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif", background: "#f3f6f9", overflowX: "hidden" },
-    sidebar: { flexShrink: 0, width: sidebarOpen ? "240px" : "60px", background: "linear-gradient(to bottom, #1d4ed8, #2563eb)", color: "#fff", display: "flex", flexDirection: "column", padding: "25px", boxShadow: "5px 0 20px rgba(0,0,0,0.2)", transition: "width 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55)" },
-    sidebarToggleBtn: { position: "absolute", top: "20px", right: "-15px", background: "#fbbf24", color: "#000", border: "none", borderRadius: "50%", width: "30px", height: "30px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 4px 10px rgba(0,0,0,0.1)", transition: "transform 0.3s ease-in-out" },
-    sidebarTitle: { fontSize: "24px", fontWeight: "700", marginBottom: "35px", opacity: sidebarOpen ? 1 : 0, transition: "opacity 0.3s ease", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
-    menuItem: (isActive) => ({ padding: "12px 15px", marginBottom: "12px", borderRadius: "12px", cursor: "pointer", backgroundColor: isActive ? "rgba(255,255,255,0.2)" : "transparent", transition: "all 0.3s ease", fontWeight: isActive ? "600" : "500", display: "flex", alignItems: "center", gap: "10px", position: "relative", overflow: "hidden", transform: isActive ? "scale(1.05)" : "scale(1)" }),
-    mainContent: { flex: 1, padding: "30px 40px", transition: "margin-left 0.5s ease-in-out" },
-    header: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "30px" },
-    mainTitle: { fontSize: "28px", fontWeight: "700", color: "#333" },
-    logoutBtn: { padding: "10px 18px", background: "#ef4444", color: "#fff", border: "none", borderRadius: "12px", cursor: "pointer", fontWeight: "600", transition: "background-color 0.3s ease, transform 0.3s ease" },
-    cardContainer: { display: "flex", gap: "25px", marginBottom: "30px", flexWrap: "wrap" },
-    statCard: (bgColor) => ({ flex: "1 1 200px", background: bgColor, color: "#fff", padding: "25px", borderRadius: "20px", boxShadow: "0 10px 25px rgba(0,0,0,0.1)", textAlign: "center", cursor: "pointer", transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out", opacity: 0, transform: "translateY(20px)", animation: cardAnimate ? "slideInUp 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards" : "none" }),
-    statIcon: { fontSize: "30px", marginBottom: "10px" },
-    statTitle: { fontSize: "18px", fontWeight: "600" },
-    statValue: { fontSize: "22px", fontWeight: "700", marginTop: "5px" },
-    placeholder: { background: "#fff", padding: "25px", borderRadius: "20px", boxShadow: "0 10px 20px rgba(0,0,0,0.05)", minHeight: "350px", transition: "all 0.3s ease" },
-  };
-
-  // Keyframes for animation
-  useEffect(() => {
-    const styleTag = document.createElement("style");
-    styleTag.innerHTML = `
-      @keyframes slideInUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-    `;
-    document.head.appendChild(styleTag);
-    return () => document.head.removeChild(styleTag);
-  }, []);
-
   return (
-    <div style={styles.container}>
+    <div style={{ display: 'flex', minHeight: '100vh', overflowX: 'hidden' }}>
+      
       {/* Sidebar */}
-      <div style={styles.sidebar}>
+      <div 
+        className="glass-panel"
+        style={{ 
+          width: sidebarOpen ? "260px" : "80px", 
+          margin: "16px",
+          transition: "width 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+          display: "flex",
+          flexDirection: "column",
+          position: "relative",
+          zIndex: 10
+        }}
+      >
         <button
-          style={{ ...styles.sidebarToggleBtn, transform: sidebarOpen ? "rotate(0deg)" : "rotate(180deg)" }}
           onClick={() => setSidebarOpen(!sidebarOpen)}
+          style={{
+            position: "absolute",
+            top: "24px",
+            right: "-14px",
+            width: "28px",
+            height: "28px",
+            borderRadius: "50%",
+            background: "var(--accent-primary)",
+            color: "white",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            boxShadow: "0 0 10px rgba(59, 130, 246, 0.5)",
+            zIndex: 100
+          }}
         >
-          {sidebarOpen ? "◀️" : "▶️"}
+          {sidebarOpen ? "◀" : "▶"}
         </button>
-        <h2 style={styles.sidebarTitle}>Admin Panel</h2>
-        <div style={{ marginTop: "20px" }}>
-          {menuItems.map((menu) => (
-            <div key={menu.name} style={styles.menuItem(activeMenu === menu.name)} onClick={() => handleMenuClick(menu.name)}>
-              <span style={{ position: "relative", zIndex: 1, fontSize: "1.2rem" }}>{menu.icon}</span>
-              {sidebarOpen && <span style={{ position: "relative", zIndex: 1 }}>{menu.name}</span>}
-            </div>
-          ))}
+
+        <div style={{ padding: "32px 20px", display: "flex", alignItems: "center", gap: "12px", overflow: "hidden" }}>
+          <div style={{ fontSize: "28px", filter: "drop-shadow(0 0 8px rgba(59,130,246,0.5))" }}>🚀</div>
+          <h2 style={{ 
+            fontSize: "20px", 
+            fontWeight: "700", 
+            color: "white",
+            opacity: sidebarOpen ? 1 : 0,
+            whiteSpace: "nowrap",
+            transition: "opacity 0.3s"
+          }}>
+            Admin<span style={{ color: "var(--accent-primary)" }}>Pro</span>
+          </h2>
         </div>
+
+        <nav style={{ flex: 1, padding: "0 12px", display: "flex", flexDirection: "column", gap: "8px" }}>
+          {menuItems.map((menu) => {
+            const isActive = activeMenu === menu.name;
+            return (
+              <div 
+                key={menu.name}
+                onClick={() => setActiveMenu(menu.name)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "16px",
+                  padding: "14px",
+                  borderRadius: "12px",
+                  cursor: "pointer",
+                  background: isActive ? "rgba(59, 130, 246, 0.2)" : "transparent",
+                  color: isActive ? "white" : "var(--text-secondary)",
+                  border: isActive ? "1px solid rgba(59, 130, 246, 0.3)" : "1px solid transparent",
+                  transition: "all 0.3s ease",
+                  whiteSpace: "nowrap",
+                  overflow: "hidden"
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) e.currentTarget.style.background = "rgba(255,255,255,0.05)";
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) e.currentTarget.style.background = "transparent";
+                }}
+              >
+                <span style={{ fontSize: "20px", width: "24px", textAlign: "center" }}>{menu.icon}</span>
+                <span style={{ 
+                  fontWeight: isActive ? "600" : "500",
+                  opacity: sidebarOpen ? 1 : 0,
+                  transition: "opacity 0.3s"
+                }}>{menu.name}</span>
+              </div>
+            );
+          })}
+        </nav>
       </div>
 
-      {/* Main content */}
-      <div style={styles.mainContent}>
-        <header style={styles.header}>
-          <h1 style={styles.mainTitle}>{activeMenu}</h1>
-          <button style={styles.logoutBtn} onClick={handleLogout} onMouseEnter={(e) => (e.target.style.background = "#dc2626")} onMouseLeave={(e) => (e.target.style.background = "#ef4444")}>
-            Logout
-          </button>
+      {/* Main Content */}
+      <div style={{ flex: 1, padding: "24px 32px 32px 16px", overflowY: "auto", height: "100vh" }}>
+        
+        <header style={{ 
+          display: "flex", 
+          justifyContent: "space-between", 
+          alignItems: "center", 
+          marginBottom: "40px",
+          padding: "16px 32px",
+          background: "var(--glass-bg)",
+          backdropFilter: "blur(12px)",
+          borderRadius: "16px",
+          border: "1px solid var(--glass-border)",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.2)"
+        }}>
+          <h1 className="animate-fade-in" style={{ fontSize: "24px", fontWeight: "700" }}>{activeMenu}</h1>
+          <button className="btn-danger" onClick={handleLogout}>Logout</button>
         </header>
 
-        {/* Stats Cards */}
         {activeMenu === "Dashboard" && (
-          <div style={styles.cardContainer}>
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", 
+            gap: "24px",
+            marginBottom: "40px"
+          }}>
             {stats.map((stat, idx) => (
-              <div key={idx} style={{ ...styles.statCard(stat.bg), animationDelay: `${idx * 0.1}s` }} onMouseEnter={() => setHoverCard(idx)} onMouseLeave={() => setHoverCard(null)}>
-                <div style={styles.statIcon}>{stat.icon}</div>
-                <h3 style={styles.statTitle}>{stat.title}</h3>
-                <p style={styles.statValue}>{stat.value}</p>
+              <div 
+                key={idx} 
+                className="animate-fade-in"
+                style={{ 
+                  background: stat.bg,
+                  padding: "24px", 
+                  borderRadius: "20px", 
+                  color: "white",
+                  boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+                  position: "relative",
+                  overflow: "hidden",
+                  animationDelay: `${idx * 0.1}s`
+                }}
+              >
+                {/* Decorative circle */}
+                <div style={{
+                  position: "absolute",
+                  top: "-20px",
+                  right: "-20px",
+                  width: "100px",
+                  height: "100px",
+                  borderRadius: "50%",
+                  background: "rgba(255,255,255,0.1)",
+                }} />
+                
+                <div style={{ fontSize: "32px", marginBottom: "16px" }}>{stat.icon}</div>
+                <h3 style={{ fontSize: "16px", fontWeight: "500", opacity: 0.9, marginBottom: "8px" }}>{stat.title}</h3>
+                <p style={{ fontSize: "36px", fontWeight: "700" }}>{stat.value}</p>
               </div>
             ))}
           </div>
         )}
 
-        {/* Render Pages */}
-        <div style={styles.placeholder}>
+        {/* Dynamic Page Rendering */}
+        <div className="glass-panel animate-fade-in" style={{ padding: "32px", minHeight: "500px" }}>
           {activeMenu === "Users" && <UsersPage />}
           {activeMenu === "Assignments" && <AssignmentsPage />}
           {activeMenu === "Notes" && <NotesPage />}
           {activeMenu === "PYQs" && <PYQsPage />}
-          {activeMenu === "Dashboard" && <p>Welcome to your Admin Dashboard! Use the menu on the left to manage Users, Assignments, Notes, and PYQs.</p>}
+          {activeMenu === "Dashboard" && (
+            <div style={{ textAlign: "center", padding: "60px 20px", color: "var(--text-secondary)" }}>
+              <div style={{ fontSize: "64px", marginBottom: "24px" }}>📊</div>
+              <h2 style={{ color: "white", marginBottom: "16px" }}>Welcome back, Admin!</h2>
+              <p>Everything is running smoothly. Select a module from the sidebar to manage your resources.</p>
+            </div>
+          )}
         </div>
+
       </div>
     </div>
   );
