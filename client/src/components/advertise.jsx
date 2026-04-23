@@ -4,12 +4,29 @@ import { useNavigate } from "react-router-dom";
 import "./advertise.css";
 import axios from "axios";
 
-const Advertise = async () => {
+const Advertise = () => {
   const heroRef = useRef(null);
   const titleRef = useRef(null);
   const navigate = useNavigate();
-  const token = localStorage.getItem("usertoken");
-  const userno = await axios.get("https://resource-allocator-project.onrender.com/api/admin/users/count", { headers: { Authorization: `Bearer ${token}` } });
+  const [userno, setUserno] = useState(0);
+
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      try {
+        // Use standard 'token' since login stores it as 'token'
+        const token = localStorage.getItem("token") || localStorage.getItem("usertoken");
+        const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/users/count", { 
+          headers: { Authorization: `Bearer ${token}` } 
+        });
+        if (res.data && res.data.success) {
+          setUserno(res.data.count);
+        }
+      } catch (err) {
+        console.error("Failed to fetch user count:", err);
+      }
+    };
+    fetchUserCount();
+  }, []);
 
   useEffect(() => {
     // Staggered text reveal
@@ -61,20 +78,24 @@ const Advertise = async () => {
       easing: 'easeInOutSine',
       delay: anime.stagger(600),
     });
-
-    // Counter animation
-    document.querySelectorAll('.hero__stat-number').forEach((el) => {
-      const target = parseInt(el.getAttribute('data-target'));
-      anime({
-        targets: el,
-        innerHTML: [0, target],
-        round: 1,
-        duration: 2000,
-        delay: 1200,
-        easing: 'easeOutExpo',
-      });
-    });
   }, []);
+
+  useEffect(() => {
+    // Counter animation - we re-run this when userno updates so it correctly animates the fetched value
+    document.querySelectorAll('.hero__stat-number').forEach((el) => {
+      const target = parseInt(el.getAttribute('data-target')) || 0;
+      if (target > 0) {
+        anime({
+          targets: el,
+          innerHTML: [0, target],
+          round: 1,
+          duration: 2000,
+          delay: 200,
+          easing: 'easeOutExpo',
+        });
+      }
+    });
+  }, [userno]);
 
   return (
     <section className="hero" ref={heroRef} id="hero-section">
