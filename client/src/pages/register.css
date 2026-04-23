@@ -1,197 +1,301 @@
-/* ----------------------------------------------------
-   FULL PAGE WRAPPER
----------------------------------------------------- */
-.register-page-wrapper {
-  width: 100%;
-  height: 100vh;
+/* ===== Register Page ===== */
+.register {
+  min-height: 100vh;
+  background: var(--bg-primary);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
-  background: #0b1120; /* backup color */
+  padding: 40px 20px;
 }
 
-/* ----------------------------------------------------
-   GRADIENT BACKGROUND
----------------------------------------------------- */
-.register-background {
+.register__orb {
   position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.register__orb--1 {
+  width: 400px;
+  height: 400px;
+  background: rgba(168, 85, 247, 0.12);
+  top: -100px;
+  left: -100px;
+}
+
+.register__orb--2 {
+  width: 300px;
+  height: 300px;
+  background: rgba(0, 229, 255, 0.08);
+  bottom: -50px;
+  right: -50px;
+}
+
+.register__container {
+  display: flex;
   width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 20% 20%, #3a0ca3, transparent 60%),
-              radial-gradient(circle at 80% 80%, #4361ee, transparent 60%),
-              linear-gradient(135deg, #0b1120, #0f1c2e);
-  filter: blur(30px);
+  max-width: 1150px;
+  min-height: 800px;
   z-index: 1;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: rgba(12, 16, 41, 0.4);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
 }
 
-/* ----------------------------------------------------
-   REGISTER CARD (GLASS EFFECT)
----------------------------------------------------- */
-.register-box {
-  position: relative;
-  z-index: 5;
-  width: 380px;
-  padding: 35px;
-  border-radius: 18px;
-
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(15px);
-
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-
-  animation: fadeIn 0.8s ease-out;
-  text-align: center;
+.register__side {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* ----------------------------------------------------
-   HEADER TEXT
----------------------------------------------------- */
-.title {
-  font-size: 28px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 5px;
+/* Left Side */
+.register__side--left {
+  background: linear-gradient(135deg, rgba(168, 85, 247, 0.12), rgba(0, 229, 255, 0.08));
+  border-right: 1px solid var(--border-subtle);
+  opacity: 0;
 }
 
-.subtitle {
-  font-size: 14px;
-  color: #cbd5e1;
-  margin-bottom: 25px;
+.register__logo-large {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.25);
 }
 
-/* ----------------------------------------------------
-   FORM
----------------------------------------------------- */
-.form-area {
-  width: 100%;
-  margin-top: 10px;
-}
-
-/* INPUT GROUP */
-.input-block {
-  text-align: left;
-  margin-bottom: 18px;
-}
-
-.input-block label {
-  color: #cbd5e1;
-  font-size: 14px;
-  margin-bottom: 5px;
-  display: block;
-}
-
-/* INPUT BOX STYLING */
-.input-block input {
-  width: 100%;
-  padding: 12px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-
-  background: rgba(255, 255, 255, 0.1);
+.register__logo-text-large {
   color: #fff;
-
-  font-size: 15px;
-  transition: all 0.3s ease;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 2.2rem;
 }
 
-/* INPUT HOVER + FOCUS EFFECT */
-.input-block input:focus {
-  outline: none;
-  border-color: #7dd3fc;
-  box-shadow: 0 0 8px rgba(125, 211, 252, 0.5);
+.register__visual-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 24px;
 }
 
-/* ----------------------------------------------------
-   MESSAGE BOX (SUCCESS / ERROR)
----------------------------------------------------- */
-.message-box {
-  padding: 10px 12px;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  font-size: 14px;
+.register__visual-desc {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  margin-bottom: 40px;
+  max-width: 400px;
 }
 
-.message-box.success {
-  background: rgba(34, 197, 94, 0.2);
-  color: #22c55e;
-  border: 1px solid #22c55e;
+.register__visual-features {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.message-box.error {
-  background: rgba(239, 68, 68, 0.18);
-  color: #ef4444;
-  border: 1px solid #ef4444;
+.register__feature {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
-/* ----------------------------------------------------
-   BUTTON
----------------------------------------------------- */
-.register-btn {
+.register__feature i {
+  color: var(--accent-cyan);
+  font-size: 1.2rem;
+}
+
+/* Right Side */
+.register__side--right {
+  background: rgba(6, 8, 26, 0.2);
+}
+
+.register__box {
+  max-width: 550px;
   width: 100%;
-  padding: 12px;
-  margin-top: 10px;
+  margin: 0 auto;
+  padding: 40px;
+  opacity: 0;
+}
 
-  background: linear-gradient(90deg, #3a0ca3, #4361ee);
+.register__header {
+  margin-bottom: 28px;
+}
+
+.register__title {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.register__subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.register__message-box {
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.register__message-box--error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #f87171;
+}
+
+.register__message-box--success {
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  color: #34d399;
+}
+
+.register__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.register__form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.register__form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.register__label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.register__input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: var(--transition-base);
+}
+
+.register__input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.register__password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
   border: none;
-  color: white;
-
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 10px;
-
+  color: var(--text-muted);
   cursor: pointer;
-
-  transition: 0.3s ease;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-base);
+  z-index: 2;
 }
 
-.register-btn:hover {
-  transform: scale(1.03);
-  box-shadow: 0 6px 18px rgba(67, 97, 238, 0.4);
+.register__password-toggle:hover {
+  color: var(--text-primary);
 }
 
-/* ----------------------------------------------------
-   LOGIN LINK
----------------------------------------------------- */
-.login-link-box {
-  margin-top: 18px;
-  color: #cbd5e1;
-  font-size: 14px;
+.register__input:focus {
+  border-color: var(--accent-purple);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1);
 }
 
-.login-link {
-  color: #60a5fa;
+/* File Input Customization */
+.register__file-input {
+  position: relative;
+}
+
+.register__file-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: var(--transition-base);
+}
+
+.register__file-label:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--accent-cyan);
+  color: var(--text-secondary);
+}
+
+.register__file-label i {
+  font-size: 1.2rem;
+}
+
+.register__btn {
+  margin-top: 8px;
+}
+
+.register__footer {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.register__link {
+  color: var(--accent-cyan);
   font-weight: 600;
-  margin-left: 5px;
-  text-decoration: none;
 }
 
-.login-link:hover {
-  text-decoration: underline;
-}
-
-/* ----------------------------------------------------
-   ANIMATIONS
----------------------------------------------------- */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+/* Responsive */
+@media (max-width: 992px) {
+  .register__side--left {
+    display: none;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  
+  .register__container {
+    max-width: 600px;
+    min-height: auto;
   }
 }
 
-/* ----------------------------------------------------
-   RESPONSIVE
----------------------------------------------------- */
-@media (max-width: 450px) {
-  .register-box {
-    width: 90%;
-    padding: 25px;
+@media (max-width: 576px) {
+  .register__side--right {
+    padding: 32px 20px;
+  }
+  
+  .register__box {
+    padding: 16px 0;
+  }
+  
+  .register__form-row {
+    grid-template-columns: 1fr;
   }
 }

@@ -1,175 +1,182 @@
-// // import React from "react";
-// // import Slider from "react-slick";
-// // import "../components/advertise.css";
-// // import "slick-carousel/slick/slick.css";
-// // import "slick-carousel/slick/slick-theme.css";
-// // import banner2 from "../image/banner2.jpg";
-// // import banner3 from "../image/banner3.jpg";
+import React, { useEffect, useRef } from "react";
+import anime from "animejs";
+import { useNavigate } from "react-router-dom";
+import "./advertise.css";
+import axios from "axios";
 
+const Advertise = async () => {
+  const heroRef = useRef(null);
+  const titleRef = useRef(null);
+  const navigate = useNavigate();
+  const token = localStorage.getItem("usertoken");
+  const userno = await axios.get("https://resource-allocator-project.onrender.com/api/admin/users/count", { headers: { Authorization: `Bearer ${token}` } });
 
-// // const Advertise = () => {
-// //   const slides = [
-// //     {
-// //       img: "https://kce.ac.in/new/wp-content/uploads/2023/05/College-students-reveal-the-best-ways-to-get-ahead-in-engineering-1-1024x536.jpg",
-// //       title: "We are the Engineers",
-// //       subtitle: "The Future of the World",
-// //     },
-// //     {
-// //       img: banner2,
-// //       title: "Learn. Build. Innovate.",
-// //       subtitle: "Shaping Tomorrow’s Technology",
-// //     },
-// //     {
-// //       img: banner3,
-// //       title: "DBATU Scholar Hub",
-// //       subtitle: "Empowering Students with Knowledge",
-// //     },
-// //   ];
+  useEffect(() => {
+    // Staggered text reveal
+    const tl = anime.timeline({ easing: 'easeOutExpo' });
 
-// //   const settings = {
-// //     dots: true,
-// //     infinite: true,
-// //     autoplay: true,
-// //     speed: 1000,
-// //     autoplaySpeed: 4000,
-// //     slidesToShow: 1,
-// //     slidesToScroll: 1,
-// //     arrows: false,
-// //   };
+    tl.add({
+      targets: '.hero__badge',
+      opacity: [0, 1],
+      translateY: [20, 0],
+      duration: 800,
+    })
+      .add({
+        targets: '.hero__title .word',
+        opacity: [0, 1],
+        translateY: [60, 0],
+        duration: 1000,
+        delay: anime.stagger(120),
+      }, '-=400')
+      .add({
+        targets: '.hero__subtitle',
+        opacity: [0, 1],
+        translateY: [30, 0],
+        duration: 800,
+      }, '-=600')
+      .add({
+        targets: '.hero__actions > *',
+        opacity: [0, 1],
+        translateY: [30, 0],
+        duration: 600,
+        delay: anime.stagger(100),
+      }, '-=400')
+      .add({
+        targets: '.hero__stats-item',
+        opacity: [0, 1],
+        translateY: [30, 0],
+        duration: 600,
+        delay: anime.stagger(100),
+      }, '-=300');
 
-// //   return (
-// //     <Slider {...settings} className="advertise-slider">
-// //       {slides.map((slide, idx) => (
-// //         <div key={idx} className="advertise-slide">
-// //           <img src={slide.img} alt={slide.title} className="advertise-img" />
-// //           <div className="advertise-overlay">
-// //             <h1 className="fw-bold">{slide.title}</h1>
-// //             <h4 className="fw-light">{slide.subtitle}</h4>
-// //           </div>
-// //         </div>
-// //       ))}
-// //     </Slider>
-// //   );
-// // };
+    // Floating orbs animation
+    anime({
+      targets: '.hero__orb',
+      translateY: [-20, 20],
+      translateX: [-10, 10],
+      scale: [1, 1.1],
+      duration: 4000,
+      direction: 'alternate',
+      loop: true,
+      easing: 'easeInOutSine',
+      delay: anime.stagger(600),
+    });
 
-// // export default Advertise;
+    // Counter animation
+    document.querySelectorAll('.hero__stat-number').forEach((el) => {
+      const target = parseInt(el.getAttribute('data-target'));
+      anime({
+        targets: el,
+        innerHTML: [0, target],
+        round: 1,
+        duration: 2000,
+        delay: 1200,
+        easing: 'easeOutExpo',
+      });
+    });
+  }, []);
 
-// import React from "react";
-// import Slider from "react-slick";
-// import "../components/advertise.css";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
-// import banner2 from "../image/banner2.jpg";
-// import banner3 from "../image/banner3.jpg";
-
-// const Advertise = () => {
-//   const slides = [
-//     {
-//       img: "https://kce.ac.in/new/wp-content/uploads/2023/05/College-students-reveal-the-best-ways-to-get-ahead-in-engineering-1-1024x536.jpg",
-//       title: "We are the Engineers",
-//       subtitle: "The Future of the World",
-//     },
-//     {
-//       img: banner2,
-//       title: "Learn. Build. Innovate.",
-//       subtitle: "Shaping Tomorrow’s Technology",
-//     },
-//     {
-//       img: banner3,
-//       title: "DBATU Scholar Hub",
-//       subtitle: "Empowering Students with Knowledge",
-//     },
-//   ];
-
-//   const settings = {
-//     dots: true,
-//     infinite: true,
-//     autoplay: true,
-//     speed: 1000,
-//     autoplaySpeed: 4000,
-//     slidesToShow: 1,
-//     slidesToScroll: 1,
-//     arrows: false,
-//     pauseOnHover: false,
-//     fade: true, // smooth crossfade transition
-//   };
-
-//   return (
-//     <Slider {...settings} className="advertise-slider">
-//       {slides.map((slide, idx) => (
-//         <div key={idx} className="advertise-slide">
-//           <img src={slide.img} alt={slide.title} className="advertise-img" />
-//           <div className="advertise-overlay">
-//             <h1 className="fw-bold animate-fade">{slide.title}</h1>
-//             <h4 className="fw-light animate-slide">{slide.subtitle}</h4>
-//           </div>
-//         </div>
-//       ))}
-//     </Slider>
-//   );
-// };
-
-// export default Advertise;
-
-import React from "react";
-import { motion } from "framer-motion";
-import "../components/advertise.css";
-
-const Advertise = () => {
   return (
-    <div className="hero-section">
-
-      {/* Animated Gradient Blobs */}
-      <motion.div 
-        className="blob blob1"
-        animate={{ x: [0, 20, -20, 0], y: [0, -15, 15, 0] }}
-        transition={{ duration: 10, repeat: Infinity }}
-      />
-
-      <motion.div 
-        className="blob blob2"
-        animate={{ x: [0, -25, 25, 0], y: [0, 25, -25, 0] }}
-        transition={{ duration: 12, repeat: Infinity }}
-      />
-
-      <motion.div 
-        className="blob blob3"
-        animate={{ scale: [1, 1.3, 1], rotate: [0, 10, -10, 0] }}
-        transition={{ duration: 14, repeat: Infinity }}
-      />
-
-      {/* Main Text */}
-      <div className="hero-content">
-        <motion.h1 
-          className="hero-title"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+    <section className="hero" ref={heroRef} id="hero-section">
+      {/* Video Background */}
+      <div className="hero__video-wrapper">
+        <video
+          className="hero__video"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=80"
         >
-          DBATU Scholar Hub
-        </motion.h1>
-
-        <motion.h3 
-          className="hero-subtitle"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          Learn • Explore • Innovate  
-        </motion.h3>
-
-        <motion.p 
-          className="hero-desc"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.3 }}
-        >
-          A modern platform designed for DBATU students to boost learning 
-          and academic collaboration.
-        </motion.p>
+          <source
+            src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4"
+            type="video/mp4"
+          />
+        </video>
+        <div className="hero__overlay"></div>
       </div>
 
-    </div>
+      {/* Floating Orbs */}
+      <div className="hero__orb hero__orb--1"></div>
+      <div className="hero__orb hero__orb--2"></div>
+      <div className="hero__orb hero__orb--3"></div>
+
+      {/* Content */}
+      <div className="hero__content container">
+        <div className="hero__badge">
+          <span className="hero__badge-dot"></span>
+          Trusted by 90+ DBATU Students
+        </div>
+
+        <h1 className="hero__title" ref={titleRef}>
+          <span className="word">Your</span>{" "}
+          <span className="word gradient-text">Academic</span>{" "}
+          <span className="word">Journey</span>
+          <br />
+          <span className="word">Starts</span>{" "}
+          <span className="word gradient-text">Here.</span>
+        </h1>
+
+        <p className="hero__subtitle">
+          Access curated notes, PYQs, assignments & video tutorials —
+          all in one modern platform built for DBATU scholars.
+        </p>
+
+        <div className="hero__actions">
+          <button
+            className="btn-primary-glow"
+            onClick={() => navigate('/notes')}
+            id="hero-explore-btn"
+          >
+            <i className="fas fa-rocket"></i>
+            Explore Materials
+          </button>
+          <button
+            className="btn-outline-glow"
+            onClick={() => navigate('/about-us')}
+            id="hero-learn-btn"
+          >
+            Learn More
+            <i className="fas fa-arrow-right"></i>
+          </button>
+        </div>
+
+        {/* Stats Row */}
+        <div className="hero__stats">
+          <div className="hero__stats-item">
+            <span className="hero__stat-number" data-target={userno}>0</span>
+            <span className="hero__stat-suffix">+</span>
+            <span className="hero__stat-label">Active Students</span>
+          </div>
+          <div className="hero__stats-divider"></div>
+          <div className="hero__stats-item">
+            <span className="hero__stat-number" data-target="300+">0</span>
+            <span className="hero__stat-suffix">+</span>
+            <span className="hero__stat-label">Study Materials</span>
+          </div>
+          <div className="hero__stats-divider"></div>
+          <div className="hero__stats-item">
+            <span className="hero__stat-number" data-target="5+">0</span>
+            <span className="hero__stat-suffix"></span>
+            <span className="hero__stat-label">Departments</span>
+          </div>
+          <div className="hero__stats-divider"></div>
+          <div className="hero__stats-item">
+            <span className="hero__stat-number" data-target="100+">0</span>
+            <span className="hero__stat-suffix">+</span>
+            <span className="hero__stat-label">Downloads</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="hero__scroll-indicator">
+        <div className="hero__scroll-mouse">
+          <div className="hero__scroll-wheel"></div>
+        </div>
+        <span>Scroll to explore</span>
+      </div>
+    </section>
   );
 };
 

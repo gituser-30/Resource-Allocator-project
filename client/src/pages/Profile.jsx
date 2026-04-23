@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "../pages/profile.css";
+import anime from "animejs";
+import "./profile.css";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -9,15 +10,24 @@ const Profile = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({});
   const [passwordData, setPasswordData] = useState({ oldPassword: "", newPassword: "" });
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Fetch user from localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
       const parsedUser = JSON.parse(storedUser);
       setUser(parsedUser);
       setForm(parsedUser);
+
+      // Entry animation
+      anime({
+        targets: '.profile__container',
+        opacity: [0, 1],
+        translateY: [30, 0],
+        duration: 800,
+        easing: 'easeOutExpo'
+      });
     } else {
       navigate("/login");
     }
@@ -29,17 +39,10 @@ const Profile = () => {
     navigate("/login");
   };
 
-
-
-  // Update profile
   const handleProfileUpdate = async () => {
+    setLoading(true);
     try {
       const userId = user._id || user.id;
-      if (!userId) {
-        alert("User ID missing, please login again.");
-        return;
-      }
-
       const res = await axios.put(
         `https://resource-allocator-project.onrender.com/api/users/update-profile/${userId}`,
         form,
@@ -57,18 +60,15 @@ const Profile = () => {
     } catch (err) {
       console.error(err);
       alert("Error updating profile ❌");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Change password
   const handleChangePassword = async () => {
+    setLoading(true);
     try {
       const userId = user._id || user.id;
-      if (!userId) {
-        alert("User ID missing, please login again.");
-        return;
-      }
-
       const res = await axios.put(
         `https://resource-allocator-project.onrender.com/api/users/change-password/${userId}`,
         passwordData,
@@ -78,112 +78,183 @@ const Profile = () => {
       if (res.data.success) {
         alert("Password changed successfully ✅");
         setShowPassword(false);
+        setPasswordData({ oldPassword: "", newPassword: "" });
       } else {
         alert(res.data.msg || "Password change failed ❌");
       }
     } catch (err) {
       console.error(err);
       alert("Error changing password ❌");
+    } finally {
+      setLoading(false);
     }
   };
 
   if (!user) return null;
 
   return (
-    <div className="profile-container">
-      <div className="profile-card shadow-lg">
-        {/* Header */}
-        <div className="profile-header text-center">
-         <div className="profile-avatar">
-           
+    <div className="profile">
+      <div className="profile__orb profile__orb--1"></div>
+      <div className="profile__orb profile__orb--2"></div>
 
-           <img
-              src={user.profilePhoto || "https://www.pngkey.com/png/full/115-1150152_default-profile-picture-avatar-png-green.png"}
-              alt="Profile"
-              onError={(e) => (e.target.src = "/images/default-avatar.png")} // fallback if URL broken
-            />
+      <div className="container">
+        <div className="profile__container glass-card">
+          {/* Header */}
+          <div className="profile__header">
+            <div className="profile__avatar-wrapper">
+              <div className="profile__avatar-ring">
+                <img
+                  src={user.profilePhoto || "https://www.pngkey.com/png/full/115-1150152_default-profile-picture-avatar-png-green.png"}
+                  alt="Profile"
+                  className="profile__img"
+                  onError={(e) => (e.target.src = "https://ui-avatars.com/api/?name=" + user.fullName)}
+                />
+              </div>
+            </div>
+            <div className="profile__meta">
+              <h2 className="profile__name">{user.fullName}</h2>
+              <p className="profile__email">{user.email}</p>
+              <div className="profile__badges">
+                <span className="profile__badge">Student</span>
+                {user.department && <span className="profile__badge profile__badge--cyan">{user.department}</span>}
+              </div>
+            </div>
           </div>
 
-          <h2 className="fw-bold text-light">{user.fullName}</h2>
-          <p className="text-muted">{user.email}</p>
-        </div>
+          {/* Info Grid */}
+          <div className="profile__info">
+            <h3 className="profile__section-title">Personal Information</h3>
+            <div className="profile__info-grid">
+              <div className="profile__info-item">
+                <span className="profile__label">Full Name</span>
+                <p className="profile__value">{user.fullName}</p>
+              </div>
+              <div className="profile__info-item">
+                <span className="profile__label">Email Address</span>
+                <p className="profile__value">{user.email}</p>
+              </div>
+              <div className="profile__info-item">
+                <span className="profile__label">Department</span>
+                <p className="profile__value">{user.department || "Not specified"}</p>
+              </div>
+              <div className="profile__info-item">
+                <span className="profile__label">Date of Birth</span>
+                <p className="profile__value">
+                  {user.dob ? new Date(user.dob).toLocaleDateString("en-GB") : "Not provided"}
+                </p>
+              </div>
+              <div className="profile__info-item">
+                <span className="profile__label">Member Since</span>
+                <p className="profile__value">
+                  {user.createdAt ? new Date(user.createdAt).toLocaleDateString("en-GB") : "Unknown"}
+                </p>
+              </div>
+            </div>
+          </div>
 
-        {/* Info */}
-        <div className="profile-info">
-          <h5 className="section-title">👤 Personal Information</h5>
-         <ul className="list-unstyled">
-            <li><strong>📛 Name:</strong> {user.fullName}</li>
-            <li><strong>📧 Email:</strong> {user.email}</li>
-            <li><strong>🏫 Department:</strong> {user.department || "Not added"}</li>
-            <li><strong>🎂 Date of Birth:</strong> {user.dob ? new Date(user.dob).toLocaleDateString("en-GB") : "Not provided"}</li>
-            <li><strong>📅 Joined:</strong>{user.createdAt ? new Date(user.createdAt).toLocaleDateString("en-GB") : "Unknown"}</li>
-          </ul>
-
-        </div>
-
-        {/* Buttons */}
-        <div className="profile-actions d-flex justify-content-between">
-          <button className="btn btn-outline-info w-100 me-2" onClick={() => setShowEdit(true)}>✏️ Edit Profile</button>
-          <button className="btn btn-outline-warning w-100 me-2" onClick={() => setShowPassword(true)}>🔑 Change Password</button>
-          <button className="btn btn-danger w-100" onClick={handleLogout}>🚪 Logout</button>
+          {/* Actions */}
+          <div className="profile__actions">
+            <button className="btn-outline-glow" onClick={() => setShowEdit(true)}>
+              <i className="fas fa-edit"></i> Edit Profile
+            </button>
+            <button className="btn-outline-glow" onClick={() => setShowPassword(true)}>
+              <i className="fas fa-key"></i> Change Password
+            </button>
+            <button className="profile__logout-btn" onClick={handleLogout}>
+              <i className="fas fa-sign-out-alt"></i> Logout
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Edit Modal */}
+      {/* Edit Profile Modal */}
       {showEdit && (
-        <div className="modal-backdrop">
-          <div className="modal-card">
-            <h3>Edit Profile</h3>
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Full Name"
-              value={form.fullName}
-              onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-            />
-            <input
-              type="text"
-              className="form-control mb-2"
-              placeholder="Department"
-              value={form.department || ""}
-              onChange={(e) => setForm({ ...form, department: e.target.value })}
-            />
-            <input
-              type="date"
-              className="form-control mb-2"
-              value={form.dob || ""}
-              onChange={(e) => setForm({ ...form, dob: e.target.value })}
-            />
-            <div className="d-flex justify-content-end">
-              <button className="btn btn-secondary me-2" onClick={() => setShowEdit(false)}>Cancel</button>
-              <button className="btn btn-success" onClick={handleProfileUpdate}>Save</button>
+        <div className="modal-overlay">
+          <div className="modal-content glass-card">
+            <div className="modal-header">
+              <h3>Edit Profile</h3>
+              <button className="modal-close" onClick={() => setShowEdit(false)}>&times;</button>
+            </div>
+            <div className="modal-body">
+              <div className="modal-field">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  className="modal-input"
+                  value={form.fullName}
+                  onChange={(e) => setForm({ ...form, fullName: e.target.value })}
+                />
+              </div>
+              <div className="modal-field">
+                <label>Department</label>
+                <select
+                  className="modal-input"
+                  value={form.department || ""}
+                  onChange={(e) => setForm({ ...form, department: e.target.value })}
+                >
+                  <option value="">Select Department</option>
+                  <option value="Computer Engineering">Computer Engineering</option>
+                  <option value="Information Technology">Information Technology</option>
+                  <option value="Mechanical Engineering">Mechanical Engineering</option>
+                  <option value="Civil Engineering">Civil Engineering</option>
+                  <option value="Electrical Engineering">Electrical Engineering</option>
+                </select>
+              </div>
+              <div className="modal-field">
+                <label>Date of Birth</label>
+                <input
+                  type="date"
+                  className="modal-input"
+                  value={form.dob ? new Date(form.dob).toISOString().split('T')[0] : ""}
+                  onChange={(e) => setForm({ ...form, dob: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="modal-btn-cancel" onClick={() => setShowEdit(false)}>Cancel</button>
+              <button className="modal-btn-save" onClick={handleProfileUpdate} disabled={loading}>
+                {loading ? "Saving..." : "Save Changes"}
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Password Modal */}
+      {/* Change Password Modal */}
       {showPassword && (
-        <div className="modal-backdrop">
-          <div className="modal-card">
-            <h3>Change Password</h3>
-            <input
-              type="password"
-              className="form-control mb-2"
-              placeholder="Old Password"
-              value={passwordData.oldPassword}
-              onChange={(e) => setPasswordData({ ...passwordData, oldPassword: e.target.value })}
-            />
-            <input
-              type="password"
-              className="form-control mb-2"
-              placeholder="New Password"
-              value={passwordData.newPassword}
-              onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-            />
-            <div className="d-flex justify-content-end">
-              <button className="btn btn-secondary me-2" onClick={() => setShowPassword(false)}>Cancel</button>
-              <button className="btn btn-success" onClick={handleChangePassword}>Update</button>
+        <div className="modal-overlay">
+          <div className="modal-content glass-card">
+            <div className="modal-header">
+              <h3>Change Password</h3>
+              <button className="modal-close" onClick={() => setShowPassword(false)}>&times;</button>
+            </div>
+            <div className="modal-body">
+              <div className="modal-field">
+                <label>Old Password</label>
+                <input
+                  type="password"
+                  className="modal-input"
+                  placeholder="Enter old password"
+                  value={passwordData.oldPassword}
+                  onChange={(e) => setPasswordData({ ...passwordData, oldPassword: e.target.value })}
+                />
+              </div>
+              <div className="modal-field">
+                <label>New Password</label>
+                <input
+                  type="password"
+                  className="modal-input"
+                  placeholder="Enter new password"
+                  value={passwordData.newPassword}
+                  onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button className="modal-btn-cancel" onClick={() => setShowPassword(false)}>Cancel</button>
+              <button className="modal-btn-save" onClick={handleChangePassword} disabled={loading}>
+                {loading ? "Updating..." : "Update Password"}
+              </button>
             </div>
           </div>
         </div>

@@ -1,169 +1,357 @@
-/* ===================================================================
-   GLOBAL WRAPPER
-=================================================================== */
-.notes-wrapper {
-  font-family: "Inter", sans-serif;
-}
-
-
-/* ===================================================================
-   DEPARTMENT BIG POSTER CARDS
-=================================================================== */
-
-.dept-card {
+/* ===== Notes Page ===== */
+.notes {
+  padding: 140px 0 80px;
+  background: var(--bg-primary);
+  min-height: 100vh;
   position: relative;
-  height: 230px;
-  width: 100%;
-  border-radius: 22px;
   overflow: hidden;
-  cursor: pointer;
-  transition: 0.35s ease;
-  box-shadow: 0px 12px 28px rgba(0, 0, 0, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-.dept-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0px 22px 40px rgba(0, 0, 0, 0.6);
-}
-
-/* Background Image Layer */
-.dept-card-img {
+.notes__orb {
   position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  filter: brightness(0.55);
-  transition: 0.35s ease;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 0;
 }
 
-.dept-card:hover .dept-card-img {
-  filter: brightness(0.85);
+.notes__orb--1 {
+  width: 500px;
+  height: 500px;
+  background: rgba(168, 85, 247, 0.08);
+  top: -100px;
+  right: -200px;
 }
 
-/* Dark Overlay */
-.dept-card-overlay {
-  position: absolute;
-  inset: 0;
+.notes__orb--2 {
+  width: 400px;
+  height: 400px;
+  background: rgba(0, 229, 255, 0.06);
+  bottom: 0;
+  left: -100px;
+}
+
+/* Stepper */
+.notes__stepper {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 60px;
+  position: relative;
   z-index: 1;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.85),
-    rgba(0, 0, 0, 0.25)
-  );
 }
 
-/* Card Title */
-.dept-card-title {
+.notes__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.notes__step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: var(--text-muted);
+  transition: var(--transition-base);
+}
+
+.notes__step--active .notes__step-num {
+  background: var(--gradient-primary);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);
+}
+
+.notes__step-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.notes__step--active .notes__step-label {
+  color: var(--text-primary);
+}
+
+.notes__step-line {
   position: absolute;
-  bottom: 18px;
-  width: 100%;
-  z-index: 3;
-  text-align: center;
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: 700;
-  padding: 0 20px;
-  text-shadow: 0px 4px 12px rgba(0, 0, 0, 0.95);
+  top: 18px;
+  left: 100%;
+  width: 40px;
+  height: 2px;
+  background: var(--border-subtle);
 }
 
-
-/* ===================================================================
-   SEMESTER CARDS
-=================================================================== */
-
-.sem-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #cfe9ff;
-  padding: 18px 35px;
-  border-radius: 15px;
-  cursor: pointer;
-  transition: 0.3s ease;
+.notes__step--active .notes__step-line {
+  background: var(--accent-purple);
 }
 
-.sem-card:hover {
-  background: rgba(0, 238, 255, 0.18);
-  transform: translateY(-5px);
+/* Content */
+.notes__content {
+  opacity: 0;
+  position: relative;
+  z-index: 1;
 }
 
+.notes__title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 40px;
+}
 
-/* ===================================================================
-   SUBJECT CARDS
-=================================================================== */
+.notes__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
 
-.subject-card {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 22px;
+.notes__card {
+  padding: 40px 32px;
   text-align: center;
   cursor: pointer;
-  transition: 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: var(--transition-base);
 }
 
-.subject-card:hover {
-  background: rgba(56, 189, 248, 0.18);
-  transform: translateY(-5px);
+.notes__card:hover {
+  transform: translateY(-8px);
+  border-color: var(--card-color);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
-.subject-title {
-  color: #38bdf8;
-  font-weight: 700;
-  font-size: 1.1rem;
+.notes__card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 24px;
 }
 
-.subject-count {
-  color: #94a3b8;
+/* Sem & Subject selection */
+.notes__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.notes__back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.notes__back:hover {
+  color: var(--accent-cyan);
+}
+
+.notes__path {
+  color: var(--text-muted);
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
-
-/* ===================================================================
-   NOTES CARDS
-=================================================================== */
-
-.note-card {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 18px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #e2e8f0;
-  transition: 0.3s ease;
-  padding-bottom: 20px;
+.notes__path i {
+  font-size: 0.7rem;
+  margin: 0 8px;
 }
 
-.note-card:hover {
-  transform: translateY(-6px);
-  background: rgba(255, 255, 255, 0.12);
+.notes__sem-grid, .notes__sub-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
-.note-header h5 {
-  padding: 15px;
-  font-size: 1.1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #38bdf8;
-  font-weight: 700;
+.notes__sem-btn, .notes__sub-btn {
+  padding: 20px;
+  background: var(--bg-glass);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-weight: 600;
+  transition: var(--transition-base);
 }
 
-.note-desc {
-  color: #cbd5e1;
-  font-size: 0.88rem;
-  padding: 10px 15px;
+.notes__sem-btn:hover, .notes__sub-btn:hover {
+  background: var(--bg-glass-hover);
+  border-color: var(--accent-purple);
+  color: #fff;
+  transform: translateY(-4px);
 }
 
-.view-btn {
-  background: rgba(56, 189, 248, 0.25);
-  padding: 10px 15px;
-  border-radius: 10px;
-  color: #38bdf8;
-  text-decoration: none;
-  transition: 0.3s ease;
-  display: block;
+/* Results */
+.notes__header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.notes__tabs {
+  display: flex;
+  gap: 12px;
+  background: var(--bg-glass);
+  padding: 6px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+}
+
+.notes__tab {
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: var(--transition-base);
+}
+
+.notes__tab.active {
+  background: var(--gradient-primary);
+  color: #fff;
+}
+
+.notes__summary {
+  padding: 32px;
+  margin-bottom: 32px;
   text-align: center;
 }
 
-.view-btn:hover {
-  background: rgba(56, 189, 248, 0.45);
+.notes__summary h3 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.notes__summary p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.notes__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.notes__item {
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  gap: 24px;
+}
+
+.notes__item-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(168, 85, 247, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: var(--accent-purple);
+}
+
+.notes__item-info {
+  flex: 1;
+}
+
+.notes__item-info h5 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.notes__item-info span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.notes__download-btn {
+  padding: 10px 20px;
+  background: rgba(0, 229, 255, 0.1);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  color: var(--accent-cyan);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-base);
+}
+
+.notes__download-btn:hover {
+  background: var(--accent-cyan);
+  color: var(--bg-primary);
+  transform: translateY(-2px);
+}
+
+.notes__empty {
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.notes__empty i {
+  font-size: 3rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.notes__loader {
+  text-align: center;
+  padding: 60px 0;
+}
+
+.notes__loader .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-subtle);
+  border-top-color: var(--accent-purple);
+  border-radius: 50%;
+  animation: spin-slow 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@media (max-width: 992px) {
+  .notes__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .notes__sem-grid, .notes__sub-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .notes__stepper {
+    gap: 15px;
+  }
+  .notes__step-line {
+    display: none;
+  }
+  .notes__header-row {
+    flex-direction: column;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .notes__item {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .notes__grid {
+    grid-template-columns: 1fr;
+  }
+  .notes__sem-grid, .notes__sub-grid {
+    grid-template-columns: 1fr;
+  }
 }

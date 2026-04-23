@@ -1,155 +1,45 @@
-// import React, { useState } from "react";
-// import axios from "axios";
-// import { useNavigate, Link } from "react-router-dom"; // ✅ Added Link import
-// import "../pages/login.css";
-
-// const Login = () => {
-//   const [email, setEmail] = useState("");
-//   const [password, setPassword] = useState("");
-//   const [error, setError] = useState("");
-//   const navigate = useNavigate();
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setError(""); // clear old errors
-
-//     try {
-//       const res = await axios.post("https://resource-allocator-project.onrender.com/api/auth/login", {
-//         email,
-//         password,
-//       });
-
-//       if (res.data.success) {
-//         // ✅ Save token in localStorage (for PrivateRoute)
-//         localStorage.setItem("token", res.data.token);
-
-//         // ✅ Optional: also save user info
-//         localStorage.setItem("user", JSON.stringify(res.data.user));
-
-//         // Redirect to home page
-//         navigate("/home");
-//       }
-//     } catch (err) {
-//       setError(err.response?.data?.message || "Login failed");
-//     }
-//   };
-
-//   return (
-//     <div className="login-container">
-//       {/* Background */}
-//       <div className="background-svg">
-//         <svg
-//           viewBox="0 0 1440 800"
-//           fill="none"
-//           xmlns="http://www.w3.org/2000/svg"
-//         >
-//           <path
-//             d="M0 0C250.667 0 450.667 400 720 400C989.333 400 1189.33 0 1440 0V800H0V0Z"
-//             fill="url(#blue-gradient)"
-//           />
-//           <defs>
-//             <linearGradient
-//               id="blue-gradient"
-//               x1="0"
-//               y1="0"
-//               x2="1440"
-//               y2="800"
-//               gradientUnits="userSpaceOnUse"
-//             >
-//               <stop stopColor="#0077b6" />
-//               <stop offset="1" stopColor="#00b4d8" />
-//             </linearGradient>
-//           </defs>
-//         </svg>
-//       </div>
-
-//       {/* Card */}
-//       <div className="login-card animated-card">
-//         <div className="login-header animated-header">
-//           <div className="icon-circle animated-icon">
-//             <svg
-//               xmlns="http://www.w3.org/2000/svg"
-//               width="32"
-//               height="32"
-//               viewBox="0 0 24 24"
-//               fill="none"
-//               stroke="white"
-//               strokeWidth="2"
-//               strokeLinecap="round"
-//               strokeLinejoin="round"
-//             >
-//               <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-//               <circle cx="12" cy="7" r="4" />
-//             </svg>
-//           </div>
-//           <h1 className="animated-heading">Welcome Back!</h1>
-//           <p className="animated-text">DBATU Scholar Hub</p>
-//         </div>
-
-//         {/* ✅ Corrected onSubmit */}
-//         <form onSubmit={handleSubmit} className="animated-form">
-//           {/* ✅ Error Message */}
-//           {error && <p className="error-message">{error}</p>}
-
-//           <div className="form-group animated-input">
-//             <input
-//               type="email"
-//               placeholder="Email address"
-//               value={email}
-//               onChange={(e) => setEmail(e.target.value)}
-//               required
-//             />
-//           </div>
-
-//           <div className="form-group password-group animated-input delay-1">
-//             <input
-//               type="password"
-//               placeholder="Password"
-//               value={password}
-//               onChange={(e) => setPassword(e.target.value)}
-//               required
-//             />
-//             <Link to="/forgot-password" className="forgot-link">
-//               Forgot?
-//             </Link>
-//           </div>
-
-//           <button type="submit" className="btn-primary animated-button delay-3">
-//             Sign In
-//           </button>
-//         </form>
-
-//         <div className="signup-text animated-signup-text delay-2">
-//           <p>
-//             Are you a new user?{" "}
-//             <Link to="/Register" className="login-link-text">
-//               Create account
-//             </Link>
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Login;  
-
-
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import "../pages/login.css";
+import anime from "animejs";
+import "./login.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Initial animations
+    anime.timeline({ easing: 'easeOutExpo' })
+      .add({
+        targets: '.login__side--left',
+        opacity: [0, 1],
+        translateX: [-50, 0],
+        duration: 1000
+      })
+      .add({
+        targets: '.login__box',
+        opacity: [0, 1],
+        translateY: [30, 0],
+        duration: 800
+      }, '-=600')
+      .add({
+        targets: '.login__form-group',
+        opacity: [0, 1],
+        translateY: [20, 0],
+        delay: anime.stagger(100),
+        duration: 600
+      }, '-=400');
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
 
     try {
       const res = await axios.post(
@@ -160,61 +50,122 @@ const Login = () => {
       if (res.data.success) {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("user", JSON.stringify(res.data.user));
-        navigate("/home");
+        
+        // Success animation before navigating
+        anime({
+          targets: '.login__box',
+          scale: 0.95,
+          opacity: 0,
+          duration: 400,
+          easing: 'easeInBack',
+          complete: () => navigate("/home")
+        });
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || "Login failed. Please check your credentials.");
+      setLoading(false);
+      
+      // Shake animation on error
+      anime({
+        targets: '.login__box',
+        translateX: [0, -10, 10, -10, 10, 0],
+        duration: 400,
+        easing: 'easeInOutSine'
+      });
     }
   };
 
   return (
-    <div className="login-page-wrapper">
-      {/* Background */}
-      <div className="login-background"></div>
+    <div className="login">
+      {/* Background Orbs */}
+      <div className="login__orb login__orb--1"></div>
+      <div className="login__orb login__orb--2"></div>
 
-      {/* Login Card */}
-      <div className="login-box">
-        <h1 className="title">Welcome Back 👋</h1>
-        <p className="subtitle">Sign in to continue to DBATU Scholar Hub</p>
-
-        {error && <p className="error-box">{error}</p>}
-
-        <form onSubmit={handleSubmit} className="form-area">
-          <div className="input-block">
-            <label>Email Address</label>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+      <div className="login__container">
+        {/* Left Side - Visual */}
+        <div className="login__side login__side--left">
+          <div className="login__visual-content">
+            <div className="login__logo-large">
+              <span className="login__logo-text-large">D</span>
+            </div>
+            <h1 className="login__visual-title">Welcome Back to <br /><span className="gradient-text">Scholar Hub</span></h1>
+            <p className="login__visual-desc">
+              Your gateway to organized study materials, academic success, and community collaboration.
+            </p>
+            <div className="login__visual-stats">
+              <div className="login__stat">
+                <span className="login__stat-val">1200+</span>
+                <span className="login__stat-lab">Notes</span>
+              </div>
+              <div className="login__stat">
+                <span className="login__stat-val">500+</span>
+                <span className="login__stat-lab">Students</span>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <div className="input-block">
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-            <Link to="/forgot-password" className="forgot">
-              Forgot Password?
-            </Link>
+        {/* Right Side - Form */}
+        <div className="login__side login__side--right">
+          <div className="login__box glass-card">
+            <div className="login__header">
+              <h2 className="login__title">Sign In</h2>
+              <p className="login__subtitle">Enter your credentials to access your account</p>
+            </div>
+
+            {error && <div className="login__error-box">{error}</div>}
+
+            <form onSubmit={handleSubmit} className="login__form">
+              <div className="login__form-group">
+                <label className="login__label">Email Address</label>
+                <div className="login__input-wrapper">
+                  <i className="fas fa-envelope"></i>
+                  <input
+                    type="email"
+                    className="login__input"
+                    placeholder="name@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="login__form-group">
+                <div className="login__label-row">
+                  <label className="login__label">Password</label>
+                  <Link to="/forgot-password" title="Forgot Password?" className="login__forgot">Forgot?</Link>
+                </div>
+                <div className="login__input-wrapper">
+                  <i className="fas fa-lock"></i>
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="login__input"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <button 
+                    type="button" 
+                    className="login__password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    <i className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"}`}></i>
+                  </button>
+                </div>
+              </div>
+
+              <button className="login__btn btn-primary-glow w-full" type="submit" disabled={loading}>
+                {loading ? "Signing in..." : "Sign In"}
+                <i className="fas fa-arrow-right"></i>
+              </button>
+            </form>
+
+            <div className="login__footer">
+              <p>Don't have an account? <Link to="/Register" className="login__link">Create one</Link></p>
+            </div>
           </div>
-
-          <button className="login-btn" type="submit">
-            Sign In
-          </button>
-        </form>
-
-        <div className="signup-box">
-          New to Scholar Hub?{" "}
-          <Link to="/Register" className="signup-link">
-            Create Account
-          </Link>
         </div>
       </div>
     </div>

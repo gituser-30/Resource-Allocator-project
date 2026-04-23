@@ -1,83 +1,81 @@
-/* Main Section */
-.tws-section {
-  background: linear-gradient(135deg, #0a1a3b, #0d264d, #0f3b63);
-  padding: 70px 20px;
-  color: white;
-  text-align: center;
+/* ===== Things We Share ===== */
+.tws {
+  padding: var(--section-pad);
+  background: var(--bg-secondary);
 }
 
-/* Main Title */
-.tws-title {
-  font-size: 2.4rem;
+.tws__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.tws__card {
+  padding: 36px 28px;
+  text-align: center;
+  opacity: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.tws__card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background: var(--tws-color);
+  border-radius: var(--radius-full);
+  transition: width 0.4s var(--ease-smooth);
+}
+
+.tws__card:hover::after {
+  width: 60%;
+}
+
+.tws__card-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 1.5rem;
+  transition: var(--transition-base);
+}
+
+.tws__card:hover .tws__card-icon-wrapper {
+  transform: scale(1.1) rotate(5deg);
+  border-color: var(--tws-color);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.1);
+}
+
+.tws__card-title {
+  font-size: 1.05rem;
   font-weight: 700;
-  background: linear-gradient(45deg, #00eaff, #4cc9f0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
+  color: var(--text-primary);
+  margin-bottom: 10px;
 }
 
-/* Subtitle */
-.tws-subtitle {
-  font-size: 1.1rem;
-  opacity: 0.8;
-  margin-bottom: 40px;
+.tws__card-desc {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
 }
 
-/* Card Styling */
-.tws-card {
-  background: rgba(255, 255, 255, 0.07);
-  border-radius: 18px;
-  padding: 30px 20px;
-  text-align: center;
-  backdrop-filter: blur(7px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  height: 100%;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
-}
-
-/* Icon (Emoji Circle) */
-.tws-card-icon {
-  font-size: 2.4rem;
-  padding: 18px;
-  width: 75px;
-  height: 75px;
-  margin: 0 auto 15px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.12);
-  backdrop-filter: blur(4px);
-  box-shadow: 0 4px 10px rgba(255,255,255,0.15);
-}
-
-/* Title inside card */
-.tws-card-title {
-  color: #4cc9f0;
-  font-size: 1.2rem;
-  font-weight: 600;
-  margin-top: 10px;
-}
-
-/* Description */
-.tws-card-desc {
-  font-size: 0.95rem;
-  opacity: 0.85;
-  margin-top: 8px;
-  line-height: 1.4rem;
-}
-
-/* Hover Glow */
-.tws-card:hover {
-  box-shadow: 0px 12px 25px rgba(0, 238, 255, 0.35);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .tws-title {
-    font-size: 2rem;
+@media (max-width: 992px) {
+  .tws__grid {
+    grid-template-columns: repeat(2, 1fr);
   }
+}
 
-  .tws-card {
-    padding: 25px 15px;
+@media (max-width: 576px) {
+  .tws__grid {
+    grid-template-columns: 1fr;
   }
 }

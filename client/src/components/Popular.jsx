@@ -1,288 +1,152 @@
-// import React from "react";
-// import { NavLink } from "react-router-dom";
-// const Popular = () => {
-//   return (
-//     <div
-//       className="container-fluid py-5"
-//       style={{
-//         background: "linear-gradient(135deg, #0f2027, #000304ff, #010709ff)",
-//         color: "#fff",
-//         fontFamily: "Inter, sans-serif",
-//       }}
-//     >
-//       {/* ---------------- Featured Notes ---------------- */}
-//       <h2 className="text-center fw-bold mb-4" style={{ color: "#90e0ef" }}>
-//   🌟 Featured Notes
-// </h2>
-
-// <div className="row g-4 justify-content-center">
-//   {[
-//     {
-//       id: 1,
-//       subject: "Discrete mathematics",
-//       unit: "Reference book",
-//       img: "https://essaycorp.com/blog/uploads/Side-Hustle.webp",
-//       description: "📖 Second Year - Discrete mathematics",
-//       link:"https://res.cloudinary.com/dsq3sf0ea/raw/upload/v1761630004/uploads/1761630003169-1757868895020-%5BBook%5D%20Discrete%20mathematics%20and%20its%20applications%20%282019%29_0_compressed.pdf",
-//     },
-//     {
-//       id: 2,
-//       subject: "C Programming",
-//       unit: "Reference Book",
-//       img: "https://www.seedinfotech.com/wp-content/uploads/2023/01/C_Programming-1-1170x728.jpg",
-//       description: "🖥️ First Year - C Programming",
-//       link:"https://res.cloudinary.com/dsq3sf0ea/raw/upload/v1761630484/uploads/1761630483368-1757868844647-C%20programming%20Notes.pdf",
-//     },
-//     {
-//       id: 3,
-//       subject: "Data Structures & Algorithm",
-//       unit: "Unit 3",
-//       img: "https://i.ytimg.com/vi/F0PYgGImt1A/maxresdefault.jpg",
-//       description: "🌐 Second Year - Data Structures & Algorithm",
-//       link:"https://res.cloudinary.com/dsq3sf0ea/raw/upload/v1761594778/uploads/1761594777216-1757867439691-DSA%20UNIT%201_compressed%20%281%29.pdf",
-//     },
-//   ].map((note) => (
-//     <div className="col-md-4 col-sm-6" key={note.id}>
-//       <div
-//         className="card shadow border-0 h-100"
-//         style={{
-//           background: "rgba(255,255,255,0.1)",
-//           borderRadius: "14px",
-//           backdropFilter: "blur(12px)",
-//           transition: "transform 0.3s ease, box-shadow 0.3s ease",
-//           cursor: "pointer",
-//         }}
-//         onMouseEnter={(e) => {
-//           e.currentTarget.style.transform = "translateY(-6px)";
-//           e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.3)";
-//         }}
-//         onMouseLeave={(e) => {
-//           e.currentTarget.style.transform = "translateY(0)";
-//           e.currentTarget.style.boxShadow = "0 6px 14px rgba(0,0,0,0.2)";
-//         }}
-//       >
-//         <div className="card-body text-center">
-//           <img
-//             src={note.img}
-//             alt={`${note.subject} Notes`}
-//             className="img-fluid rounded mb-3"
-//             style={{
-//               maxHeight: "180px",
-//               borderRadius: "10px",
-//               boxShadow: "0 3px 10px rgba(0,0,0,0.4)",
-//             }}
-//           />
-//           <h5 className="card-title fw-bold text-info">
-//             {note.subject} - {note.unit} Notes
-//           </h5>
-//           <p className="card-text small text-light"><a href={note.link} target="_blank" rel="noopener noreferrer">{note.description}</a></p>
-//         </div>
-//       </div>
-//     </div>
-//   ))}
-// </div>
-
-
-//       {/* ---------------- Featured Assignments ---------------- */}
-//       <h2
-//         className="text-center fw-bold mt-5 mb-4"
-//         style={{ color: "#90ee90" }}
-//       >
-//         📝 Featured Assignments
-//       </h2>
-
-//       <div className="row g-4 justify-content-center">
-//         {[1, 2, 3].map((assign) => (
-//           <div className="col-md-4 col-sm-6" key={assign}>
-//             <div
-//               className="card shadow border-0 h-100"
-//               style={{
-//                 background: "rgba(255,255,255,0.1)",
-//                 borderRadius: "14px",
-//                 backdropFilter: "blur(12px)",
-//                 transition: "all 0.3s ease",
-//               }}
-//               onMouseEnter={(e) => {
-//                 e.currentTarget.style.transform = "translateY(-6px)";
-//                 e.currentTarget.style.boxShadow = "0 12px 24px rgba(0,0,0,0.3)";
-//               }}
-//               onMouseLeave={(e) => {
-//                 e.currentTarget.style.transform = "translateY(0)";
-//                 e.currentTarget.style.boxShadow = "0 6px 14px rgba(0,0,0,0.2)";
-//               }}
-//             >
-//               <div className="card-body text-center">
-//                 <img
-//                   src={`https://cdn-icons-png.flaticon.com/512/3135/31357${
-//                     10 + assign
-//                   }.png`}
-//                   alt="Assignment"
-//                   className="img-fluid rounded mb-3"
-//                   style={{
-//                     maxHeight: "150px",
-//                     borderRadius: "10px",
-//                     boxShadow: "0 3px 10px rgba(0,0,0,0.4)",
-//                   }}
-//                 />
-//                 <h5 className="card-title fw-bold text-success">
-//                   DSA Notes {assign}
-//                 </h5>
-//                 <p className="card-text small text-light">
-//                   📝 Second Year - Data Structure & Algorithm
-//                 </p>
-//                 <div className="d-flex justify-content-center gap-2 mt-2">
-                  
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* ---------------- Video Tutorials ---------------- */}
-//       <h2
-//         className="text-center fw-bold mt-5 mb-4"
-//         style={{ color: "#ff6b6b" }}
-//       >
-//         🎥 Video Tutorials
-//       </h2>
-//       <div className="row g-4 justify-content-center">
-//         {[
-//           "https://www.youtube.com/embed/videoseries?si=ntB57z6TnMFAXMfC&amp;list=PLfqMhTWNBTe3LtFWcvwpqTkUSlB32kJop",
-//           "https://www.youtube.com/embed/tVzUXW6siu0?si=6tpffHiXeG-kfbmV",
-//           "https://www.youtube.com/embed/videoseries?si=bmD1NzfMB7gMhcT5&amp;list=PLjwm_8O3suyOFd8LTFqgw9v7MqPNtgINA",
-//           "https://www.youtube.com/embed/LvC68w9JS4Y?si=j2_HAX1Aad0UCPQT",
-//           "https://www.youtube.com/embed/videoseries?si=mgNT8Cg8HWUPRijH&amp;list=PLC36xJgs4dxEYmhzVBW7nBdftFZ4xmiF1",
-//         ].map((vid) => (
-//           <div className="col-md-4 col-sm-6" key={vid}>
-//             <div className="ratio ratio-16x9 shadow rounded overflow-hidden">
-//               <iframe src={vid} title="YouTube video" allowFullScreen></iframe>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-
-      
-//     </div>
-//   );
-// };
-
-// export default Popular;
-
-
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useEffect } from "react";
+import anime from "animejs";
 import "./popular.css";
 
 const Popular = () => {
   const trending = [
     {
-      title: "All Subjects– Complete Notes",
-      desc: "Best rated notes by DBATU students",
-      tag: "Trending 🔥",
-      color: "#38bdf8",
+      title: "All Subjects – Complete Notes",
+      desc: "Best rated notes curated by top DBATU students across all departments",
+      tag: "Trending",
+      icon: "🔥",
+      color: "#a855f7",
     },
     {
-      title: "All Subject - Assignment",
-      desc: "All Assignments at one place",
-      tag: "Most Downloaded ⭐",
+      title: "All Subjects – Assignments",
+      desc: "Comprehensive assignment collection with solutions for every semester",
+      tag: "Most Downloaded",
+      icon: "⭐",
+      color: "#00e5ff",
+    },
+    {
+      title: "PYQs – All Departments",
+      desc: "Previous year question papers to boost your exam preparation strategy",
+      tag: "Student Favorite",
+      icon: "❤️",
       color: "#f472b6",
-    },
-    {
-      title: "PYQs – All Department",
-      desc: "Scoring questions for exams",
-      tag: "Student Favorite ❤️",
-      color: "#34d399",
     },
   ];
 
   const playlists = [
     {
-      title: "Web dev Full Course",
+      title: "Web Development Full Course",
       link: "https://www.youtube.com/embed/tVzUXW6siu0",
+      channel: "Complete Beginner to Pro",
     },
     {
-      title: "Javascript Crash Course (Hindi)",
+      title: "JavaScript Crash Course",
       link: "https://www.youtube.com/embed/O3iR-CIufKM",
+      channel: "Hindi Tutorial",
     },
     {
-      title: "DSA with Java – Complete Playlist",
+      title: "DSA with Java – Playlist",
       link: "https://www.youtube.com/embed/videoseries?list=PLfqMhTWNBTe3LtFWcvwpqTkUSlB32kJop",
+      channel: "Complete Data Structures",
     },
   ];
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            anime({
+              targets: '.popular__trend-card',
+              opacity: [0, 1],
+              translateY: [50, 0],
+              duration: 800,
+              delay: anime.stagger(150),
+              easing: 'easeOutExpo',
+            });
+            anime({
+              targets: '.popular__video-card',
+              opacity: [0, 1],
+              translateY: [50, 0],
+              duration: 800,
+              delay: anime.stagger(150, { start: 400 }),
+              easing: 'easeOutExpo',
+            });
+            observer.disconnect();
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    const section = document.getElementById('popular-section');
+    if (section) observer.observe(section);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="popular-container">
+    <section className="popular" id="popular-section">
+      <div className="container">
+        {/* Heading */}
+        <div className="section-heading">
+          <h2 className="gradient-text">Popular on Scholar Hub</h2>
+          <p>Most accessed study resources by DBATU students</p>
+          <div className="section-divider"></div>
+        </div>
 
-      {/* 🔹 Section Heading */}
-      <motion.h2
-        className="popular-title"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-      >
-        🚀 Popular on Scholar Hub
-      </motion.h2>
-
-      <motion.p
-        className="popular-sub"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-      >
-        Most accessed study resources by DBATU students
-      </motion.p>
-
-      {/* 🔥 Trending Cards */}
-      <div className="row g-4 justify-content-center mt-4">
-        {trending.map((item, i) => (
-          <motion.div
-            key={i}
-            className="col-md-4"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
-          >
-            <div className="trend-card" style={{ borderTopColor: item.color }}>
-              <span className="trend-badge" style={{ background: item.color }}>
-                {item.tag}
-              </span>
-
-              <h4 className="trend-title">{item.title}</h4>
-              <p className="trend-desc">{item.desc}</p>
+        {/* Trending Cards */}
+        <div className="popular__trend-grid">
+          {trending.map((item, i) => (
+            <div
+              className="popular__trend-card glass-card"
+              key={i}
+              style={{ '--trend-color': item.color }}
+              id={`trend-card-${i}`}
+            >
+              <div className="popular__trend-header">
+                <span className="popular__trend-icon">{item.icon}</span>
+                <span
+                  className="popular__trend-badge"
+                  style={{ background: `${item.color}20`, color: item.color }}
+                >
+                  {item.tag}
+                </span>
+              </div>
+              <h4 className="popular__trend-title">{item.title}</h4>
+              <p className="popular__trend-desc">{item.desc}</p>
+              <div className="popular__trend-bar">
+                <div
+                  className="popular__trend-fill"
+                  style={{ background: item.color, width: `${85 - i * 10}%` }}
+                ></div>
+              </div>
             </div>
-          </motion.div>
-        ))}
-      </div>
+          ))}
+        </div>
 
-      {/* 🎥 Youtube Playlists */}
-      <motion.h3
-        className="popular-title mt-5"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-      >
-        🎥 Recommended Tutorials
-      </motion.h3>
+        {/* Video Section */}
+        <div className="popular__video-heading">
+          <h3>
+            <i className="fas fa-play-circle" style={{ color: 'var(--accent-cyan)' }}></i>
+            {" "}Recommended Tutorials
+          </h3>
+          <p>Handpicked video courses to accelerate your learning</p>
+        </div>
 
-      <div className="row g-4 justify-content-center mt-2">
-        {playlists.map((item, index) => (
-          <motion.div
-            key={index}
-            className="col-md-4"
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.15 }}
-          >
-            <div className="video-card shadow">
-              <iframe
-                src={item.link}
-                title={item.title}
-                allowFullScreen
-              ></iframe>
-              <p className="video-title">{item.title}</p>
+        <div className="popular__video-grid">
+          {playlists.map((item, index) => (
+            <div className="popular__video-card glass-card" key={index} id={`video-card-${index}`}>
+              <div className="popular__video-frame">
+                <iframe
+                  src={item.link}
+                  title={item.title}
+                  allowFullScreen
+                  loading="lazy"
+                ></iframe>
+              </div>
+              <div className="popular__video-info">
+                <h5>{item.title}</h5>
+                <span>{item.channel}</span>
+              </div>
             </div>
-          </motion.div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -438,7 +438,7 @@ router.get("/assignments", async (req, res) => {
     if (department) filter.department = department;
     if (semester) filter.semester = semester;
 
-    const assignments = await Assignment.find(filter).sort({ createdAt: -1 });
+    const assignments = await Assignment.find(filter).sort({ createdAt: -1 }).lean();
     res.json({ success: true, assignments });
   } catch (err) {
     console.error("Fetch Assignments Error:", err);
@@ -480,7 +480,7 @@ router.get("/notes", async (req, res) => {
     if (department) filter.department = department;
     if (semester) filter.semester = semester;
 
-    const notes = await Note.find(filter).sort({ createdAt: -1 });
+    const notes = await Note.find(filter).sort({ createdAt: -1 }).lean();
     res.json({ success: true, notes });
   } catch (err) {
     console.error("Fetch Notes Error:", err);
@@ -528,7 +528,7 @@ router.delete("/notes/:id", async (req, res) => {
 // ---------------- Users ----------------
 router.get("/users", async (_, res) => {
   try {
-    const users = await User.find().sort({ createdAt: -1 });
+    const users = await User.find().sort({ createdAt: -1 }).lean();
     res.json({ success: true, users });
   } catch (err) {
     console.error("Fetch Users Error:", err);
@@ -562,7 +562,7 @@ router.get("/pyqs", async (req, res) => {
     if (department) filter.department = department;
     if (semester) filter.semester = Number(semester);
 
-    const pyqs = await PYQ.find(filter).sort({ uploadedAt: -1 });
+    const pyqs = await PYQ.find(filter).sort({ uploadedAt: -1 }).lean();
     res.json({ success: true, pyqs });
   } catch (err) {
     console.error("Fetch PYQs Error:", err);

@@ -152,7 +152,7 @@
 //     const { title, subject, description, department, semester } = req.body;
 //     // const fileUrl = `/uploads/${req.file.filename}`;
 //     const fileUrl = req.file.path || req.file.secure_url; // Cloudinary gives a URL directly
-    
+
 
 
 //     let newNote;
@@ -368,24 +368,35 @@ process.on("unhandledRejection", (reason) => {
 });
 
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URI || "mongodb://127.0.0.1:27017/dbatu_scholar_hub")
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB error:", err));
 
 // ================== RESEND CLIENT ==================
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+
+if (!resend) {
+  console.warn("⚠️ Warning: RESEND_API_KEY is missing. Email notifications will be disabled.");
+}
 
 // ================== SEND EMAIL TO ALL STUDENTS ==================
 async function sendEmailToAllStudents(title, department, semester) {
-  try {
-    const students = await User.find({}, "email fullName");
+  if (!resend) return; // Skip if resend is not configured
 
-    const emails = students.map((student) =>
-      resend.emails.send({
-        from:"Dbatu Scholar Hub <no-reply@resend.dev>",
-        to: student.email,
-        subject: `New ${title} Uploaded`,
-        html: `
+  try {
+    // Use .lean() to reduce memory usage significantly
+    const students = await User.find({}, "email fullName").lean();
+
+    // Chunk emails to prevent hitting rate limits
+    const CHUNK_SIZE = 50; 
+    for (let i = 0; i < students.length; i += CHUNK_SIZE) {
+      const chunk = students.slice(i, i + CHUNK_SIZE);
+      const emails = chunk.map((student) =>
+        resend.emails.send({
+          from: "Dbatu Scholar Hub <no-reply@resend.dev>",
+          to: student.email,
+          subject: `New ${title} Uploaded`,
+          html: `
           <h3>Hello ${student.fullName},</h3>
           <p>A new <strong>${title}</strong> has been uploaded in:</p>
           <ul>
@@ -396,14 +407,17 @@ async function sendEmailToAllStudents(title, department, semester) {
           <br/>
           <p>Regards,<br>Dbatu Scholar Hub Team</p>
         `,
-      })
-    );
+        })
+      );
 
-    // 🟢 Resend recommends this to avoid throttling
-    const results = await Promise.allSettled(emails);
+      const results = await Promise.allSettled(emails);
+      console.log(`Email dispatch results for chunk ${i / CHUNK_SIZE + 1}:`, results);
 
-    console.log("Email dispatch results:", results);
-
+      // Wait a bit between chunks to respect rate limits (e.g., 1 second)
+      if (i + CHUNK_SIZE < students.length) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
   } catch (error) {
     console.error("❌ Error sending notification emails:", error);
   }
@@ -496,11 +510,14 @@ app.get("/api/resources", async (req, res) => {
     if (department) query.department = department;
     if (semester) query.semester = semester;
 
-    const notes = await Note.find(query);
-    const assignments = await Assignment.find(query);
-    const Pyqs = await PYQ.find(query);
+    // Use Promise.all to fetch concurrently and .lean() for better space/time complexity
+    const [notes, assignments, pyqs] = await Promise.all([
+      Note.find(query).lean(),
+      Assignment.find(query).lean(),
+      PYQ.find(query).lean(),
+    ]);
 
-    const all = [...notes, ...assignments, ...Pyqs].sort(
+    const all = [...notes, ...assignments, ...pyqs].sort(
       (a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt)
     );
 
@@ -555,6 +572,44 @@ app.post("/api/auth/register", uploadProfile.single("profilePhoto"), async (req,
   }
 });
 
+// ================== FORGOT PASSWORD (RESET) ==================
+app.post("/api/auth/forgot-password", async (req, res) => {
+  try {
+    const { email, dob, newPassword } = req.body;
+
+    if (!email || !dob || !newPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Fix: Validate dates to avoid crash when dob is invalid or missing
+    if (!user.dob || isNaN(new Date(user.dob).getTime()) || isNaN(new Date(dob).getTime())) {
+      return res.status(400).json({ message: "Verification failed. Invalid Date of Birth." });
+    }
+
+    // Convert stored dob and provided dob to same format for comparison
+    const storedDob = new Date(user.dob).toISOString().split('T')[0];
+    const providedDob = new Date(dob).toISOString().split('T')[0];
+
+    if (storedDob !== providedDob) {
+      return res.status(400).json({ message: "Verification failed. Incorrect Date of Birth." });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ success: true, message: "Password reset successful! You can now login." });
+  } catch (err) {
+    console.error("❌ Forgot Password Error:", err);
+    res.status(500).json({ message: "Error resetting password" });
+  }
+});
+
 // ================== LOGIN ==================
 app.post("/api/auth/login", async (req, res) => {
   try {
@@ -580,6 +635,8 @@ app.post("/api/auth/login", async (req, res) => {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
+        dob: user.dob,
+        department: user.department,
         profilePhoto: user.profilePhoto
       }
     });
@@ -599,4 +656,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });
-

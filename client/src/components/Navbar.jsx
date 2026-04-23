@@ -1,262 +1,128 @@
-// import { NavLink, useNavigate, useLocation } from "react-router-dom";
-// import head from "../image/Head_logo.png";
-
-// const Navbar = () => {
-//   const navigate = useNavigate();
-//   const location = useLocation();
-//   const token = localStorage.getItem("token");
-
-//   const hideNavbarRoutes = ["/login", "/register"];
-//   if (hideNavbarRoutes.includes(location.pathname)) {
-//     return null;
-//   }
-
-//   const handleLogout = () => {
-//     localStorage.removeItem("token");
-//     navigate("/login");
-//   };
-
-//   return (
-//     <nav
-//       className="navbar navbar-expand-lg navbar-dark sticky-top shadow"
-//       style={{ backgroundColor: "black" }}
-//     >
-//       <div className="container-fluid">
-//         {/* Brand */}
-//         <NavLink
-//           className="navbar-brand d-flex align-items-center fw-bold text-light"
-//           to="/"
-//         >
-//           <img
-//             src={head}
-//             alt="Dbatu Scholar Hub Logo"
-//             className="me-2"
-//             style={{
-//               width: "40px",
-//               height: "40px",
-//               borderRadius: "50%",
-//               objectFit: "cover",
-//             }}
-//           />
-//           <span style={{ color: "#38bdf8" }}>Dbatu Scholar Hub</span>
-//         </NavLink>
-
-//         {/* Toggle button */}
-//         <button
-//           className="navbar-toggler bg-light"
-//           type="button"
-//           data-bs-toggle="collapse"
-//           data-bs-target="#navbarNav"
-//           aria-controls="navbarNav"
-//           aria-expanded="false"
-//           aria-label="Toggle navigation"
-//         >
-//           <span className="navbar-toggler-icon"></span>
-//         </button>
-
-//         {/* Navbar links */}
-//         <div
-//           className="collapse navbar-collapse justify-content-between"
-//           id="navbarNav"
-//         >
-//           <ul className="navbar-nav mb-2 mb-lg-0 text-center">
-//             {token ? (
-//               <>
-//                 <li className="nav-item">
-//                   <NavLink
-//                     className={({ isActive }) =>
-//                       isActive
-//                         ? "nav-link text-warning border-bottom border-2 border-warning px-3"
-//                         : "nav-link text-light px-3"
-//                     }
-//                     to="/home"
-//                   >
-//                     Home
-//                   </NavLink>
-//                 </li>
-//                 <li className="nav-item">
-//                   <NavLink
-//                     className={({ isActive }) =>
-//                       isActive
-//                         ? "nav-link text-warning border-bottom border-2 border-warning px-3"
-//                         : "nav-link text-light px-3"
-//                     }
-//                     to="/Notes"
-//                   >
-//                     Study Material
-//                   </NavLink>
-//                 </li>
-//                 <li className="nav-item">
-//                   <NavLink
-//                     className={({ isActive }) =>
-//                       isActive
-//                         ? "nav-link text-warning border-bottom border-2 border-warning px-3"
-//                         : "nav-link text-light px-3"
-//                     }
-//                     to="/About-us"
-//                   >
-//                     About Us
-//                   </NavLink>
-//                 </li>
-//                 <li className="nav-item">
-//                   <NavLink
-//                     className={({ isActive }) =>
-//                       isActive
-//                         ? "nav-link text-warning border-bottom border-2 border-warning px-3"
-//                         : "nav-link text-light px-3"
-//                     }
-//                     to="/Contact"
-//                   >
-//                     Contact
-//                   </NavLink>
-//                 </li>
-//                 <li className="nav-item">
-//                   <NavLink
-//                     className={({ isActive }) =>
-//                       isActive
-//                         ? "nav-link text-warning border-bottom border-2 border-warning px-3"
-//                         : "nav-link text-light px-3"
-//                     }
-//                     to="/Profile"
-//                   >
-//                     Profile
-//                   </NavLink>
-//                 </li>
-                
-//               </>
-//             ) : (
-//               <>
-//                 <li className="nav-item">
-//                   <NavLink
-//                     className={({ isActive }) =>
-//                       isActive
-//                         ? "nav-link text-warning border-bottom border-2 border-warning px-3"
-//                         : "nav-link text-light px-3"
-//                     }
-//                     to="/login"
-//                   >
-//                     Login
-//                   </NavLink>
-//                 </li>
-//                 <li className="nav-item">
-//                   <NavLink
-//                     className={({ isActive }) =>
-//                       isActive
-//                         ? "nav-link text-warning border-bottom border-2 border-warning px-3"
-//                         : "nav-link text-light px-3"
-//                     }
-//                     to="/Register"
-//                   >
-//                     Register
-//                   </NavLink>
-//                 </li>
-//               </>
-//             )}
-//           </ul>
-
-//           {/* Logout button (moves below links in mobile view) */}
-//           {token && (
-//             <div className="text-center mt-2 mt-lg-0">
-//               <button
-//                 className="btn btn-danger px-4 fw-semibold"
-//                 onClick={handleLogout}
-//               >
-//                 Logout
-//               </button>
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
-
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
-import head from "../image/Head_logo.png";
+import { useState, useEffect } from "react";
 import "./Navbar.css";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const token = localStorage.getItem("token");
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const hideNavbarRoutes = ["/login", "/register"];
   if (hideNavbarRoutes.includes(location.pathname)) return null;
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
-  return (
-    <nav className="navbar navbar-expand-lg neo-navbar shadow-lg sticky-top">
-      <div className="container-fluid">
+  const navLinks = [
+    { to: "/home", label: "Home" },
+    { to: "/notes", label: "Study Material" },
+    { to: "/about-us", label: "About" },
+    { to: "/contact", label: "Contact" },
+    { to: "/profile", label: "Profile" },
+  ];
 
+  return (
+    <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`} id="main-navbar">
+      <div className="navbar__container">
         {/* Brand */}
-        <NavLink className="navbar-brand d-flex align-items-center" to="/">
-          <img src={head} alt="logo" className="neo-logo" />
-          <span className="neo-title">Dbatu Scholar Hub</span>
+        <NavLink className="navbar__brand" to="/home" id="navbar-brand">
+          <div className="navbar__logo-ring">
+            <span className="navbar__logo-text">D</span>
+          </div>
+          <span className="navbar__title">
+            Scholar <span className="navbar__title-accent">Hub</span>
+          </span>
         </NavLink>
 
-        {/* Toggle */}
-        <button
-          className="navbar-toggler neo-toggler bg-white"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+        {/* Desktop Nav */}
+        <div className="navbar__links" id="navbar-links">
+          {token ? (
+            <>
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  className={({ isActive }) =>
+                    `navbar__link ${isActive ? 'navbar__link--active' : ''}`
+                  }
+                  id={`nav-link-${link.label.toLowerCase().replace(/\s+/g, '-')}`}
+                >
+                  {link.label}
+                  <span className="navbar__link-indicator"></span>
+                </NavLink>
+              ))}
+            </>
+          ) : (
+            <>
+              <NavLink to="/login" className="navbar__link" id="nav-link-login">Login</NavLink>
+              <NavLink to="/register" className="navbar__link" id="nav-link-register">Register</NavLink>
+            </>
+          )}
+        </div>
 
-        {/* Menu Items */}
-        <div className="collapse navbar-collapse justify-content-between" id="navbarNav">
-          <ul className="navbar-nav mb-2 mb-lg-0 text-center">
-
-            {token ? (
-              <>
-                <li className="nav-item">
-                  <NavLink className="nav-link neo-link" to="/home">Home</NavLink>
-                </li>
-
-                <li className="nav-item">
-                  <NavLink className="nav-link neo-link" to="/Notes">Study Material</NavLink>
-                </li>
-
-                <li className="nav-item">
-                  <NavLink className="nav-link neo-link" to="/About-us">About Us</NavLink>
-                </li>
-
-                <li className="nav-item">
-                  <NavLink className="nav-link neo-link" to="/Contact">Contact</NavLink>
-                </li>
-
-                <li className="nav-item">
-                  <NavLink className="nav-link neo-link" to="/Profile">Profile</NavLink>
-                </li>
-              </>
-            ) : (
-              <>
-                <li className="nav-item">
-                  <NavLink className="nav-link neo-link" to="/login">Login</NavLink>
-                </li>
-
-                <li className="nav-item">
-                  <NavLink className="nav-link neo-link" to="/Register">Register</NavLink>
-                </li>
-              </>
-            )}
-
-          </ul>
-
-          {/* Logout */}
+        {/* CTA */}
+        <div className="navbar__actions">
           {token && (
-            <button className="neo-logout-btn" onClick={handleLogout}>
-              Logout
+            <button className="navbar__logout" onClick={handleLogout} id="navbar-logout-btn">
+              <i className="fas fa-sign-out-alt"></i>
+              <span>Logout</span>
             </button>
           )}
 
+          {/* Mobile Toggle */}
+          <button
+            className={`navbar__toggle ${isOpen ? 'navbar__toggle--open' : ''}`}
+            onClick={() => setIsOpen(!isOpen)}
+            id="navbar-toggle"
+            aria-label="Toggle navigation"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <div className={`navbar__mobile ${isOpen ? 'navbar__mobile--open' : ''}`} id="navbar-mobile-menu">
+        <div className="navbar__mobile-inner">
+          {token ? (
+            <>
+              {navLinks.map((link) => (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  className={({ isActive }) =>
+                    `navbar__mobile-link ${isActive ? 'navbar__mobile-link--active' : ''}`
+                  }
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.label}
+                </NavLink>
+              ))}
+              <button className="navbar__mobile-logout" onClick={handleLogout}>
+                <i className="fas fa-sign-out-alt"></i> Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <NavLink to="/login" className="navbar__mobile-link" onClick={() => setIsOpen(false)}>Login</NavLink>
+              <NavLink to="/register" className="navbar__mobile-link" onClick={() => setIsOpen(false)}>Register</NavLink>
+            </>
+          )}
         </div>
       </div>
     </nav>
@@ -264,4 +130,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-

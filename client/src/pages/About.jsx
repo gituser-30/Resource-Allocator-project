@@ -1,235 +1,156 @@
-import React from "react";
+import React, { useEffect } from "react";
+import anime from "animejs";
+import "./About.css";
 
 const About = () => {
+  useEffect(() => {
+    anime.timeline({ easing: 'easeOutExpo' })
+      .add({
+        targets: '.about__header',
+        opacity: [0, 1],
+        translateY: [30, 0],
+        duration: 800
+      })
+      .add({
+        targets: '.about__section',
+        opacity: [0, 1],
+        translateY: [40, 0],
+        delay: anime.stagger(200),
+        duration: 800
+      }, '-=400');
+  }, []);
+
+  const team = [
+    {
+      name: "Abdullah Asif Ali Hajwane",
+      role: "Academic Lead",
+      desc: "Topper since 1st year with a 9+ pointer. Abdullah provides high-quality notes for all subjects.",
+      icon: "fas fa-user-graduate",
+      color: "#a855f7"
+    },
+    {
+      name: "Aryan Mandhare",
+      role: "Full Stack Developer",
+      desc: "Passionate developer experienced in building real-world web applications and MERN stack integration.",
+      icon: "fas fa-code",
+      color: "#00e5ff",
+      links: [
+        { icon: "fab fa-linkedin", url: "https://www.linkedin.com/in/aryan-mandhare-207014380" },
+        { icon: "fas fa-globe", url: "https://aryanportfolio-r5lg.onrender.com/" }
+      ]
+    },
+    {
+      name: "Rashid Khopatkar",
+      role: "Admin & Frontend Developer",
+      desc: "Specializes in database management and frontend development. Ensures data security for the platform.",
+      icon: "fas fa-user-shield",
+      color: "#fbbf24"
+    }
+  ];
+
   return (
-    <div className="container-fluid" style={{ background: "#1f2937" }}>
-      <div className="container py-5 text-light">
-        <div className="text-center mb-4">
-          <img
-            src="/images/Head_logo.png"
-            alt="Dbatu Scholar Hub Logo"
-            style={{
-              width: "180px",
-              height: "auto",
-              borderRadius: "100px",
-              filter: "drop-shadow(0px 0px 10px #facc15)", // glowing effect
-            }}
-          />
-        </div>
-        {/* Heading */}
-        <div className="text-center mb-5">
-          <h1 className="fw-bold display-5 text-warning">🌟 About Us</h1>
-          <p className="text-secondary fs-5">
-            Learn more about Dbatu Scholar Hub, our mission, vision, and the
-            team behind this platform.
-          </p>
-        </div>
+    <div className="about">
+      {/* Background Orbs */}
+      <div className="about__orb about__orb--1"></div>
+      <div className="about__orb about__orb--2"></div>
 
-        {/* Who We Are */}
-        <div
-          className="card shadow-lg p-4 mb-5 border-0"
-          style={{ background: "#0d1117", borderRadius: "15px" }}
-        >
-          <h3 className="text-warning mb-3">Who We Are</h3>
-          <p className="fs-5 text-light">
-            A student-led project called<strong>Dbatu Scholar Hub</strong> was
-            established to make academic resources easier for{" "}
-            <strong>
-              Dr. Babasaheb Ambedkar Technological University (DBATU), Lonere
-            </strong>
-            .Our platform consolidates previous year question papers (PYQs), assignments, and study materials into a single, conveniently located location. 
+      <div className="container">
+        {/* Header */}
+        <header className="about__header section-heading">
+          <div className="about__logo-wrapper">
+            <img src="Head_logo.png" alt="Logo" className="about__logo" />
+          </div>
+          <h1 className="gradient-text">About Us</h1>
+          <p>
+            Learn more about DBATU Scholar Hub, our mission, and the dedicated team
+            working to bridge the gap in academic resources.
           </p>
-        </div>
+          <div className="section-divider"></div>
+        </header>
 
-        {/* Mission and Vision */}
-        <div className="row g-4 mb-5">
-          <div className="col-lg-6">
-            <div
-              className="card shadow-lg p-4 border-0 h-100"
-              style={{ background: "#0d1117", borderRadius: "15px" }}
-            >
-              <h3 className="text-warning mb-3">🎯 Our Mission</h3>
-              <p className="fs-5 text-light">
-                To empower students with easy access to high-quality academic
-                resources, enabling them to excel in their studies and build a
-                strong foundation for their careers.
+        {/* Content Sections */}
+        <div className="about__sections">
+          {/* Who we are */}
+          <section className="about__section about__section--flex glass-card">
+            <div className="about__info">
+              <h3 className="about__subtitle">
+                <i className="fas fa-university"></i>
+                Who We Are
+              </h3>
+              <p>
+                Established as a student-led initiative, <strong>DBATU Scholar Hub</strong> was created to
+                centralize academic resources for students of Dr. Babasaheb Ambedkar Technological University (DBATU), Lonere.
+                We provide a single, reliable point of access for previous year question papers (PYQs),
+                assignments, and comprehensive study materials.
               </p>
             </div>
-          </div>
-          <div className="col-lg-6">
-            <div
-              className="card shadow-lg p-4 border-0 h-100"
-              style={{ background: "#0d1117", borderRadius: "15px" }}
-            >
-              <h3 className="text-warning mb-3">🚀 Our Vision</h3>
-              <p className="fs-5 text-light">
-                To become the go-to academic portal for every DBATU student and
-                eventually expand to serve students across other universities.
+            <div className="about__visual">
+              <div className="about__card-stat">
+                <span className="about__stat-num">DBATU</span>
+                <span className="about__stat-label">University Portal</span>
+              </div>
+            </div>
+          </section>
+
+          {/* Mission & Vision */}
+          <div className="about__grid">
+            <section className="about__section glass-card">
+              <h3 className="about__subtitle">
+                <i className="fas fa-bullseye"></i>
+                Our Mission
+              </h3>
+              <p>
+                To empower students with easy access to high-quality academic resources,
+                enabling them to excel in their studies and build a strong foundation for their careers.
               </p>
-            </div>
+            </section>
+            <section className="about__section glass-card">
+              <h3 className="about__subtitle">
+                <i className="fas fa-rocket"></i>
+                Our Vision
+              </h3>
+              <p>
+                To become the go-to academic portal for every DBATU student and eventually expand
+                to serve students across other universities in the state.
+              </p>
+            </section>
           </div>
-        </div>
 
-        {/* What We Offer */}
-        <div
-          className="card shadow-lg p-4 mb-5 border-0"
-          style={{ background: "#0d1117", borderRadius: "15px" }}
-        >
-          <h3 className="text-warning mb-3">📚 What We Offer</h3>
-          <ul className="fs-5">
-            <li>✅ Well-structured lecture notes and study material.</li>
-            <li>✅ Previous Year Question Papers (PYQs) with solutions.</li>
-            <li>✅ Assignment repository for all semesters.</li>
-            <li>✅ Contact and feedback system for better communication.</li>
-          </ul>
-        </div>
-
-        {/* Why Choose Us */}
-        <div
-          className="card shadow-lg p-4 mb-5 border-0"
-          style={{ background: "#0d1117", borderRadius: "15px" }}
-        >
-          <h3 className="text-warning mb-3">🤝 Why Choose Us?</h3>
-          <p className="fs-5 text-light">
-            Unlike scattered resources on WhatsApp groups, Telegram, or random
-            Google Drives, Dbatu Scholar Hub provides a structured, reliable,
-            and user-friendly platform dedicated to DBATU students.
-          </p>
-        </div>
-
-        {/* Meet the Team */}
-        <div className="mb-5">
-          <h3 className="text-warning mb-4">👨‍💻 Meet the Team</h3>
-          <div className="row g-4">
-            {/*Abdullah*/}
-            <div className="col-md-4">
-              <div
-                className="card shadow-lg border-0 h-100 text-center"
-                style={{ background: "#0d1117", borderRadius: "15px" }}
-              >
-                <div className="card-body">
-                  <h4 className="text-warning">Abdullah Asif Ali Hajwane</h4>
-                  <p className="text-light mb-2">Topper Since 1st year</p>
-                  <p className="text-secondary small">
-                    Having good Knowledge of Each Subject
-                    also Good in Mathematics. Abdullah Asif-ali hajwane 
-                    is being the 1st ranker with pointer of <strong className="text-danger">9+</strong>.
-                    All Notes are Provided by himself.
-                  </p>
+          {/* Team */}
+          <section className="about__section">
+            <h3 className="about__title-center">Meet the Team</h3>
+            <div className="about__team-grid">
+              {team.map((member, i) => (
+                <div className="about__member glass-card" key={i} style={{ '--member-color': member.color }}>
+                  <div className="about__member-icon" style={{ background: `${member.color}20`, color: member.color }}>
+                    <i className={member.icon}></i>
+                  </div>
+                  <h4 className="about__member-name">{member.name}</h4>
+                  <span className="about__member-role">{member.role}</span>
+                  <p className="about__member-desc">{member.desc}</p>
+                  {member.links && (
+                    <div className="about__member-links">
+                      {member.links.map((link, j) => (
+                        <a href={link.url} target="_blank" rel="noreferrer" key={j} className="about__member-link">
+                          <i className={link.icon}></i>
+                        </a>
+                      ))}
+                    </div>
+                  )}
                 </div>
-              </div>
+              ))}
             </div>
+          </section>
 
-
-            {/* Aryan */}
-            <div className="col-md-4">
-  <div
-    className="card shadow-lg border-0 h-100 text-center"
-    style={{ background: "#0d1117", borderRadius: "15px" }}
-  >
-    <div className="card-body d-flex flex-column justify-content-center">
-      <h4 className="text-warning mb-1">Aryan Mandhare</h4>
-      <p className="text-light mb-2">Full Stack Developer</p>
-
-      <p className="text-secondary small">
-        A passionate Full Stack Developer with hands-on experience in building
-        real-world web applications. Actively involved in frontend design and
-        backend integration for projects like <strong>Dbatu Scholar Hub</strong>.
-        Computer Engineering student with strong problem-solving skills.
-        <br /><br />
-        <strong className="text-warning">
-          Languages & Technologies:
-        </strong>{" "}
-        C, Python, Java, JavaScript, PHP, MERN Stack.
-      </p>
-
-      {/* Social Links */}
-      <div className="d-flex justify-content-center gap-3 mt-3">
-        <a
-          href="https://www.linkedin.com/in/aryan-mandhare-207014380"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-primary fs-5"
-        >
-          <i className="fab fa-linkedin"></i>
-        </a>
-
-        <a
-          href="https://wa.me/919561017209"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-success fs-5"
-        >
-          <i className="fab fa-whatsapp"></i>
-        </a>
-
-        <a
-          href="https://www.instagram.com/mandhare3243"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-danger fs-5"
-        >
-          <i className="fab fa-instagram"></i>
-        </a>
-
-        <a
-          href="https://aryanportfolio-r5lg.onrender.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-warning fs-5"
-        >
-          <i className="fas fa-globe"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-            {/* Rashid */}
-            <div className="col-md-4">
-              <div
-                className="card shadow-lg border-0 h-100 text-center"
-                style={{ background: "#0d1117", borderRadius: "15px" }}
-              >
-                <div className="card-body">
-                  <h4 className="text-warning">Rashid Khopatkar</h4>
-                  <p className="text-light mb-2">Full stack Developer </p>
-                  <p className="text-secondary small">
-                    Specializes in Frontend development and database management.
-                    Admin of Dbatu Scholor Hub.  Handles and Ensure the security of Data.
-                    Languages Known: <strong className="text-warning">C++, C, Python, javascript, PHP</strong>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Future Goals */}
-        <div
-          className="card shadow-lg p-4 mb-5 border-0"
-          style={{ background: "#0d1117", borderRadius: "15px" }}
-        >
-          <h3 className="text-warning mb-3">🌐 Future Goals</h3>
-          <p className="fs-5 text-light">
-            In the future, we plan to introduce:
-          </p>
-          <ul className="fs-5">
-            <li>💡 AI-powered doubt solving & chatbots.</li>
-            <li>💡 Online coding practice platform.</li>
-          </ul>
-        </div>
-
-        {/* Closing Statement */}
-        <div className="text-center mt-5">
-          <h2 className="fw-bold text-warning">
-            “Together, we learn. Together, we grow.”
-          </h2>
-          <p className="fs-5 text-secondary mt-3">
-            Dbatu Scholar Hub is more than just a platform — it’s a community
-            for learners, built by learners.
-          </p>
+          {/* Closing */}
+          <section className="about__closing text-center">
+            <h2 className="gradient-text">"Together, we learn. Together, we grow."</h2>
+            <p>
+              DBATU Scholar Hub is more than just a platform — it’s a community
+              for learners, built by learners. Join us in shaping the future of
+              academic collaboration.
+            </p>
+          </section>
         </div>
       </div>
     </div>

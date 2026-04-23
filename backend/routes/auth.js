@@ -102,9 +102,9 @@ router.post("/login", async (req, res) => {
     // });
 
     return res.json({
-        success: true,
-        user,  // sends full user object including department
-        token
+      success: true,
+      user,  // sends full user object including department
+      token
     });
 
   } catch (err) {
@@ -127,20 +127,20 @@ router.post("/forgot-password", async (req, res) => {
     await user.save();
 
     // send email
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: { user: "your-email@gmail.com", pass: "your-app-password" },
-    });
+    // const transporter = nodemailer.createTransport({
+    //   service: "gmail",
+    //   auth: { user: "your-email@gmail.com", pass: "your-app-password" },
+    // });
 
-    const resetURL = `http://localhost:3000/reset-password/${resetToken}`;
+    // const resetURL = `http://localhost:3000/reset-password/${resetToken}`;
 
-    await transporter.sendMail({
-      to: email,
-      subject: "Password Reset Request",
-      html: `<p>Click <a href="${resetURL}">here</a> to reset your password. Valid for 15 minutes.</p>`,
-    });
+    // await transporter.sendMail({
+    //   to: email,
+    //   subject: "Password Reset Request",
+    //   html: `<p>Click <a href="${resetURL}">here</a> to reset your password. Valid for 15 minutes.</p>`,
+    // });
 
-    res.json({ success: true, message: "Reset link sent to your email" });
+    // res.json({ success: true, message: "Reset link sent to your email" });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

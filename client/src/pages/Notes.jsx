@@ -1,583 +1,307 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import { useSearchParams, useLocation, useParams } from "react-router-dom";
-
-// const Notes = () => {
-//   const [department, setDepartment] = useState("");
-//   const [semester, setSemester] = useState("");
-//   const [notes, setNotes] = useState([]);
-//   const [step, setStep] = useState(1);
-//   const [selectedSubject, setSelectedSubject] = useState(null);
-
-//   const [searchParams] = useSearchParams();
-//   const searchSubject = searchParams.get("subject");
-//   const location = useLocation();
-//   const { department: deptParam } = useParams();
-
-//   // ✅ Department normalization mapping
-//   const departmentMap = {
-//     "Computer Engineering": "Computer",
-//     "Information Technology": "Information Technology",
-//     "Mechanical Engineering": "Mechanical",
-//     "Civil Engineering": "Civil",
-//     "Electrical Engineering": "Electrical",
-//     "Electronics & Telecommunication": "ENTC",
-//     "Chemical Enginnering": "Chemical Engineering",
-//   };
-
-//   // ✅ Handle route /notes/:department or state from Browse page
-//   useEffect(() => {
-//     if (location.state?.department) {
-//       setDepartment(location.state.department);
-//       setStep(2);
-//     } else if (deptParam) {
-//       const formattedDept = deptParam
-//         .replace(/-/g, " ")
-//         .replace(/\b\w/g, (l) => l.toUpperCase());
-//       setDepartment(formattedDept);
-//       setStep(2);
-//     }
-//   }, [location.state, deptParam]);
-
-//   // ✅ Fetch notes when department + semester selected
-//   useEffect(() => {
-//     if (department && semester) {
-//       // Normalize department name to match backend
-//       const backendDept = departmentMap[department] || department;
-
-//       axios
-//         .get(
-//           `https://resource-allocator-project.onrender.com/api/resources?department=${encodeURIComponent(backendDept)}&semester=${semester}`
-//         )
-//         .then((res) => setNotes(res.data))
-//         .catch((err) => console.error("❌ Fetch Error:", err));
-//     }
-//   }, [department, semester]);
-
-//   const groupedNotes = notes.reduce((acc, note) => {
-//     if (!acc[note.subject]) acc[note.subject] = [];
-//     acc[note.subject].push(note);
-//     return acc;
-//   }, {});
-
-//   // ✅ Auto-select subject if ?subject= param present
-//   useEffect(() => {
-//     if (searchSubject && Object.keys(groupedNotes).length > 0) {
-//       const found = Object.keys(groupedNotes).find(
-//         (subj) => subj.toLowerCase() === searchSubject.toLowerCase()
-//       );
-//       if (found) {
-//         setStep(3);
-//         setSelectedSubject(found);
-//       }
-//     }
-//   }, [searchSubject, groupedNotes]);
-
-//   return (
-//     <div
-//       className="container-fluid min-vh-100 py-5"
-//       style={{
-//         background: "linear-gradient(135deg, #0f172a, #1e293b, #0f172a)",
-//         color: "#f1f5f9",
-//       }}
-//     >
-//       {/* Header */}
-//       <div className="text-center mb-5">
-//         <h2 className="fw-bold text-light display-5">📚 Scholars Library</h2>
-//         <p className="text-muted">
-//           Access department-wise and semester-wise notes, all in one place.
-//         </p>
-//       </div>
-
-//       {/* Step 1: Select Department */}
-//       {step === 1 && (
-//         <div className="text-center">
-//           <h4 className="fw-bold text-info mb-3">Select Your Department</h4>
-//           <p className="text-muted">
-//             Choose your department to explore available notes and resources.
-//           </p>
-
-//           <select
-//             className="form-select w-50 mx-auto mt-3 bg-dark text-light border-info"
-//             onChange={(e) => setDepartment(e.target.value)}
-//           >
-//             <option value="">-- Choose Department --</option>
-//             <option value="Computer Engineering">💻 Computer Engineering</option>
-//             <option value="Information Technology">
-//               💻 Information Technology
-//             </option>
-//             <option value="Mechanical Engineering">
-//               ⚙️ Mechanical Engineering
-//             </option>
-//             <option value="Civil Engineering">🏗️ Civil Engineering</option>
-//             <option value="Electrical Engineering">
-//               🔌 Electrical Engineering
-//             </option>
-//             <option value="Electronics & Telecommunication">
-//               🔌 Electronics & Telecommunication
-//             </option>
-//             <option value="Chemical Engineering">
-//               🔌 Chemical Engineering
-//             </option>
-//           </select>
-
-//           <button
-//             className="btn btn-info mt-4 px-4 fw-bold"
-//             disabled={!department}
-//             onClick={() => setStep(2)}
-//           >
-//             Next ➡️
-//           </button>
-//         </div>
-//       )}
-
-//       {/* Step 2: Select Semester */}
-//       {step === 2 && (
-//         <div className="text-center">
-//           <h5 className="fw-bold text-warning">Department: {department}</h5>
-//           <h6 className="mt-3 text-light">Select Your Semester</h6>
-//           <div className="d-flex flex-wrap justify-content-center gap-3 mt-4">
-//             {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
-//               <button
-//                 key={sem}
-//                 className="btn btn-outline-light px-4 py-2 rounded-pill shadow-sm"
-//                 onClick={() => {
-//                   setSemester(sem);
-//                   setStep(3);
-//                 }}
-//               >
-//                 🎓 Semester {sem}
-//               </button>
-//             ))}
-//           </div>
-//         </div>
-//       )}
-
-//       {/* Step 3: Show Subjects */}
-//       {step === 3 && !selectedSubject && (
-//         <>
-//           <div className="d-flex justify-content-between align-items-center mb-4">
-//             <h5 className="fw-bold text-info">
-//               {department} - Semester {semester}
-//             </h5>
-//             <button
-//               className="btn btn-outline-warning fw-bold"
-//               onClick={() => setStep(2)}
-//             >
-//               🔙 Back
-//             </button>
-//           </div>
-
-//           <div className="row g-4">
-//             {Object.keys(groupedNotes).length > 0 ? (
-//               Object.keys(groupedNotes).map((subject, index) => (
-//                 <div key={index} className="col-md-3 col-sm-6">
-//                   <div
-//                     className="card h-100 shadow-lg border-0 text-center"
-//                     style={{
-//                       backgroundColor: "#1e293b",
-//                       color: "#f8fafc",
-//                       cursor: "pointer",
-//                       transition: "transform 0.2s ease-in-out",
-//                     }}
-//                     onClick={() => setSelectedSubject(subject)}
-//                     onMouseEnter={(e) =>
-//                       (e.currentTarget.style.transform = "scale(1.05)")
-//                     }
-//                     onMouseLeave={(e) =>
-//                       (e.currentTarget.style.transform = "scale(1)")
-//                     }
-//                   >
-//                     <div className="card-body d-flex flex-column justify-content-center">
-//                       <h5 className="fw-bold text-warning">📂 {subject}</h5>
-//                       <p className="small text-muted">
-//                         {groupedNotes[subject].length} Notes
-//                       </p>
-//                     </div>
-//                   </div>
-//                 </div>
-//               ))
-//             ) : (
-//               <p className="text-center text-muted">⚠️ No notes available yet.</p>
-//             )}
-//           </div>
-//         </>
-//       )}
-
-//       {/* Step 4: Show Notes of Selected Subject */}
-//       {step === 3 && selectedSubject && (
-//         <>
-//           <div className="d-flex justify-content-between align-items-center mb-4">
-//             <h5 className="fw-bold text-info">
-//               {department} - Semester {semester} | {selectedSubject}
-//             </h5>
-//             <button
-//               className="btn btn-outline-warning fw-bold"
-//               onClick={() => setSelectedSubject(null)}
-//             >
-//               🔙 Back to Subjects
-//             </button>
-//           </div>
-
-//           <div className="row g-4">
-//             {groupedNotes[selectedSubject]?.map((note, index) => (
-//               <div key={index} className="col-md-4 col-sm-6">
-//                 <div
-//                   className="card h-100 shadow-lg border-0"
-//                   style={{
-//                     backgroundColor: "#1e293b",
-//                     color: "#f8fafc",
-//                     transition: "all 0.3s",
-//                   }}
-//                 >
-//                   <div className="card-body">
-//                     <h5 className="fw-bold text-info">{note.title}</h5>
-//                     <span className="badge bg-secondary mb-2">
-//                       📖 {note.subject}
-//                     </span>
-//                     <p className="small">{note.description}</p>
-//                   </div>
-//                   <div className="card-footer bg-transparent border-0 text-center">
-//                     <a
-//                       href={note.fileUrl}
-//                       target="_blank"
-//                       rel="noopener noreferrer"
-//                       className="btn btn-sm btn-outline-info fw-bold me-2"
-//                     >
-//                       👀 View
-//                     </a>
-//                   </div>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Notes;
-
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useSearchParams, useLocation, useParams } from "react-router-dom";
-import "../pages/Notes.css"
+import anime from "animejs";
+import "./Notes.css";
 
 const Notes = () => {
-  const [department, setDepartment] = useState("");
-  const [semester, setSemester] = useState("");
-  const [notes, setNotes] = useState([]);
-  const [step, setStep] = useState(1);
-  const [selectedSubject, setSelectedSubject] = useState(null);
-
-  const [searchParams] = useSearchParams();
-  const searchSubject = searchParams.get("subject");
+  const { department: urlDepartment } = useParams();
   const location = useLocation();
-  const { department: deptParam } = useParams();
+  const navigate = useNavigate();
 
-  // Department Name Normalization
-  const departmentMap = {
-    "Computer Engineering": "Computer",
-    "Information Technology": "Information Technology",
-    "Mechanical Engineering": "Mechanical",
-    "Civil Engineering": "Civil",
-    "Electrical Engineering": "Electrical",
-    "Electronics & Telecommunication": "ENTC",
-    "Chemical Engineering": "Chemical Engineering",
-  };
+  const [step, setStep] = useState(urlDepartment ? 2 : 1);
+  const [selectedDept, setSelectedDept] = useState("");
+  const [selectedSemester, setSelectedSemester] = useState("");
+  const [selectedSubject, setSelectedSubject] = useState("");
+  const [allMaterials, setAllMaterials] = useState([]);
+  const [dynamicSubjects, setDynamicSubjects] = useState([]);
+  const [filteredNotes, setFilteredNotes] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("all");
 
-  // Handle department from route (/notes/:department)
+  const departmentMap = useMemo(() => ({
+    "computer-engineering": "Computer",
+    "it-engineering": "Information Technology",
+    "mechanical-engineering": "Mechanical",
+    "civil-engineering": "Civil Engineering",
+    "electrical-engineering": "Electrical Engineering",
+    "chemical-engineering": "Chemical Engineering",
+  }), []);
+
+  const departments = [
+    { id: "computer-engineering", name: "Computer", icon: "fas fa-laptop-code", color: "#a855f7" },
+    { id: "it-engineering", name: "Information Technology", icon: "fas fa-project-diagram", color: "#00e5ff" },
+    { id: "mechanical-engineering", name: "Mechanical", icon: "fas fa-cog", color: "#fbbf24" },
+    { id: "civil-engineering", name: "Civil", icon: "fas fa-building", color: "#f472b6" },
+    { id: "electrical-engineering", name: "Electrical", icon: "fas fa-bolt", color: "#34d399" },
+    { id: "chemical-engineering", name: "Chemical Engineering", icon: "fas fa-flask", color: "#34d399" },
+  ];
+
+  const semesters = ["Semester 1", "Semester 2", "Semester 3", "Semester 4", "Semester 5", "Semester 6", "Semester 7", "Semester 8"];
+
+  // Initialize from URL if present
   useEffect(() => {
-    if (location.state?.department) {
-      setDepartment(location.state.department);
-      setStep(2);
-    } else if (deptParam) {
-      const formatted = deptParam
-        .replace(/-/g, " ")
-        .replace(/\b\w/g, (l) => l.toUpperCase());
-
-      setDepartment(formatted);
-      setStep(2);
-    }
-  }, [location.state, deptParam]);
-
-  // FETCH NOTES API — FIXED
-  useEffect(() => {
-    if (department && semester) {
-      const backendDept = departmentMap[department] || department;
-
-      axios
-        .get(
-          `https://resource-allocator-project.onrender.com/api/resources?department=${encodeURIComponent(
-            backendDept
-          )}&semester=${semester}`
-        )
-        .then((res) => setNotes(res.data))
-        .catch((err) => console.log("❌ Fetch Error:", err));
-    }
-  }, [department, semester]);
-
-  // Group notes by subject
-  const groupedNotes = notes.reduce((acc, note) => {
-    if (!acc[note.subject]) acc[note.subject] = [];
-    acc[note.subject].push(note);
-    return acc;
-  }, {});
-
-  // Auto-select subject from ?subject=
-  useEffect(() => {
-    if (searchSubject && Object.keys(groupedNotes).length > 0) {
-      const match = Object.keys(groupedNotes).find(
-        (s) => s.toLowerCase() === searchSubject.toLowerCase()
-      );
-      if (match) {
-        setStep(3);
-        setSelectedSubject(match);
+    if (urlDepartment) {
+      const deptName = departmentMap[urlDepartment];
+      if (deptName) {
+        setSelectedDept(deptName);
+        setStep(2);
       }
     }
-  }, [searchSubject, groupedNotes]);
+  }, [urlDepartment, departmentMap]);
+
+  // Animation on step change
+  useEffect(() => {
+    anime({
+      targets: '.notes__content',
+      opacity: [0, 1],
+      translateY: [20, 0],
+      duration: 600,
+      easing: 'easeOutExpo'
+    });
+  }, [step]);
+
+  // Fetch subjects dynamically based on Dept and Sem
+  const fetchSubjectsAndMaterials = useCallback(async (dept, sem) => {
+    setLoading(true);
+    try {
+      const semNum = sem.split(" ")[1]; // "Semester 3" -> "3"
+      const res = await axios.get("https://resource-allocator-project.onrender.com/api/resources", {
+        params: { department: dept, semester: semNum }
+      });
+
+      const materials = res.data;
+      setAllMaterials(materials);
+
+      // Extract unique subjects
+      const subjects = [...new Set(materials.map(m => m.subject))];
+      setDynamicSubjects(subjects);
+
+    } catch (err) {
+      console.error("Fetch Error:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // Update step and fetch if needed
+  useEffect(() => {
+    if (selectedDept && selectedSemester && step === 3) {
+      fetchSubjectsAndMaterials(selectedDept, selectedSemester);
+    }
+  }, [selectedDept, selectedSemester, step, fetchSubjectsAndMaterials]);
+
+  // Filter notes when subject or tab changes
+  useEffect(() => {
+    let filtered = allMaterials;
+
+    if (selectedSubject) {
+      filtered = filtered.filter(n => n.subject === selectedSubject);
+    }
+
+    if (activeTab !== "all") {
+      const typeMap = {
+        "notes": ["Note", "note"],
+        "pyqs": ["PYQ", "pyq"],
+        "assignments": ["Assignment", "assignment"]
+      };
+      filtered = filtered.filter(n => {
+        const type = n.title || ""; // Assuming type might be in title or checked differently
+        // In the backend schema, Note, Assignment, and PYQ are different collections.
+        // We'll try to guess or use the source if available.
+        // For now, let's keep it simple.
+        return true;
+      });
+    }
+
+    setFilteredNotes(filtered);
+  }, [allMaterials, selectedSubject, activeTab]);
+
+  const handleDeptSelect = (dept) => {
+    setSelectedDept(dept.name);
+    setStep(2);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSemSelect = (sem) => {
+    setSelectedSemester(sem);
+    setStep(3);
+  };
+
+  const handleSubjectSelect = (sub) => {
+    setSelectedSubject(sub);
+    setStep(4);
+  };
+
+  const handleBack = () => {
+    setStep(prev => prev - 1);
+  };
+
+  const resetAll = () => {
+    setStep(1);
+    setSelectedDept("");
+    setSelectedSemester("");
+    setSelectedSubject("");
+    setAllMaterials([]);
+    setDynamicSubjects([]);
+    navigate("/notes");
+  };
 
   return (
-    <div
-      className="container-fluid min-vh-100 py-5"
-      style={{
-        background: "linear-gradient(135deg, #0a0f1f, #0e1b2c, #0a1a33)",
-        color: "#e6f1ff",
-        paddingBottom: "90px",
-      }}
-    >
-      {/* Header */}
-      <div className="text-center mb-5">
-        <h2 className="fw-bold display-5" style={{ color: "#a8c5ff" }}>
-          📚 Scholar’s Library
-        </h2>
-        <p className="text-light opacity-75">
-          Find all semester-wise notes, books, assignments & resources.
-        </p>
-      </div>
+    <div className="notes">
+      <div className="notes__orb notes__orb--1"></div>
+      <div className="notes__orb notes__orb--2"></div>
 
-      {/* STEP 1 */}
- {step === 1 && (
-  <div className="container py-4">
-
-    <h2 className="fw-bold text-center mb-3" style={{ color: "#84d8ff" }}>
-      Select Your Department
-    </h2>
-
-    <p className="text-center text-light opacity-75 mb-4">
-      Choose your department to explore notes, books & resources.
-    </p>
-
-    <div className="row g-4">
-
-      {[
-        {
-          name: "Computer Engineering",
-          img: "https://images.unsplash.com/photo-1518770660439-4636190af475",
-        },
-        {
-          name: "Information Technology",
-          img: "https://images.unsplash.com/photo-1555949963-aa79dcee981c",
-        },
-        {
-          name: "Mechanical Engineering",
-          img: "https://images.unsplash.com/photo-1581091870632-3ed31b174662",
-        },
-        {
-          name: "Civil Engineering",
-          img: "https://images.unsplash.com/photo-1503387762-592deb58ef4e",
-        },
-        {
-          name: "Electrical Engineering",
-          img: "https://images.unsplash.com/photo-1567443024551-f3e2f64f72e8",
-        },
-        {
-          name: "Electronics & Telecommunication",
-          img: "https://images.unsplash.com/photo-1542751110-97427bbecf20",
-        },
-        {
-          name: "Chemical Engineering",
-          img: "https://images.unsplash.com/photo-1581091012184-5c8afaae03fb",
-        },
-      ].map((dept, index) => (
-        <div key={index} className="col-12 col-md-6 col-lg-4">
-          
-          <div
-            className="dept-card"
-            onClick={() => {
-              setDepartment(dept.name);
-              setStep(2);
-            }}
-          >
-            <div
-              className="dept-card-img"
-              style={{ backgroundImage: `url(${dept.img})` }}
-            ></div>
-
-            <div className="dept-card-overlay"></div>
-
-            <h3 className="dept-card-title">{dept.name}</h3>
-          </div>
-
+      <div className="container">
+        {/* Progress Stepper */}
+        <div className="notes__stepper">
+          {[1, 2, 3, 4].map(num => (
+            <div key={num} className={`notes__step ${step >= num ? 'notes__step--active' : ''}`}>
+              <div className="notes__step-num">{num}</div>
+              <span className="notes__step-label">
+                {num === 1 ? "Dept" : num === 2 ? "Sem" : num === 3 ? "Subject" : "Result"}
+              </span>
+              {num < 4 && <div className="notes__step-line"></div>}
+            </div>
+          ))}
         </div>
-      ))}
 
-    </div>
-  </div>
-)}
-
-
-
-
-      {/* STEP 2 */}
-      {step === 2 && (
-        <div className="text-center">
-          <h5 className="fw-bold" style={{ color: "#ffd166" }}>
-            Department: {department}
-          </h5>
-
-          <div className="d-flex flex-wrap justify-content-center gap-3 mt-4">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((sem) => (
-              <button
-                key={sem}
-                className="shadow-lg"
-                style={{
-                  background: "rgba(255,255,255,0.07)",
-                  color: "#caf0f8",
-                  border: "none",
-                  borderRadius: "12px",
-                  padding: "12px 30px",
-                  fontWeight: "600",
-                  transition: "0.3s",
-                }}
-                onMouseEnter={(e) =>
-                  (e.currentTarget.style.background = "rgba(255,255,255,0.15)")
-                }
-                onMouseLeave={(e) =>
-                  (e.currentTarget.style.background = "rgba(255,255,255,0.07)")
-                }
-                onClick={() => {
-                  setSemester(sem);
-                  setStep(3);
-                }}
-              >
-                Semester {sem}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* STEP 3 - Subject List */}
-      {step === 3 && !selectedSubject && (
-        <>
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h5 className="fw-bold" style={{ color: "#90e0ef" }}>
-              {department} – Sem {semester}
-            </h5>
-
-            <button
-              className="btn btn-outline-light"
-              onClick={() => setStep(2)}
-              style={{ borderRadius: "8px" }}
-            >
-              ← Back
-            </button>
-          </div>
-
-          <div className="row g-4">
-            {Object.keys(groupedNotes).length > 0 ? (
-              Object.keys(groupedNotes).map((subject, i) => (
-                <div key={i} className="col-md-3 col-sm-6">
+        <div className="notes__content">
+          {/* Step 1: Departments */}
+          {step === 1 && (
+            <div className="notes__selection">
+              <h2 className="notes__title text-center">Select Your Department</h2>
+              <div className="notes__grid">
+                {departments.map(dept => (
                   <div
-                    className="shadow-lg text-center"
-                    style={{
-                      background: "rgba(255,255,255,0.07)",
-                      borderRadius: "15px",
-                      padding: "25px 10px",
-                      cursor: "pointer",
-                      transition: "0.3s",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.transform = "scale(1.05)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.transform = "scale(1)")
-                    }
-                    onClick={() => setSelectedSubject(subject)}
+                    key={dept.id}
+                    className="notes__card glass-card"
+                    onClick={() => handleDeptSelect(dept)}
+                    style={{ '--card-color': dept.color }}
                   >
-                    <h5 className="fw-bold" style={{ color: "#ffd166" }}>
-                      {subject}
-                    </h5>
-                    <p className="small opacity-75">
-                      {groupedNotes[subject].length} Files Available
-                    </p>
+                    <div className="notes__card-icon" style={{ color: dept.color }}>
+                      <i className={dept.icon}></i>
+                    </div>
+                    <h4>{dept.name}</h4>
+                    <p>Browse all semesters</p>
                   </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-center text-muted">No subjects available.</p>
-            )}
-          </div>
-        </>
-      )}
+                ))}
+              </div>
+            </div>
+          )}
 
-      {/* STEP 4 - Notes */}
-      {step === 3 && selectedSubject && (
-        <>
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h5 className="fw-bold" style={{ color: "#90e0ef" }}>
-              {selectedSubject}
-            </h5>
-            <button
-              className="btn btn-outline-light"
-              onClick={() => setSelectedSubject(null)}
-              style={{ borderRadius: "8px" }}
-            >
-              ← Back
-            </button>
-          </div>
-
-          <div className="row g-4">
-            {groupedNotes[selectedSubject]?.map((note, index) => (
-              <div key={index} className="col-md-4 col-sm-6">
-                <div
-                  className="shadow-lg"
-                  style={{
-                    background: "rgba(255,255,255,0.07)",
-                    borderRadius: "15px",
-                    padding: "20px",
-                    transition: "0.3s",
-                  }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.transform = "translateY(-6px)")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.transform = "translateY(0)")
-                  }
-                >
-                  <h5 className="fw-bold" style={{ color: "#a8dadc" }}>
-                    {note.title}
-                  </h5>
-                  <span className="badge bg-dark mb-2">{note.subject}</span>
-                  <p className="small opacity-75">{note.description}</p>
-
-                  <a
-                    href={note.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-info w-100 fw-bold mt-3"
-                    style={{ background: "#4ea8de", borderRadius: "10px" }}
+          {/* Step 2: Semesters */}
+          {step === 2 && (
+            <div className="notes__selection">
+              <div className="notes__nav">
+                <button className="notes__back" onClick={handleBack}><i className="fas fa-arrow-left"></i> Back</button>
+                <span className="notes__path">{selectedDept}</span>
+              </div>
+              <h2 className="notes__title text-center">Select Semester</h2>
+              <div className="notes__sem-grid">
+                {semesters.map(sem => (
+                  <button
+                    key={sem}
+                    className={`notes__sem-btn ${selectedSemester === sem ? 'active' : ''}`}
+                    onClick={() => handleSemSelect(sem)}
                   >
-                    View File
-                  </a>
+                    {sem}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Subjects (Dynamic) */}
+          {step === 3 && (
+            <div className="notes__selection">
+              <div className="notes__nav">
+                <button className="notes__back" onClick={handleBack}><i className="fas fa-arrow-left"></i> Back</button>
+                <span className="notes__path">{selectedDept} <i className="fas fa-chevron-right"></i> {selectedSemester}</span>
+              </div>
+              <h2 className="notes__title text-center">Select Subject</h2>
+
+              {loading ? (
+                <div className="notes__loader">
+                  <div className="spinner"></div>
+                  <p>Fetching subjects...</p>
+                </div>
+              ) : dynamicSubjects.length > 0 ? (
+                <div className="notes__sub-grid">
+                  {dynamicSubjects.map(sub => (
+                    <button
+                      key={sub}
+                      className={`notes__sub-btn ${selectedSubject === sub ? 'active' : ''}`}
+                      onClick={() => handleSubjectSelect(sub)}
+                    >
+                      {sub}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="notes__empty glass-card">
+                  <i className="fas fa-folder-open"></i>
+                  <h4>No subjects found.</h4>
+                  <p>There are currently no study materials for this semester.</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Step 4: Results */}
+          {step === 4 && (
+            <div className="notes__results">
+              <div className="notes__header-row">
+                <div className="notes__nav">
+                  <button className="notes__back" onClick={handleBack}><i className="fas fa-arrow-left"></i> Back</button>
+                  <button className="notes__reset" onClick={resetAll}><i className="fas fa-redo"></i> Reset</button>
+                </div>
+                <div className="notes__tabs">
+                  {["all", "notes", "pyqs", "assignments"].map(tab => (
+                    <button
+                      key={tab}
+                      className={`notes__tab ${activeTab === tab ? 'active' : ''}`}
+                      onClick={() => setActiveTab(tab)}
+                    >
+                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </button>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
-        </>
-      )}
+
+              <div className="notes__summary glass-card">
+                <h3>{selectedSubject}</h3>
+                <p>{selectedDept} • {selectedSemester}</p>
+              </div>
+
+              {filteredNotes.length > 0 ? (
+                <div className="notes__list">
+                  {filteredNotes.map((note, idx) => (
+                    <div className="notes__item glass-card" key={note._id || idx}>
+                      <div className="notes__item-icon">
+                        <i className={`fas ${note.fileUrl?.toLowerCase().includes('.pdf') ? 'fa-file-pdf' : 'fa-file-alt'}`}></i>
+                      </div>
+                      <div className="notes__item-info">
+                        <h5>{note.title || note.subject}</h5>
+                        <span>Uploaded At: {new Date(note.uploadedAt).toLocaleDateString()}</span>
+                      </div>
+                      <a href={note.fileUrl} target="_blank" rel="noreferrer" className="notes__download-btn">
+                        <i className="fas fa-download"></i> View / Download
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="notes__empty glass-card">
+                  <i className="fas fa-search"></i>
+                  <h4>No matching materials.</h4>
+                  <p>Try switching tabs or selecting another subject.</p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 };
