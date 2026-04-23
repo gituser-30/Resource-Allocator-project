@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { mergeSort, multiColumnSearch, paginate } from "../utils/dsa";
 
 const AssignmentsPage = () => {
   const [assignments, setAssignments] = useState([]);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Form states
   const [department, setDepartment] = useState("");
@@ -12,31 +14,36 @@ const AssignmentsPage = () => {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState(null);
 
+  // DSA States
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortConfig, setSortConfig] = useState({ key: 'subject', direction: 'asc' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+
   // Options
   const departments = [
-    "Computer",
-    "Mechanical",
-    "Civil",
-    "Electrical",
-    "Information Technology",
-    "Chemical Engineering",
-    "ENTC",
-    "Electrical"
+    "Computer", "Mechanical", "Civil", "Electrical", "Information Technology", "Chemical Engineering", "ENTC"
   ];
   const semesters = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
   // Fetch assignments
   useEffect(() => {
     const fetchAssignments = async () => {
+      setIsLoading(true);
       try {
-        const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/assignments", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+        const cacheBuster = `?t=${new Date().getTime()}`;
+        const res = await axios.get(`https://resource-allocator-project.onrender.com/api/admin/assignments${cacheBuster}`, {
+          headers: { 
+            Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+            'Cache-Control': 'no-cache', 
+            'Pragma': 'no-cache',
+          },
         });
-
-        // backend may return { assignments: [] } or [] directly
-        setAssignments(res.data.assignments || res.data);
+        setAssignments(res.data.assignments || res.data || []);
       } catch (err) {
         setError("Failed to fetch assignments ❌");
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchAssignments();
@@ -46,7 +53,7 @@ const AssignmentsPage = () => {
   const handleAddAssignment = async (e) => {
     e.preventDefault();
     if (!department || !semester || !subject || !file || !title) {
-      setError("All fields are required ❌");
+      setError("All required fields must be filled ❌");
       return;
     }
 
@@ -65,12 +72,8 @@ const AssignmentsPage = () => {
         },
       });
 
-      setAssignments([...assignments, res.data.assignment]); // ✅ add new assignment
-      setDepartment(""); 
-      setSemester(""); 
-      setSubject(""); 
-      setTitle(""); 
-      setFile(null);
+      setAssignments([...assignments, res.data.assignment]);
+      setDepartment(""); setSemester(""); setSubject(""); setTitle(""); setFile(null);
       setError("");
     } catch (err) {
       setError(err.response?.data?.error || "Failed to add assignment ❌");
@@ -90,95 +93,109 @@ const AssignmentsPage = () => {
     }
   };
 
-  // Inline styles
-  const containerStyle = { padding: "30px 40px", fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif", background: "#f3f6f9", minHeight: "100vh" };
-  const headerStyle = { fontSize: "28px", fontWeight: "700", marginBottom: "20px", color: "#1d4ed8" };
-  const formStyle = { marginBottom: "30px", background: "#fff", padding: "20px", borderRadius: "12px", boxShadow: "0 5px 15px rgba(0,0,0,0.1)" };
-  const inputStyle = { width: "100%", padding: "12px", marginBottom: "10px", border: "1px solid #ccc", borderRadius: "8px", fontSize: "14px" };
-  const buttonStyle = { padding: "10px 16px", backgroundColor: "#1d4ed8", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "600", cursor: "pointer" };
-  const tableContainerStyle = { overflowX: "auto", borderRadius: "15px", boxShadow: "0 10px 25px rgba(0,0,0,0.1)", background: "#fff" };
-  const tableStyle = { width: "100%", borderCollapse: "collapse" };
-  const thStyle = { padding: "15px", backgroundColor: "#1d4ed8", color: "#fff", textAlign: "left", fontWeight: "600" };
-  const tdStyle = { padding: "15px", borderBottom: "1px solid #ddd" };
-  const deleteButtonStyle = { backgroundColor: "#ef4444", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "8px", cursor: "pointer", fontWeight: "600" };
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') direction = 'desc';
+    setSortConfig({ key, direction });
+  };
+
+  // DSA Pipeline
+  const filteredAssignments = multiColumnSearch(assignments, searchQuery, ['department', 'subject', 'title', 'semester']);
+  const sortedAssignments = mergeSort(filteredAssignments, sortConfig.key, sortConfig.direction);
+  const paginatedAssignments = paginate(sortedAssignments, currentPage, pageSize);
+  const totalPages = Math.ceil(sortedAssignments.length / pageSize) || 1;
+
+  if (isLoading) {
+    return (
+      <div style={{ textAlign: "center", padding: "50px", color: "var(--text-secondary)" }}>
+        <div style={{ fontSize: "40px", marginBottom: "16px", animation: "pulse 2s infinite" }}>⏳</div>
+        <p>Loading assignments...</p>
+      </div>
+    );
+  }
 
   return (
-    <div style={containerStyle}>
-      <h1 style={headerStyle}>Assignments Management</h1>
-
-      {error && <p style={{ color: "red", fontWeight: "600" }}>{error}</p>}
-
-      {/* Form */}
-      <form style={formStyle} onSubmit={handleAddAssignment}>
-        <select style={inputStyle} value={department} onChange={(e) => setDepartment(e.target.value)} required>
-          <option value="">-- Choose Department --</option>
-          {departments.map((d) => <option key={d} value={d}>{d}</option>)}
-        </select>
-
-        <select style={inputStyle} value={semester} onChange={(e) => setSemester(e.target.value)} required>
-          <option value="">Select Semester</option>
-          {semesters.map((s) => <option key={s} value={s}>{s}</option>)}
-        </select>
-
-        <input
-          type="text"
-          placeholder="Enter Subject Name"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          style={inputStyle}
-          required
+    <div className="animate-fade-in">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px", flexWrap: "wrap", gap: "16px" }}>
+        <div>
+          <h2 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "8px" }}>Assignments Management</h2>
+          <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>Upload and manage assignments.</p>
+        </div>
+        <input 
+          type="text" 
+          className="search-input" 
+          placeholder="Search subject, dept, title..." 
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setCurrentPage(1);
+          }}
         />
+      </div>
 
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          style={inputStyle}
-          required
-        />
+      {error && <div style={{ padding: "16px", background: "rgba(239, 68, 68, 0.1)", border: "1px solid var(--danger)", color: "var(--danger)", borderRadius: "8px", marginBottom: "24px" }}>{error}</div>}
 
-        <input type="file" onChange={(e) => setFile(e.target.files[0])} style={inputStyle} accept="application/pdf" required />
-        <button type="submit" style={buttonStyle}>Add Assignment</button>
+      {/* Upload Form */}
+      <form className="glass-panel" style={{ padding: "24px", marginBottom: "32px" }} onSubmit={handleAddAssignment}>
+        <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px" }}>Upload New Assignment</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginBottom: "16px" }}>
+          <select className="search-input" value={department} onChange={(e) => setDepartment(e.target.value)} required>
+            <option value="">-- Department --</option>
+            {departments.map((d) => <option key={d} value={d}>{d}</option>)}
+          </select>
+          <select className="search-input" value={semester} onChange={(e) => setSemester(e.target.value)} required>
+            <option value="">-- Semester --</option>
+            {semesters.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <input type="text" className="search-input" placeholder="Subject Name" value={subject} onChange={(e) => setSubject(e.target.value)} required />
+          <input type="text" className="search-input" placeholder="Assignment Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+          <input type="file" className="search-input" onChange={(e) => setFile(e.target.files[0])} accept="application/pdf" style={{ padding: "7px 16px" }} required />
+        </div>
+        <button type="submit" className="btn-primary" style={{ width: "200px" }}>Upload Assignment</button>
       </form>
 
       {/* Table */}
-      <div style={tableContainerStyle}>
-        <table style={tableStyle}>
+      <div className="data-table-container">
+        <table className="data-table">
           <thead>
             <tr>
-              <th style={thStyle}>Department</th>
-              <th style={thStyle}>Semester</th>
-              <th style={thStyle}>Subject</th>
-              <th style={thStyle}>Title</th>
-              <th style={thStyle}>File</th>
-              <th style={thStyle}>Action</th>
+              <th onClick={() => handleSort('department')}>Dept {sortConfig.key === 'department' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+              <th onClick={() => handleSort('semester')}>Sem {sortConfig.key === 'semester' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+              <th onClick={() => handleSort('subject')}>Subject {sortConfig.key === 'subject' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+              <th onClick={() => handleSort('title')}>Title {sortConfig.key === 'title' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+              <th style={{ cursor: 'default' }}>File</th>
+              <th style={{ cursor: 'default' }}>Action</th>
             </tr>
           </thead>
           <tbody>
-            {assignments.length === 0 ? (
-              <tr>
-                <td colSpan="6" style={{ ...tdStyle, textAlign: "center" }}>No assignments found</td>
-              </tr>
+            {paginatedAssignments.length === 0 ? (
+              <tr><td colSpan="6" style={{ textAlign: "center", padding: "40px", color: "var(--text-secondary)" }}>No assignments match your criteria.</td></tr>
             ) : (
-              assignments.map((a, idx) => (
-                <tr key={a._id} style={{ backgroundColor: idx % 2 === 0 ? "#f9fafb" : "#fff" }}>
-                  <td style={tdStyle}>{a.department}</td>
-                  <td style={tdStyle}>{a.semester}</td>
-                  <td style={tdStyle}>{a.subject}</td>
-                  <td style={tdStyle}>{a.title}</td>
-                  <td style={tdStyle}>
-                    <a href={`https://resource-allocator-project.onrender.com${a.fileUrl}`} target="_blank" rel="noopener noreferrer" style={{ color: "#1d4ed8", fontWeight: "600" }}>View PDF</a>
+              paginatedAssignments.map((a) => (
+                <tr key={a._id}>
+                  <td>{a.department}</td>
+                  <td>{a.semester}</td>
+                  <td style={{ fontWeight: "500", color: "white" }}>{a.subject}</td>
+                  <td>{a.title || "-"}</td>
+                  <td>
+                    <a href={`https://resource-allocator-project.onrender.com${a.fileUrl}`} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "500" }}>View PDF</a>
                   </td>
-                  <td style={tdStyle}>
-                    <button style={deleteButtonStyle} onClick={() => handleDelete(a._id)}>Delete</button>
-                  </td>
+                  <td><button className="btn-danger" onClick={() => handleDelete(a._id)}>Delete</button></td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button className="page-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}>Previous</button>
+          <span className="page-info">Page <span style={{ color: "white", fontWeight: "600" }}>{currentPage}</span> of {totalPages}</span>
+          <button className="page-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}>Next</button>
+        </div>
+      )}
     </div>
   );
 };

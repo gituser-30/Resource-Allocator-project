@@ -1,41 +1,50 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { mergeSort, multiColumnSearch, paginate } from "../utils/dsa";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   // Form states
   const [department, setDepartment] = useState("");
   const [semester, setSemester] = useState("");
   const [subject, setSubject] = useState("");
   const [file, setFile] = useState(null); 
-  const [title, settittle] = useState(""); 
+  const [title, setTitle] = useState(""); 
+
+  // DSA States
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortConfig, setSortConfig] = useState({ key: 'subject', direction: 'asc' });
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
   // Options
   const departments = [
-    "Computer",
-    "Mechanical",
-    "Civil",
-    "Electrical",
-    "ENTC",
-    "Chemical Engineering",
-    "Information Technology",
+    "Computer", "Mechanical", "Civil", "Electrical", "ENTC", 
+    "Chemical Engineering", "Information Technology"
   ];
   const semesters = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
   // Fetch notes
   useEffect(() => {
     const fetchNotes = async () => {
+      setIsLoading(true);
       try {
-        const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/notes", {
-          headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
+        const cacheBuster = `?t=${new Date().getTime()}`;
+        const res = await axios.get(`https://resource-allocator-project.onrender.com/api/admin/notes${cacheBuster}`, {
+          headers: { 
+            Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+            'Cache-Control': 'no-cache', 
+            'Pragma': 'no-cache',
+          },
         });
-
-        // Sometimes backend returns array directly, sometimes inside {notes: []}
-        setNotes(res.data.notes || res.data);
+        setNotes(res.data.notes || res.data || []);
       } catch (err) {
         setError("Failed to fetch notes ❌");
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchNotes();
@@ -45,7 +54,7 @@ const NotesPage = () => {
   const handleAddNote = async (e) => {
     e.preventDefault();
     if (!department || !semester || !subject || !file) {
-      setError("All fields are required ❌");
+      setError("All required fields must be filled ❌");
       return;
     }
 
@@ -64,8 +73,8 @@ const NotesPage = () => {
         },
       });
 
-      setNotes([...notes, res.data.note]); // add new note
-      setDepartment(""); setSemester(""); setSubject(""); setFile(null);
+      setNotes([...notes, res.data.note]); 
+      setDepartment(""); setSemester(""); setSubject(""); setTitle(""); setFile(null);
       setError("");
     } catch (err) {
       setError(err.response?.data?.error || "Failed to add note ❌");
@@ -84,95 +93,110 @@ const NotesPage = () => {
       alert("Failed to delete note ❌");
     }
   };
-  
 
-  // Inline styles
-  const containerStyle = { padding: "30px 40px", fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif", background: "#f3f6f9", minHeight: "100vh" };
-  const headerStyle = { fontSize: "28px", fontWeight: "700", marginBottom: "20px", color: "#1d4ed8" };
-  const formStyle = { marginBottom: "30px", background: "#fff", padding: "20px", borderRadius: "12px", boxShadow: "0 5px 15px rgba(0,0,0,0.1)" };
-  const inputStyle = { width: "100%", padding: "12px", marginBottom: "10px", border: "1px solid #ccc", borderRadius: "8px", fontSize: "14px" };
-  const buttonStyle = { padding: "10px 16px", backgroundColor: "#1d4ed8", color: "#fff", border: "none", borderRadius: "8px", fontWeight: "600", cursor: "pointer" };
-  const tableContainerStyle = { overflowX: "auto", borderRadius: "15px", boxShadow: "0 10px 25px rgba(0,0,0,0.1)", background: "#fff" };
-  const tableStyle = { width: "100%", borderCollapse: "collapse" };
-  const thStyle = { padding: "15px", backgroundColor: "#1d4ed8", color: "#fff", textAlign: "left", fontWeight: "600" };
-  const tdStyle = { padding: "15px", borderBottom: "1px solid #ddd" };
-  const deleteButtonStyle = { backgroundColor: "#ef4444", color: "#fff", border: "none", padding: "6px 12px", borderRadius: "8px", cursor: "pointer", fontWeight: "600" };
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') direction = 'desc';
+    setSortConfig({ key, direction });
+  };
+
+  // DSA Pipeline
+  const filteredNotes = multiColumnSearch(notes, searchQuery, ['department', 'subject', 'title', 'semester']);
+  const sortedNotes = mergeSort(filteredNotes, sortConfig.key, sortConfig.direction);
+  const paginatedNotes = paginate(sortedNotes, currentPage, pageSize);
+  const totalPages = Math.ceil(sortedNotes.length / pageSize) || 1;
+
+  if (isLoading) {
+    return (
+      <div style={{ textAlign: "center", padding: "50px", color: "var(--text-secondary)" }}>
+        <div style={{ fontSize: "40px", marginBottom: "16px", animation: "pulse 2s infinite" }}>⏳</div>
+        <p>Loading notes...</p>
+      </div>
+    );
+  }
 
   return (
-    <div style={containerStyle}>
-      <h1 style={headerStyle}>Notes Management</h1>
-
-      {error && <p style={{ color: "red", fontWeight: "600" }}>{error}</p>}
-
-      {/* Form */}
-      <form style={formStyle} onSubmit={handleAddNote}>
-        <select style={inputStyle} value={department} onChange={(e) => setDepartment(e.target.value)} required>
-          <option value="">-- Choose Department --</option>
-          {departments.map((d) => <option key={d} value={d}>{d}</option>)}
-        </select>
-
-        <select style={inputStyle} value={semester} onChange={(e) => setSemester(e.target.value)} required>
-          <option value="">Select Semester</option>
-          {semesters.map((s) => <option key={s} value={s}>{s}</option>)}
-        </select>
-
-        <input
-          type="text"
-          placeholder="Enter Subject Name"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value)}
-          style={inputStyle}
-          required
+    <div className="animate-fade-in">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px", flexWrap: "wrap", gap: "16px" }}>
+        <div>
+          <h2 style={{ fontSize: "24px", fontWeight: "700", marginBottom: "8px" }}>Notes Management</h2>
+          <p style={{ color: "var(--text-secondary)", fontSize: "14px" }}>Upload and manage study materials.</p>
+        </div>
+        <input 
+          type="text" 
+          className="search-input" 
+          placeholder="Search subject, dept, title..." 
+          value={searchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+            setCurrentPage(1);
+          }}
         />
+      </div>
 
-        <input
-          type="text"
-          placeholder="title"
-          value={title}
-          onChange={(e) => settittle(e.target.value)}
-          style={inputStyle}
-          required
-        />
+      {error && <div style={{ padding: "16px", background: "rgba(239, 68, 68, 0.1)", border: "1px solid var(--danger)", color: "var(--danger)", borderRadius: "8px", marginBottom: "24px" }}>{error}</div>}
 
-        <input type="file" onChange={(e) => setFile(e.target.files[0])} style={inputStyle} accept="application/pdf" required />
-        <button type="submit" style={buttonStyle}>Add Note</button>
+      {/* Upload Form */}
+      <form className="glass-panel" style={{ padding: "24px", marginBottom: "32px" }} onSubmit={handleAddNote}>
+        <h3 style={{ fontSize: "18px", fontWeight: "600", marginBottom: "16px" }}>Upload New Note</h3>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginBottom: "16px" }}>
+          <select className="search-input" value={department} onChange={(e) => setDepartment(e.target.value)} required>
+            <option value="">-- Department --</option>
+            {departments.map((d) => <option key={d} value={d}>{d}</option>)}
+          </select>
+          <select className="search-input" value={semester} onChange={(e) => setSemester(e.target.value)} required>
+            <option value="">-- Semester --</option>
+            {semesters.map((s) => <option key={s} value={s}>{s}</option>)}
+          </select>
+          <input type="text" className="search-input" placeholder="Subject Name" value={subject} onChange={(e) => setSubject(e.target.value)} required />
+          <input type="text" className="search-input" placeholder="Title (Optional)" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <input type="file" className="search-input" onChange={(e) => setFile(e.target.files[0])} accept="application/pdf" style={{ padding: "7px 16px" }} required />
+        </div>
+        <button type="submit" className="btn-primary" style={{ width: "200px" }}>Upload Material</button>
       </form>
 
       {/* Table */}
-      <div style={tableContainerStyle}>
-        <table style={tableStyle}>
+      <div className="data-table-container">
+        <table className="data-table">
           <thead>
             <tr>
-              <th style={thStyle}>Department</th>
-              <th style={thStyle}>Semester</th>
-              <th style={thStyle}>Subject</th>
-              <th style={thStyle}>File</th>
-              <th style={thStyle}>Action</th>
+              <th onClick={() => handleSort('department')}>Dept {sortConfig.key === 'department' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+              <th onClick={() => handleSort('semester')}>Sem {sortConfig.key === 'semester' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+              <th onClick={() => handleSort('subject')}>Subject {sortConfig.key === 'subject' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+              <th onClick={() => handleSort('title')}>Title {sortConfig.key === 'title' ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}</th>
+              <th style={{ cursor: 'default' }}>File</th>
+              <th style={{ cursor: 'default' }}>Action</th>
             </tr>
           </thead>
           <tbody>
-            {notes.length === 0 ? (
-              <tr>
-                <td colSpan="5" style={{ ...tdStyle, textAlign: "center" }}>No notes found</td>
-              </tr>
+            {paginatedNotes.length === 0 ? (
+              <tr><td colSpan="6" style={{ textAlign: "center", padding: "40px", color: "var(--text-secondary)" }}>No notes match your criteria.</td></tr>
             ) : (
-              notes.map((n, idx) => (
-                <tr key={n._id} style={{ backgroundColor: idx % 2 === 0 ? "#f9fafb" : "#fff" }}>
-                  <td style={tdStyle}>{n.department}</td>
-                  <td style={tdStyle}>{n.semester}</td>
-                  <td style={tdStyle}>{n.subject}</td>
-                  <td style={tdStyle}>
-                    <a href={`https://resource-allocator-project.onrender.com${n.fileUrl}`} target="_blank" rel="noopener noreferrer" style={{ color: "#1d4ed8", fontWeight: "600" }}>View PDF</a>
+              paginatedNotes.map((n) => (
+                <tr key={n._id}>
+                  <td>{n.department}</td>
+                  <td>{n.semester}</td>
+                  <td style={{ fontWeight: "500", color: "white" }}>{n.subject}</td>
+                  <td>{n.title || "-"}</td>
+                  <td>
+                    <a href={`https://resource-allocator-project.onrender.com${n.fileUrl}`} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "500" }}>View PDF</a>
                   </td>
-                  <td style={tdStyle}>
-                    <button style={deleteButtonStyle} onClick={() => handleDelete(n._id)}>Delete</button>
-                  </td>
+                  <td><button className="btn-danger" onClick={() => handleDelete(n._id)}>Delete</button></td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="pagination">
+          <button className="page-btn" disabled={currentPage === 1} onClick={() => setCurrentPage(p => Math.max(p - 1, 1))}>Previous</button>
+          <span className="page-info">Page <span style={{ color: "white", fontWeight: "600" }}>{currentPage}</span> of {totalPages}</span>
+          <button className="page-btn" disabled={currentPage === totalPages} onClick={() => setCurrentPage(p => Math.min(p + 1, totalPages))}>Next</button>
+        </div>
+      )}
     </div>
   );
 };
