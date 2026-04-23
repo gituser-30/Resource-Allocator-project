@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import anime from "animejs";
 import { useNavigate } from "react-router-dom";
 import "./advertise.css";
