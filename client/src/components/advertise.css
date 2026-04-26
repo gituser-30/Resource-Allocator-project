@@ -233,7 +233,7 @@
   }
 
   .hero__stats {
-    gap: 20px;
+    gap: 16px;
   }
 
   .hero__stats-divider {
@@ -241,7 +241,12 @@
   }
 
   .hero__stats-item {
-    width: 40%;
+    width: 45%;
+    padding: 10px;
+  }
+
+  .hero__stat-number {
+    font-size: 1.5rem;
   }
 
   .hero__scroll-indicator {
@@ -257,5 +262,19 @@
   .hero__actions .btn-outline-glow {
     width: 100%;
     max-width: 280px;
+  }
+
+  .hero__title {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__stats-item {
+    width: 100%;
+  }
+  
+  .hero__title {
+    font-size: 1.8rem;
   }
 }

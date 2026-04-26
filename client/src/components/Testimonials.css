@@ -87,3 +87,19 @@
 .testimonial__dot:hover {
   background: rgba(255,255,255,0.3);
 }
+
+@media (max-width: 768px) {
+  .testimonial__card {
+    padding: 30px 20px;
+  }
+  
+  .testimonial__text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  
+  .testimonial__author {
+    flex-direction: column;
+    text-align: center;
+  }
+}

@@ -185,17 +185,38 @@
 }
 
 /* Responsiveness */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .pro-slider__header h2 {
-    font-size: 2.2rem;
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .pro-slider-section {
+    padding: 60px 0;
+  }
+  
+  .pro-slider__header h2 {
+    font-size: 2rem;
   }
   
   .pro-card {
     height: 280px;
-    padding: 20px;
+    padding: 24px;
   }
   
   .pro-card__title {
-    font-size: 1.25rem;
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pro-slider__header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .pro-card {
+    height: 260px;
+    padding: 20px;
   }
 }

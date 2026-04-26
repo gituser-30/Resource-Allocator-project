@@ -136,15 +136,31 @@
 @media (max-width: 1024px) {
   .tws__grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .tws__heading h2 {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .tws {
+    padding: 70px 0;
+  }
+  
+  .tws__heading h2 {
+    font-size: 2rem;
   }
 }
 
 @media (max-width: 640px) {
   .tws__grid {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
-  .tws {
-    padding: 60px 0;
+  
+  .tws__card {
+    padding: 30px 20px;
   }
 }
-
