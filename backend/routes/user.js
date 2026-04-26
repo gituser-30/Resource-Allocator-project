@@ -18,10 +18,7 @@ router.put("/update-profile/:id", async (req, res) => {
       },
       { new: true }
     );
-    
-    if (!updatedUser) {
-      return res.status(404).json({ success: false, msg: "User not found" });
-    }
+
     res.json({ success: true, user: updatedUser });
   } catch (err) {
     res.json({ success: false, msg: "Error updating profile" });

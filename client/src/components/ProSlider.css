@@ -1,0 +1,201 @@
+.pro-slider-section {
+  padding: 80px 0;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.pro-slider__header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.pro-slider__header h2 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.pro-slider__header p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+.pro-slider__wrapper {
+  margin: 0 -15px;
+}
+
+/* Slide Spacing */
+.pro-slider__slide {
+  padding: 20px 15px;
+}
+
+/* Pro Card Design */
+.pro-card {
+  position: relative;
+  height: 320px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.pro-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 
+              0 0 20px var(--card-color);
+}
+
+.pro-card__badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pro-card__icon-container {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pro-card__icon {
+  font-size: 2.5rem;
+  z-index: 2;
+  transition: transform 0.4s ease;
+}
+
+.pro-card:hover .pro-card__icon {
+  transform: scale(1.2) rotate(5deg);
+}
+
+.pro-card__icon-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  filter: blur(25px);
+  opacity: 0.3;
+  z-index: 1;
+}
+
+.pro-card__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 20px 0 10px;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.pro-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.pro-card__stats {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.pro-card__arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  color: var(--card-color);
+}
+
+.pro-card:hover .pro-card__arrow {
+  background: var(--card-color);
+  color: #000;
+  transform: translateX(5px);
+}
+
+.pro-card__border-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  padding: 2px;
+  background: linear-gradient(135deg, transparent, var(--card-color), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.pro-card:hover .pro-card__border-glow {
+  opacity: 0.6;
+}
+
+/* Custom Slick Styles for Smooth Infinite Scroll */
+.slick-track {
+  display: flex !important;
+  align-items: stretch;
+}
+
+.slick-slide {
+  height: inherit !important;
+}
+
+.slick-list {
+  overflow: visible !important;
+}
+
+/* Custom Dots */
+.slick-dots {
+  bottom: -40px;
+}
+
+.slick-dots li button:before {
+  color: var(--accent-cyan) !important;
+  font-size: 10px;
+  opacity: 0.2;
+  transition: all 0.3s ease;
+}
+
+.slick-dots li.slick-active button:before {
+  opacity: 1;
+  color: var(--accent-purple) !important;
+  transform: scale(1.5);
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .pro-slider__header h2 {
+    font-size: 2.2rem;
+  }
+  
+  .pro-card {
+    height: 280px;
+    padding: 20px;
+  }
+  
+  .pro-card__title {
+    font-size: 1.25rem;
+  }
+}

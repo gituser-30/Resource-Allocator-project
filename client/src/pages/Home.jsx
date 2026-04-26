@@ -1,6 +1,6 @@
 import React from 'react'
 import Advertise from '../components/advertise'
-import Browse from '../components/Browse'
+import ProSlider from '../components/ProSlider'
 import Popular from '../components/Popular'
 import ThingsWeShare from '../components/Thingsshare'
 import Testimonials from '../components/Testimonials'
@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <main className="home-page">
       <Advertise />
-      <Browse />
+      <ProSlider />
       <Popular />
       <ThingsWeShare />
       <Testimonials />

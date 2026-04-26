@@ -15,8 +15,8 @@ const Advertise = () => {
       try {
         // Use standard 'token' since login stores it as 'token'
         const token = localStorage.getItem("token") || localStorage.getItem("usertoken");
-        const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/users/count", { 
-          headers: { Authorization: `Bearer ${token}` } 
+        const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/users/count", {
+          headers: { Authorization: `Bearer ${token}` }
         });
         if (res.data && res.data.success) {
           setUserno(res.data.count);
@@ -110,7 +110,7 @@ const Advertise = () => {
           poster="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=80"
         >
           <source
-            src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4"
+            src="/videos/hero-bg.mp4"
             type="video/mp4"
           />
         </video>

@@ -51,8 +51,8 @@ const Browse = () => {
               targets: '.browse__card',
               opacity: [0, 1],
               translateY: [60, 0],
-              duration: 800,
-              delay: anime.stagger(120),
+              duration: 3000,
+              delay: anime.stagger(200),
               easing: 'easeOutExpo',
             });
             observer.disconnect();
