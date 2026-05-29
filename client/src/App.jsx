@@ -33,8 +33,25 @@ const AppContent = () => {
 
       <Routes>
         <Route path='/' element={<Navigate to="/login" />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/register' element={<Register />} />
+        {/* <Route path='/login' element={<Login />} />
+        <Route path='/register' element={<Register />} /> */}
+        <Route
+  path="/login"
+  element={
+    localStorage.getItem("token")
+      ? <Navigate to="/home" replace />
+      : <Login />
+  }
+/>
+
+<Route
+  path="/register"
+  element={
+    localStorage.getItem("token")
+      ? <Navigate to="/home" replace />
+      : <Register />
+  }
+/>
         <Route path='/forgot-password' element={<ForgotPassword />} />
 
         <Route path='/home' element={<PrivateRoute><Home /></PrivateRoute>} />
