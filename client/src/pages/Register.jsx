@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import anime from "animejs";
+import { API_BASE_URL } from "../config/api";
 import "./register.css";
 
 const Register = () => {
@@ -36,7 +37,7 @@ const Register = () => {
         duration: 800
       }, '-=600')
       .add({
-        targets: '.register__form-group',
+        targets: '.register__form-group, .register__form-row',
         opacity: [0, 1],
         translateY: [20, 0],
         delay: anime.stagger(80),
@@ -75,7 +76,7 @@ const Register = () => {
       if (profilePhoto) data.append("profilePhoto", profilePhoto);
 
       await axios.post(
-        "https://resource-allocator-project.onrender.com/api/auth/register",
+        `${API_BASE_URL}/api/auth/register`,
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

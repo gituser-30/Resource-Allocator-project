@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config/api";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ const AdminLogin = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post("https://resource-allocator-project.onrender.com/api/admin/login", {
+      const res = await axios.post(`${API_BASE_URL}/api/admin/login`, {
         email,
         password,
       });

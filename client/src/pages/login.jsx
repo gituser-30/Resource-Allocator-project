@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import anime from "animejs";
+import { API_BASE_URL } from "../config/api";
 import "./login.css";
 
 const Login = () => {
@@ -43,7 +44,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        "https://resource-allocator-project.onrender.com/api/auth/login",
+        `${API_BASE_URL}/api/auth/login`,
         { email, password }
       );
 

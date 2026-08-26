@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { mergeSort, multiColumnSearch, paginate } from "../utils/dsa";
+import { API_BASE_URL, formatPdfUrl } from "../config/api";
 
 const PYQsPage = () => {
   const [pyqs, setPyqs] = useState([]);
@@ -34,7 +35,7 @@ const PYQsPage = () => {
       setIsLoading(true);
       try {
         const cacheBuster = `?t=${new Date().getTime()}`;
-        const res = await axios.get(`https://resource-allocator-project.onrender.com/api/admin/pyqs${cacheBuster}`, {
+        const res = await axios.get(`${API_BASE_URL}/api/admin/pyqs${cacheBuster}`, {
           headers: { 
             Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
             'Cache-Control': 'no-cache', 
@@ -70,7 +71,7 @@ const PYQsPage = () => {
     formData.append("title", title);
 
     try {
-      const res = await axios.post("https://resource-allocator-project.onrender.com/api/admin/pyqs", formData, {
+      const res = await axios.post(`${API_BASE_URL}/api/admin/pyqs`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
           "Content-Type": "multipart/form-data",
@@ -89,7 +90,7 @@ const PYQsPage = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this PYQ?")) return;
     try {
-      await axios.delete(`https://resource-allocator-project.onrender.com/api/admin/pyqs/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/admin/pyqs/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
       setPyqs(pyqs.filter((p) => p._id !== id));
@@ -186,7 +187,26 @@ const PYQsPage = () => {
                   <td style={{ fontWeight: "600", color: "var(--accent-primary)" }}>{p.year}</td>
                   <td>{p.title || "-"}</td>
                   <td>
-                    <a href={`https://resource-allocator-project.onrender.com${p.fileUrl}`} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "500" }}>View PDF</a>
+                    <a 
+                      href={formatPdfUrl(p.fileUrl)} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{ 
+                        display: "inline-flex", 
+                        alignItems: "center", 
+                        gap: "6px",
+                        padding: "6px 12px", 
+                        borderRadius: "6px", 
+                        background: "rgba(59, 130, 246, 0.15)", 
+                        color: "#60a5fa", 
+                        border: "1px solid rgba(59, 130, 246, 0.3)", 
+                        textDecoration: "none", 
+                        fontWeight: "500", 
+                        fontSize: "13px" 
+                      }}
+                    >
+                      📄 View PDF
+                    </a>
                   </td>
                   <td><button className="btn-danger" onClick={() => handleDelete(p._id)}>Delete</button></td>
                 </tr>

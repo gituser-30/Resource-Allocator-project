@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
 // Import all pages
 import NotesPage from "./Notespage"
@@ -28,16 +29,18 @@ const AdminDashboard = () => {
         const token = localStorage.getItem("adminToken");
         const headers = { headers: { Authorization: `Bearer ${token}` } };
 
-        const usersRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/users/count", headers);
-        const assignmentsRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/assignments/count", headers);
-        const notesRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/notes/count", headers);
-        const pyqsRes = await axios.get("https://resource-allocator-project.onrender.com/api/admin/pyqs/count", headers);
+        const [usersRes, assignmentsRes, notesRes, pyqsRes] = await Promise.all([
+          axios.get(`${API_BASE_URL}/api/admin/users/count`, headers),
+          axios.get(`${API_BASE_URL}/api/admin/assignments/count`, headers),
+          axios.get(`${API_BASE_URL}/api/admin/notes/count`, headers),
+          axios.get(`${API_BASE_URL}/api/admin/pyqs/count`, headers),
+        ]);
 
         setStats([
-          { title: "Total Users", value: usersRes.data.count, bg: "linear-gradient(135deg, #3b82f6, #2563eb)", icon: "👤" },
-          { title: "Assignments", value: assignmentsRes.data.count, bg: "linear-gradient(135deg, #10b981, #059669)", icon: "📄" },
-          { title: "Notes", value: notesRes.data.count, bg: "linear-gradient(135deg, #8b5cf6, #7c3aed)", icon: "📝" },
-          { title: "PYQs", value: pyqsRes.data.count, bg: "linear-gradient(135deg, #f59e0b, #d97706)", icon: "📄" },
+          { title: "Total Users", value: usersRes.data.count || 0, bg: "linear-gradient(135deg, #3b82f6, #2563eb)", icon: "👤" },
+          { title: "Assignments", value: assignmentsRes.data.count || 0, bg: "linear-gradient(135deg, #10b981, #059669)", icon: "📄" },
+          { title: "Notes", value: notesRes.data.count || 0, bg: "linear-gradient(135deg, #8b5cf6, #7c3aed)", icon: "📝" },
+          { title: "PYQs", value: pyqsRes.data.count || 0, bg: "linear-gradient(135deg, #f59e0b, #d97706)", icon: "📄" },
         ]);
       } catch (err) {
         console.error("Failed to fetch stats:", err);

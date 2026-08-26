@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import anime from "animejs";
 import { useNavigate } from "react-router-dom";
-import "./advertise.css";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
+import "./advertise.css";
 
 const Advertise = () => {
   const heroRef = useRef(null);
@@ -15,7 +16,7 @@ const Advertise = () => {
       try {
         // Use standard 'token' since login stores it as 'token'
         const token = localStorage.getItem("token") || localStorage.getItem("usertoken");
-        const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/users/count", {
+        const res = await axios.get(`${API_BASE_URL}/api/admin/users/count`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.data && res.data.success) {

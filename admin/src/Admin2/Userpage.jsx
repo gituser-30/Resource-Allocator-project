@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { mergeSort, multiColumnSearch, paginate } from "../utils/dsa";
+import { API_BASE_URL } from "../config/api";
 
 const UsersPage = () => {
     const [users, setUsers] = useState([]);
@@ -27,7 +28,7 @@ const UsersPage = () => {
 
             try {
                 const cacheBuster = `?t=${new Date().getTime()}`;
-                const res = await axios.get(`https://resource-allocator-project.onrender.com/api/admin/users${cacheBuster}`, {
+                const res = await axios.get(`${API_BASE_URL}/api/admin/users${cacheBuster}`, {
                     headers: {
                         Authorization: `Bearer ${token}`, 
                         'Cache-Control': 'no-cache', 
@@ -63,7 +64,7 @@ const UsersPage = () => {
         }
 
         try {
-            await axios.delete(`https://resource-allocator-project.onrender.com/api/admin/users/${id}`, {
+            await axios.delete(`${API_BASE_URL}/api/admin/users/${id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setUsers(users.filter((user) => user._id !== id));

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import anime from "animejs";
+import { API_BASE_URL, formatPdfUrl } from "../config/api";
 import "./Notes.css";
 
 const Notes = () => {
@@ -66,7 +67,7 @@ const Notes = () => {
     setLoading(true);
     try {
       const semNum = sem.split(" ")[1]; // "Semester 3" -> "3"
-      const res = await axios.get("https://resource-allocator-project.onrender.com/api/resources", {
+      const res = await axios.get(`${API_BASE_URL}/api/resources`, {
         params: { department: dept, semester: semNum }
       });
 
@@ -285,7 +286,7 @@ const Notes = () => {
                         <h5>{note.title || note.subject}</h5>
                         <span>Uploaded At: {new Date(note.uploadedAt).toLocaleDateString()}</span>
                       </div>
-                      <a href={note.fileUrl} target="_blank" rel="noreferrer" className="notes__download-btn">
+                      <a href={formatPdfUrl(note.fileUrl)} target="_blank" rel="noreferrer" className="notes__download-btn">
                         <i className="fas fa-download"></i> View / Download
                       </a>
                     </div>

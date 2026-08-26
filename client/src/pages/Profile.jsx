@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import anime from "animejs";
+import { API_BASE_URL } from "../config/api";
 import "./profile.css";
 
 const Profile = () => {
@@ -44,7 +45,7 @@ const Profile = () => {
     try {
       const userId = user._id || user.id;
       const res = await axios.put(
-        `https://resource-allocator-project.onrender.com/api/users/update-profile/${userId}`,
+        `${API_BASE_URL}/api/users/update-profile/${userId}`,
         form,
         { headers: { "Content-Type": "application/json" } }
       );
@@ -70,7 +71,7 @@ const Profile = () => {
     try {
       const userId = user._id || user.id;
       const res = await axios.put(
-        `https://resource-allocator-project.onrender.com/api/users/change-password/${userId}`,
+        `${API_BASE_URL}/api/users/change-password/${userId}`,
         passwordData,
         { headers: { "Content-Type": "application/json" } }
       );

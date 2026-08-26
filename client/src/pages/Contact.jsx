@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import anime from "animejs";
+import { API_BASE_URL } from "../config/api";
 import "./Contact.css";
 
 const Contact = () => {
@@ -42,7 +43,7 @@ const Contact = () => {
 
     try {
       const res = await axios.post(
-        "https://resource-allocator-project.onrender.com/contact",
+        `${API_BASE_URL}/contact`,
         formData,
         { headers: { "Content-Type": "application/json" } }
       );

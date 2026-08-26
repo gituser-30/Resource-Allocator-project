@@ -12,9 +12,11 @@ const userSchema = new mongoose.Schema(
     department: {
       type: String,
       default: "",
-    }, // ✅ COMMA WAS MISSING HERE
+    }, 
 
-    role: { type: String, enum: ["user", "admin"], default: "user" }, // stays correct
+    role: { type: String, enum: ["user", "admin"], default: "user" },
+    resetOtp: { type: String, default: null },
+    resetOtpExpire: { type: Date, default: null },
   },
   { timestamps: true }
 );

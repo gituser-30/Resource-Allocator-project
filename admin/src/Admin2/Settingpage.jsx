@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
 const Settings = () => {
   const [adminData, setAdminData] = useState({ name: "", email: "" });
@@ -9,7 +10,7 @@ const Settings = () => {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const res = await axios.get("https://resource-allocator-project.onrender.com/api/admin/profile", {
+        const res = await axios.get(`${API_BASE_URL}/api/admin/profile`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
         });
         setAdminData({ name: res.data.name, email: res.data.email });
@@ -25,7 +26,7 @@ const Settings = () => {
     e.preventDefault();
     try {
       await axios.put(
-        "https://resource-allocator-project.onrender.com/api/admin/profile",
+        `${API_BASE_URL}/api/admin/profile`,
         { name: adminData.name, email: adminData.email },
         { headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` } }
       );
@@ -41,7 +42,7 @@ const Settings = () => {
 
     try {
       await axios.put(
-        "https://resource-allocator-project.onrender.com/api/admin/password",
+        `${API_BASE_URL}/api/admin/password`,
         { oldPassword: passwords.oldPassword, newPassword: passwords.newPassword },
         { headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` } }
       );

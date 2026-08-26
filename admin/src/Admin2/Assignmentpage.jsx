@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { mergeSort, multiColumnSearch, paginate } from "../utils/dsa";
+import { API_BASE_URL, formatPdfUrl } from "../config/api";
 
 const AssignmentsPage = () => {
   const [assignments, setAssignments] = useState([]);
@@ -32,7 +33,7 @@ const AssignmentsPage = () => {
       setIsLoading(true);
       try {
         const cacheBuster = `?t=${new Date().getTime()}`;
-        const res = await axios.get(`https://resource-allocator-project.onrender.com/api/admin/assignments${cacheBuster}`, {
+        const res = await axios.get(`${API_BASE_URL}/api/admin/assignments${cacheBuster}`, {
           headers: { 
             Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
             'Cache-Control': 'no-cache', 
@@ -65,7 +66,7 @@ const AssignmentsPage = () => {
     formData.append("file", file);
 
     try {
-      const res = await axios.post("https://resource-allocator-project.onrender.com/api/admin/assignments", formData, {
+      const res = await axios.post(`${API_BASE_URL}/api/admin/assignments`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
           "Content-Type": "multipart/form-data",
@@ -84,7 +85,7 @@ const AssignmentsPage = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this assignment?")) return;
     try {
-      await axios.delete(`https://resource-allocator-project.onrender.com/api/admin/assignments/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/admin/assignments/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
       setAssignments(assignments.filter((a) => a._id !== id));
@@ -178,7 +179,26 @@ const AssignmentsPage = () => {
                   <td style={{ fontWeight: "500", color: "white" }}>{a.subject}</td>
                   <td>{a.title || "-"}</td>
                   <td>
-                    <a href={`https://resource-allocator-project.onrender.com${a.fileUrl}`} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "500" }}>View PDF</a>
+                    <a 
+                      href={formatPdfUrl(a.fileUrl)} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{ 
+                        display: "inline-flex", 
+                        alignItems: "center", 
+                        gap: "6px",
+                        padding: "6px 12px", 
+                        borderRadius: "6px", 
+                        background: "rgba(59, 130, 246, 0.15)", 
+                        color: "#60a5fa", 
+                        border: "1px solid rgba(59, 130, 246, 0.3)", 
+                        textDecoration: "none", 
+                        fontWeight: "500", 
+                        fontSize: "13px" 
+                      }}
+                    >
+                      📄 View PDF
+                    </a>
                   </td>
                   <td><button className="btn-danger" onClick={() => handleDelete(a._id)}>Delete</button></td>
                 </tr>

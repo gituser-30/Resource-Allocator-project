@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { mergeSort, multiColumnSearch, paginate } from "../utils/dsa";
+import { API_BASE_URL, formatPdfUrl } from "../config/api";
 
 const NotesPage = () => {
   const [notes, setNotes] = useState([]);
@@ -33,7 +34,7 @@ const NotesPage = () => {
       setIsLoading(true);
       try {
         const cacheBuster = `?t=${new Date().getTime()}`;
-        const res = await axios.get(`https://resource-allocator-project.onrender.com/api/admin/notes${cacheBuster}`, {
+        const res = await axios.get(`${API_BASE_URL}/api/admin/notes${cacheBuster}`, {
           headers: { 
             Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
             'Cache-Control': 'no-cache', 
@@ -66,7 +67,7 @@ const NotesPage = () => {
     formData.append("title", title);
 
     try {
-      const res = await axios.post("https://resource-allocator-project.onrender.com/api/admin/notes", formData, {
+      const res = await axios.post(`${API_BASE_URL}/api/admin/notes`, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
           "Content-Type": "multipart/form-data",
@@ -85,7 +86,7 @@ const NotesPage = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this note?")) return;
     try {
-      await axios.delete(`https://resource-allocator-project.onrender.com/api/admin/notes/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/admin/notes/${id}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("adminToken")}` },
       });
       setNotes(notes.filter((n) => n._id !== id));
@@ -179,7 +180,26 @@ const NotesPage = () => {
                   <td style={{ fontWeight: "500", color: "white" }}>{n.subject}</td>
                   <td>{n.title || "-"}</td>
                   <td>
-                    <a href={`https://resource-allocator-project.onrender.com${n.fileUrl}`} target="_blank" rel="noopener noreferrer" style={{ color: "var(--accent-primary)", textDecoration: "none", fontWeight: "500" }}>View PDF</a>
+                    <a 
+                      href={formatPdfUrl(n.fileUrl)} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      style={{ 
+                        display: "inline-flex", 
+                        alignItems: "center", 
+                        gap: "6px",
+                        padding: "6px 12px", 
+                        borderRadius: "6px", 
+                        background: "rgba(59, 130, 246, 0.15)", 
+                        color: "#60a5fa", 
+                        border: "1px solid rgba(59, 130, 246, 0.3)", 
+                        textDecoration: "none", 
+                        fontWeight: "500", 
+                        fontSize: "13px" 
+                      }}
+                    >
+                      📄 View PDF
+                    </a>
                   </td>
                   <td><button className="btn-danger" onClick={() => handleDelete(n._id)}>Delete</button></td>
                 </tr>

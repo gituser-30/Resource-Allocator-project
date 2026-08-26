@@ -1,0 +1,14 @@
+from sentence_transformers import SentenceTransformer
+
+class EmbeddingService:
+    def __init__(self):
+        self.model = SentenceTransformer(
+            "all-MiniLM-L6-V2"
+        )
+
+    def create_embedding(self, text):
+        return self.model.encode(text)
+    
+    def create_embeddings(self,texts):
+        return self.model.encode(texts)
+    
