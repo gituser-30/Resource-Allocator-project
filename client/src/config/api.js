@@ -1,7 +1,22 @@
 // Centralized API configuration and asset formatters for Client
 
-export const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:5000";
+const getBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // If running locally on localhost or 127.0.0.1
+  if (
+    typeof window !== "undefined" &&
+    (window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1")
+  ) {
+    return "http://localhost:5000";
+  }
+  // Production fallback for deployed website (e.g. Render / Netlify)
+  return "https://resource-allocator-project.onrender.com";
+};
+
+export const API_BASE_URL = getBaseUrl();
 
 /**
  * Ensures PDF or file URL opens cleanly regardless of storage backend (Cloudinary, local uploads, or absolute URLs)
